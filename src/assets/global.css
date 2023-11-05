@@ -129,6 +129,7 @@ template{
     padding-bottom: 0px;
 }
 
+
 .image_main {
     width: 100%;
     position: relative;
@@ -161,6 +162,10 @@ template{
     color: #170e09;
     text-align: center;
     font-weight: bold;
+}
+.services_section_2 {
+    width: 100%;
+    float: left;
 }
 .services_taital::after {
     content: '';
@@ -219,7 +224,11 @@ template{
     top: 0px;
     display: none;
 }
-
+.col-md-3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
 .image_main:hover::after {
     content: '';
     position: absolute;

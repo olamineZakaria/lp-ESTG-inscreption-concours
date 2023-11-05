@@ -2,11 +2,6 @@
     <div class="full-page">
         <div class="navbar">
             <div class="navbar-title">LP-ESTG</div>
-            <!-- <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Portfolio</a>
-            <a href="#">Contact</a> -->
         </div>
         <div class="banner-slide">
             <div class="banner-overlay">
@@ -17,66 +12,75 @@
                     <br>
                     <br>
                     <a href="#" class="button">Inscription</a>
+                    <br>
+                    <a href="#" class="button">Inscription</a>
                 </div>
             </div>
         </div>
         <div class="services_section layout_padding">
             <div class="container">
-                <h1 class="services_taital"><span style="color: #005596">Our</span> Courses</h1>
+                <h1 class="services_taital"><span style="color: #005596">Les</span> Formations</h1>
                 <div class="services_section_2">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="image_main">
-                                <img src="../assets/images/img-2.png" class="image_8" style="width:100%">
-                                <div class="text_main">
-                                    <div class="seemore_text">Art And Design</div>
+                    <center>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="image_main">
+                                    <img src="../assets/images/pexels-lukas-669616.jpg" class="image_8" style="width:100%; height: 200px;">
+                                    <div class="text_main">
+                                        <div class="seemore_text">Informatique Décisionnelle et Statistiques (IDS)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="image_main">
+                                    <img src="../assets/images/img-3.png" class="image_8" style="width:100%; height: 200px;">
+                                    <div class = "text_main">
+                                        <div class="seemore_text">Instrumentation & Systèmes (IS)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="image_main">
+                                    <img src="../assets/images/pexels-pixabay-159397.jpg" class="image_8" style="width:100%; height: 200px;">
+                                    <div class="text_main">
+                                        <div class="seemore_text">Energies Renouvelables et Procédés (ERP)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="image_main">
+                                    <img src="../assets/images/pexels-lukas-669614.jpg" class="image_8" style="width:100%; height: 200px;">
+                                    <div class="text_main">
+                                        <div class="seemore_text">Informatique Décisionnelle et Statistiques (IDS) ASSa</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="image_main">
-                                <img src="../assets/images/img-3.png" class="image_8" style="width:100%">
-                                <div class="text_main">
-                                    <div class="seemore_text">Science</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="image_main">
-                                <img src="../assets/images/img-4.png" class="image_8" style="width:100%">
-                                <div class="text_main">
-                                    <div class="seemore_text">Business Study</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="image_main">
-                                <img src="../assets/images/img-5.png" class="image_8" style="width:100%">
-                                <div class="text_main">
-                                    <div class="seemore_text">English Speaking</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </center>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script></script>
-
 <style scoped>
 @import '../assets/global.css';
+
 .full-page {
-    overflow: auto; /* Enable scrolling for the entire page */
-    height: 100vh; /* Set the page height to the viewport height */
+    overflow: auto;
+    height: 100vh;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .col-md-3 {
-    width: 25%; /* Divide the row into four equal-width columns */
-    float: left; /* Display the columns next to each other */
-    box-sizing: border-box; /* Include padding and border in the width */
+    width: calc(50% - 20px);
+    box-sizing: border-box;
     padding: 10px;
+    margin: 10px;
 }
 </style>
