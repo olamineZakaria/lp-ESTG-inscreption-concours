@@ -60,6 +60,11 @@
                 </div>
             </div>
         </div>
+        <div class="services_section layout_padding">
+            <div class="container">
+                <h1 class="services_taital"><span style="color: #005596">Les</span> Conditions d'admission</h1>
+            </div>
+        </div>
     </div>
 </template>
 
