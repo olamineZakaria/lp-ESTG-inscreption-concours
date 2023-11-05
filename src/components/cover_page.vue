@@ -2,6 +2,8 @@
     <div class="full-page">
         <div class="navbar">
             <div class="navbar-title">LP-ESTG</div>
+            <a href="#">Formations</a>
+            <a href="#">Conditions d'admission</a>
         </div>
         <div class="banner-slide">
             <div class="banner-overlay">
@@ -11,7 +13,6 @@
                     <p><u>Annee universitaire 2023-2024</u></p>
                     <br>
                     <br>
-                    <a href="/welcome" class="button">Inscription</a>
                     <br>
                     <a href="/welcome" class="button">Inscription</a>
                 </div>
@@ -19,7 +20,7 @@
         </div>
         <div class="services_section layout_padding">
             <div class="container">
-                <h1 class="services_taital"><span style="color: #005596">Les</span> Formations</h1>
+                <h1 class="services_taital"><span style="color: #005596">Formations</span></h1>
                 <div class="services_section_2">
                     <center>
                         <div class="row">
@@ -62,7 +63,19 @@
         </div>
         <div class="services_section layout_padding">
             <div class="container">
-                <h1 class="services_taital"><span style="color: #005596">Les</span> Conditions d'admission</h1>
+                <h1 class="services_taital"><span style="color: #005596"></span> Conditions d'admission</h1>
+                <center></center>
+            </div>
+        </div>
+        <div class="services_section layout_padding">
+            <div class="container">
+                <h1 class="services_taital"><span style="color: #005596">Dossier de candidateur</span></h1>
+                <center></center>
+            </div>
+        </div>
+        <div class="services_section layout_padding">
+            <div class="container">
+                <h1 class="services_taital"><span style="color: #005596"></span>Dates important</h1>
                 <center></center>
             </div>
         </div>
