@@ -1,39 +1,32 @@
 <template>
-    <div class="full-page">
+    <!-- <div class="full-page"> -->
         <div class="navbar">
+            <div class="navbar-title">LP-ESTG</div>
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Services</a>
             <a href="#">Portfolio</a>
             <a href="#">Contact</a>
         </div>
-    </div>
+        <div class="banner-slide">
+            <div class="banner-overlay">
+                <div class="banner-content">
+                    <h1>Ecole Supérieure de Technologie Guelmim</h1>
+                    <p>Concours Licence Professionnelle</p>
+                    <p><u>Annee universitaire 2023-2024</u></p>
+                    <br>
+                    <br>
+                    <a href="#" class="button">Inscreption</a>
+                </div>
+            </div>
+  
+        </div>
+    <!-- </div> -->
 </template>
 
 
-<script>
-
-</script>
-
+<script></script>
 
 <style>
- /* CSS for the navigation bar */
-.navbar {
-    background-color: #005596; /* Background color of the navbar */
-    overflow: hidden;
-}
-.navbar a {
-    float: left;
-    font-size: 16px;
-    color: white; /* Text color for navbar links */
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-        /* Change the color of navbar links when you hover over them */
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+@import '../assets/global.css';
 </style>

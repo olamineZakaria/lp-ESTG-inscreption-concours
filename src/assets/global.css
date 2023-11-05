@@ -1,0 +1,120 @@
+        /* CSS for the navigation bar */
+.navbar {
+    background-color: #005596; /* Background color of the navbar */
+    overflow: hidden;
+}
+
+.navbar a {
+    float: left;
+    font-size: 16px;
+    color: white; /* Text color for navbar links */
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar .navbar-title {
+    float: left;
+    font-size: 24px; /* You can adjust the font size */
+    color: white; /* Text color for the website name */
+    padding: 14px 16px;
+    text-decoration: none;
+    margin-right: 64%; /* Space between the name and links */
+}
+
+.navbar a:hover {
+    background-color: white;
+    color: black;
+}
+.banner-slide {
+    width: 100%;
+    height: 470px;
+    background: #000;
+    float: left;
+    position: relative;
+    background: url('./images/Guelmim_01.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+}
+          
+.banner-slide .banner-overlay {
+    position: absolute;
+    width: 60vw;
+    background: #005596;
+    left: -150px;
+    height: 470px;
+    border-radius: 10% 0% 20% 10% / 0% 87% 38% 0%;
+    transform: skew(-30deg, 0deg);
+    background: -moz-linear-gradient(left, #005596) 0%, rgba(255, 255, 255, 0.83) 100%;
+    background: -webkit-linear-gradient(left, #005596 0%, rgba(255, 255, 255, 0.83) 100%);
+    background: linear-gradient(to right, #005596 0%, rgba(255, 255, 255, 0.83) 100%);
+}
+          
+.banner-slide .banner-overlay .banner-content {
+    margin-left: 30%;
+    transform: skew(30deg, 0deg);
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+          
+.banner-slide .banner-overlay .banner-content h1 {
+    color: white;
+    font-size: 36px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 5px;
+    line-height: 58px;
+}
+          
+.banner-slide .banner-overlay .banner-content p {
+    color: white;
+    font-size: 24px;
+    line-height: 38px;
+}
+          
+.banner-slide .banner-overlay .banner-content a.button {
+    padding: 18px 50px;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    background: #005596;
+    text-decoration: none;
+}
+          
+.banner-slide .banner-overlay .banner-content a.button:hover {
+    background: darken(#005596, 10%);
+}
+          
+@media only screen and (max-width: 1250px) {
+    .banner-slide .banner-overlay {
+        width: 80vw;
+    }
+    .banner-slide .banner-overlay .banner-content {
+        margin-left: 30%;
+    }
+}
+          
+@media only screen and (max-width: 750px) {
+    .banner-slide .banner-overlay {
+        width: 90vw;
+        }
+}
+          
+@media only screen and (max-width: 680px) {
+    .banner-slide .banner-overlay {
+        width: 100vw;
+        border-radius: 0px;
+        transform: skew(0deg, 0deg);
+        left: 0px;
+    }
+    .banner-slide .banner-overlay .banner-content {
+        margin-left: 0px;
+        transform: skew(0deg, 0deg);
+        text-align: center;
+        align-items: center;
+        }
+}
