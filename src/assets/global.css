@@ -125,7 +125,7 @@ template{
     background-color: white;
 }
 .services_section.layout_padding {
-    padding-top: 90px;
+    padding-top: 0px;
     padding-bottom: 0px;
 }
 
@@ -155,6 +155,7 @@ template{
     overflow: hidden;
   }
   .services_taital{
+    margin-bottom: 20px; /* Add margin at the bottom of the h1 */
     padding-top: 20px;
     margin-top: 20px;
     width: 100%;
