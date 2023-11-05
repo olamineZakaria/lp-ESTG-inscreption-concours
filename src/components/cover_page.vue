@@ -11,9 +11,9 @@
                     <p><u>Annee universitaire 2023-2024</u></p>
                     <br>
                     <br>
-                    <a href="#" class="button">Inscription</a>
+                    <a href="/welcome" class="button">Inscription</a>
                     <br>
-                    <a href="#" class="button">Inscription</a>
+                    <a href="/welcome" class="button">Inscription</a>
                 </div>
             </div>
         </div>
@@ -47,14 +47,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                                 <div class="image_main">
                                     <img src="../assets/images/pexels-lukas-669614.jpg" class="image_8" style="width:100%; height: 200px;">
                                     <div class="text_main">
                                         <div class="seemore_text">Informatique Décisionnelle et Statistiques (IDS) ASSa</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </center>
                 </div>
@@ -63,6 +63,7 @@
         <div class="services_section layout_padding">
             <div class="container">
                 <h1 class="services_taital"><span style="color: #005596">Les</span> Conditions d'admission</h1>
+                <center></center>
             </div>
         </div>
     </div>

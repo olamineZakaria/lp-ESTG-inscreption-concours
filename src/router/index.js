@@ -10,7 +10,7 @@ import cover_page from '../components/cover_page.vue'
 const routes = [
     {
         path: '/',
-        component: welcome_page
+        component: cover_page
     },
     {
         path: '/login',
@@ -25,8 +25,8 @@ const routes = [
         component: forget_password
     },
     {
-        path: '/cover',
-        component: cover_page
+        path: '/welcome',
+        component: welcome_page
     },
 ]
 
