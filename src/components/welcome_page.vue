@@ -3,7 +3,7 @@
       <div id="container">
         <div id="row">
           <div id="padd-box">
-            <router-link to="/regestration" class="style-noodels-Fourteen blue">
+            <router-link to="/cover" class="style-noodels-Fourteen blue">
               <img src="../assets/images/Guelmim_04.jpg" alt="Image 1">
               <div class="icons">
                 <p>Créer un nouveau compte</p>

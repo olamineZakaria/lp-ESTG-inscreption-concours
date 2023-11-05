@@ -5,6 +5,7 @@ import welcome_page from '../components/welcome_page.vue'
 import login_page from '../components/login_page.vue'
 import regestration_page from '../components/regestration_page.vue'
 import forget_password from '../components/forget_password.vue'
+import cover_page from '../components/cover_page.vue'
 
 const routes = [
     {
@@ -22,6 +23,10 @@ const routes = [
     {
         path: '/forgetpassword',
         component: forget_password
+    },
+    {
+        path: '/cover',
+        component: cover_page
     },
 ]
 
