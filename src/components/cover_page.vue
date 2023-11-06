@@ -7,13 +7,13 @@
             <a href="#">Dossier de candidateur</a>
             <a href="#">Dates important</a>
         </div>
+        <br>
         <div class="banner-slide">
             <div class="banner-overlay">
                 <div class="banner-content">
                     <h1>Ecole Supérieure de Technologie Guelmim</h1>
                     <p>Concours Licence Professionnelle</p>
                     <p><u>Annee universitaire 2023-2024</u></p>
-                    <br>
                     <br>
                     <br>
                     <a href="/welcome" class="button">Inscription</a>
@@ -68,8 +68,7 @@
                 <h1 class="services_taital"><span style="color: #005596"></span> Conditions d'admission</h1>
                 <center>
                     <div class="container-main">
-                    <h4>'</h4>
-                    <br>
+                    <h4 class="text-h4">'</h4>
                     <ul>
                         <li>
                             <div class="checkmark"></div>
@@ -195,15 +194,7 @@
         </div>
         <br>
         <div class="footer">
-            <div class="container-main-footer">
-                <div class="footer-content">
-                    <div>
-                        <center>
-                            <h4>Copyright © 2018 tous droits réservés par École Supérieure de Technologie Guelmim</h4>
-                        </center>
-                    </div>
-                </div>
-            </div>
+            <a class="text-footer">Ecole Supérieure de Technologie Guelmim</a>
         </div>
     </div>
     

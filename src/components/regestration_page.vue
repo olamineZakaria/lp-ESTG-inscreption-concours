@@ -35,7 +35,18 @@
 </template>
 
 
-<style>
+<style scoped>
 @import '@/assets/styles_login._fonts.css';
 @import '@/assets/stayling.css';
+@import '@/assets/style.css';
+
+.full-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #f0f0f0; /* Set the background color you prefer */
+    overflow: hidden;
+}
 </style>

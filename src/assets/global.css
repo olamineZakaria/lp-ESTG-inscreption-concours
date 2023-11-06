@@ -83,6 +83,7 @@
     text-align: center;
     background: #005596;
     text-decoration: none;
+    border-radius: 8px;
 }
           
 .banner-slide .banner-overlay .banner-content a.button:hover {
@@ -246,12 +247,15 @@ template{
 
 
 /* dsfds */
+.text-h4{
+    color: white;
+}
 
 .container-main {
     font-family: Arial, sans-serif;
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0px;
 }
 
 h2 {
@@ -327,11 +331,26 @@ box-sizing: border-box;
 padding: 10px;
 margin: 10px;
 }
-.footer {
+/* .footer {
     background-color: #005596;
     color: #fff;
     padding: 20px 0;
     height: 10px;
+} */
+.footer {
+    background-color: #005596;
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10px;
+}
+
+.text-footer {
+    text-decoration: none;
+    font-size: 20xp;
+
 }
 
 .footer .container-main-footer {
@@ -366,3 +385,4 @@ margin: 10px;
 .footer ul li {
     margin-bottom: 5px;
 }
+
