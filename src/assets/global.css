@@ -246,3 +246,123 @@ template{
 
 
 /* dsfds */
+
+.container-main {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    color: #005596;
+    font-size: 24px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #005596;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document {
+    color: #333;
+    font-size: 20px;
+}
+
+.note {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+}
+.full-page {
+overflow: auto;
+height: 100vh;
+}
+
+.row {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+}
+table {
+border-collapse: collapse;
+width: 60%;
+margin: 0 auto;
+}
+th, td {
+border: 1px solid black;
+padding: 8px;
+text-align: center;
+}
+
+th {
+background-color: #005596ea;
+}
+
+tr:nth-child(even) {
+background-color: white;
+}
+.col-md-3 {
+width: calc(50% - 20px);
+box-sizing: border-box;
+padding: 10px;
+margin: 10px;
+}
+.footer {
+    background-color: #005596;
+    color: #fff;
+    padding: 20px 0;
+    height: 10px;
+}
+
+.footer .container-main-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer h4 {
+    font-size: 18px;
+    text-align: center;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer i {
+    font-size: 24px;
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer ul li {
+    margin-bottom: 5px;
+}

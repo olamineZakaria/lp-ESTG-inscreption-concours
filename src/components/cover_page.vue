@@ -66,7 +66,38 @@
         <div class="services_section layout_padding">
             <div class="container">
                 <h1 class="services_taital"><span style="color: #005596"></span> Conditions d'admission</h1>
-                <center></center>
+                <center>
+                    <div class="container-main">
+                    <h4>'</h4>
+                    <br>
+                    <ul>
+                        <li>
+                            <div class="checkmark"></div>
+                            <span class="document">Bac+2 DEUG, SMI, OU DEUP, DEUST, DUT ET BTS</span>
+                        </li>
+                        <li>
+                            <div class="checkmark"></div>
+                            <span class="document">Les notes obtenues dans certains modules</span>
+                        </li>
+                        <li>
+                            <div class="checkmark"></div>
+                            <span class="document">Pré-requis pédagogiques spécifiques</span>
+                        </li>
+                        <li>
+                            <div class="checkmark"></div>
+                            <span class="document">Etude du dossier</span>
+                        </li>
+                        <li>
+                            <div class="checkmark"></div>
+                            <span class="document">Epreuve écrite</span>
+                        </li>
+                        <li>
+                            <div class="checkmark"></div>
+                            <span class="document">Entretien Oral</span>
+                        </li>
+                     </ul>
+            </div>
+                </center>
             </div>
         </div>
         <div class="services_section layout_padding">
@@ -101,9 +132,9 @@
                             <div class="checkmark">✓</div>
                             <span class="document">Copie des relevés des notes S1, S2, S3, et S4.</span>
                         </li>
-        </ul>
-        <p class="note">N.B: Toute information erronée entraîne l’annulation de la candidature.</p>
-    </div>
+                     </ul>
+                    <p class="note">N.B: Toute information erronée entraîne l’annulation de la candidature.</p>
+            </div>
                 </center>
             </div>
         </div>
@@ -162,89 +193,22 @@
                 </table>
             </div>
         </div>
+        <br>
+        <div class="footer">
+            <div class="container-main-footer">
+                <div class="footer-content">
+                    <div>
+                        <center>
+                            <h4>Copyright © 2018 tous droits réservés par École Supérieure de Technologie Guelmim</h4>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
 </template>
 
-<style scoped>
+<style>
 @import '../assets/global.css';
-.container-main {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h2 {
-            color: #005596;
-            font-size: 24px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .checkmark {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #005596;
-            border-radius: 50%;
-            margin-right: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .document {
-            color: #333;
-            font-size: 20px;
-        }
-
-        .note {
-            color: red;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-.full-page {
-    overflow: auto;
-    height: 100vh;
-}
-
-.row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-table {
-    border-collapse: collapse;
-    width: 60%;
-    margin: 0 auto;
-}
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-}
-
-th {
-    background-color: #005596ea;
-}
-
-tr:nth-child(even) {
-    background-color: white;
-}
-.col-md-3 {
-    width: calc(50% - 20px);
-    box-sizing: border-box;
-    padding: 10px;
-    margin: 10px;
-}
 </style>
