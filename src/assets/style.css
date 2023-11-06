@@ -76,7 +76,8 @@
         position: absolute;
         left: 0;
         top: 50%;
-        width: 100%;
+        width: 99%;
+        height: 9%;
         background-color: #ffffff;
         text-align: right;
         transform: translateY(-50%);
