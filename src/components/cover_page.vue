@@ -2,10 +2,10 @@
     <div class="full-page">
         <div class="navbar">
             <div class="navbar-title">LP-ESTG</div>
-            <a href="#">Formations</a>
-            <a href="#">Conditions d'admission</a>
-            <a href="#">Dossier de candidateur</a>
-            <a href="#">Dates important</a>
+            <a href="#Formations">Formations</a>
+            <a href="#Conditions-admission">Conditions d'admission</a>
+            <a href="#Dossier-candidature">Dossier de candidature</a>
+            <a href="#Dates-important">Dates importants</a>
         </div>
         <br>
         <div class="banner-slide">
@@ -22,7 +22,7 @@
         </div>
         <div class="services_section layout_padding">
             <div class="container">
-                <h1 class="services_taital"><span style="color: #005596">Formations</span></h1>
+                <h1 id="Formations" class="services_taital"><span style="color: #005596">Formations</span></h1>
                 <div class="services_section_2">
                     <center>
                         <div class="row">
@@ -63,9 +63,9 @@
                 </div>
             </div>
         </div>
-        <div class="services_section layout_padding">
+        <div  class="services_section layout_padding">
             <div class="container">
-                <h1 class="services_taital"><span style="color: #005596"></span> Conditions d'admission</h1>
+                <h1 id="Conditions-admission" class="services_taital"><span style="color: #005596"></span> Conditions d'admission</h1>
                 <center>
                     <div class="container-main">
                     <h4 class="text-h4">'</h4>
@@ -99,7 +99,7 @@
                 </center>
             </div>
         </div>
-        <div class="services_section layout_padding">
+        <div id="Dossier-candidature" class="services_section layout_padding">
             <div class="container">
                 <h1 class="services_taital"><span style="color: #005596">Dossier de candidateur</span></h1>
                 <center>
@@ -137,7 +137,7 @@
                 </center>
             </div>
         </div>
-        <div class="services_section layout_padding">
+        <div id="Dates-important" class="services_section layout_padding">
             <div class="container">
                 <h1 class="services_taital"><span style="color: #005596"></span>Dates importants</h1>
                     <table>
