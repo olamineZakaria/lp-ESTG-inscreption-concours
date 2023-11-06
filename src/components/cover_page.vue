@@ -205,6 +205,7 @@
 
         .document {
             color: #333;
+            font-size: 20px;
         }
 
         .note {
