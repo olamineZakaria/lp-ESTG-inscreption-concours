@@ -6,7 +6,7 @@ import login_page from '../components/login_page.vue'
 import regestration_page from '../components/regestration_page.vue'
 import forget_password from '../components/forget_password.vue'
 import cover_page from '../components/cover_page.vue'
-
+import dashboard from '../components/dashboard.vue'
 const routes = [
     {
         path: '/',
@@ -27,6 +27,10 @@ const routes = [
     {
         path: '/welcome',
         component: welcome_page
+    },
+    {
+        path: '/dashboard',
+        component: dashboard
     },
 ]
 

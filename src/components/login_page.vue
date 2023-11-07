@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="container-login100-form-btn">
-            <button class="login100-form-btn" type="submit">Login</button>
+            <button class="login100-form-btn" type="submit"><a href="/dashboard"></a>Login</button>
           </div>
         </form>
       </div>
