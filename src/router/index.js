@@ -1,4 +1,4 @@
-// router.js
+// router/router.js
 
 import { createWebHistory, createRouter } from "vue-router";
 import welcome_page from '../components/welcome_page.vue'
