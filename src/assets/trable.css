@@ -4,6 +4,7 @@
 	--second-color: #ffffff;
 	--black: #000;
 	--white: #fff;
+  --gray:#cecece;
 }
 *{
 	margin: 0;
@@ -117,22 +118,22 @@ body{
     margin-left: -16px;
 }
 .nav > .active::before {
-         top: -80px;
+    top: -80px;
     right: -24px;
     height: 80px;
     width: 40px;
-    border-bottom-right-radius: 80px;
-    box-shadow: 0 40px 0 0 var(--white);
-    transform: rotateY(324deg);
+    /* border-bottom-right-radius: 80px; */
+    /* box-shadow: 0 40px 0 0 var(--white); */
+    /* transform: rotateY(324deg); */
 }
 .nav > .active::after {
     top: 49px;
     right: -24px;
     height: 80px;
     width: 38px;
-    border-top-right-radius: 80px;
-    box-shadow: 0 -40px 0 0 var(--white);
-    transform: rotateY( 324deg);
+    /* border-top-right-radius: 80px; */
+    /* box-shadow: 0 -40px 0 0 var(--white); */
+    /* transform: rotateY( 324deg); */
 }
 .active a{
 	color: var(--black)!important;
