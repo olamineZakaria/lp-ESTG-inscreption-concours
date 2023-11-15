@@ -13,7 +13,7 @@
           <li :class="{ 'active': currentSection === 'inscriptions' }"><a class="a-ptr" @click="showInscreptionSection('inscriptions')"><i class="fa fa-user-plus"></i>Mes inscriptions</a></li>
           <li :class="{ 'active': currentSection === 'dossier' }"><a class="a-ptr"  @click="showDossierSection('dossier')"><i class="fa fa-folder"></i>Mon dossier</a></li>
           <li :class="{ 'active': currentSection === 'parametres' }"><a class="a-ptr" @click="showParametresSection('parametres')"><i class="fa fa-cogs"></i>Paramètres</a></li>
-          <li :class="{ 'active': currentSection === 'deconnexion' }"><a class="a-ptr" @click="deconnexionSection()"><i class="fa fa-sign-out "></i>Se déconnecter</a></li>
+          <li :class="{ 'active': currentSection === 'deconnexion' } " id="li_ptr"><a class="a-ptr" @click="deconnexionSection()"><i class="fa fa-sign-out "></i>Se déconnecter</a></li>
         </ul>
         <br><br>
       </div>
@@ -114,12 +114,14 @@ export default {
 <style>
 @import '../assets/trable.css';
 
-/* Add your styling for the 'active' class here */
 .nav li.active {
   background-color: white;
-  /* Add any other styles you want for the active state */
 }
 .a-ptr{
   cursor: pointer;
+}
+
+#li_ptr{
+  margin-top: 125%;
 }
 </style>
