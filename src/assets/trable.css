@@ -412,3 +412,45 @@ padding: 0px 6px;
   font-size: 2em;
   color: #005596;
 }
+
+
+.nav li.active {
+  background-color: white;
+}
+.a-ptr{
+  cursor: pointer;
+}
+
+#li_ptr{
+  margin-top: 125%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input,select{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Two-column layout */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.col {
+    width: 48%; /* Adjust as needed based on your design */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
