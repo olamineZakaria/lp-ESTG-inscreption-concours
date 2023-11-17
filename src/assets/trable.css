@@ -9,7 +9,7 @@
 *{
 	margin: 0;
 	padding: 0;
-	font-family: 'Josefin Sans', sans-serif;
+	/* font-family: 'Josefin Sans', sans-serif; */
 }
 body{
 	background: var(--main-color);
@@ -34,17 +34,13 @@ body{
 	border-radius: 25px;
 	padding: 30px;
 }
-.logo{
-	text-align: center;
-	color: white;
-	font-weight: bold;
-}
+
 .hr{
 	border: none;
-    height: 1px;
-    background: #ddd3;
-    margin-top: 15px;
-    margin-bottom: 10px;
+  height: 1px;
+  background: var(--main-color);
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 .nav li {
     list-style: none;
@@ -155,73 +151,8 @@ padding: 0px 6px;
 .col-div-6{
 	width: 50%;
 	float: left;
-}
-.profile{
-	display: inline-block;
-	float: right;
-	width: 200px;
-	margin-top: -20px;
 
 }
-.pro-img{
-	float: left;
-    width: 40px;
-    margin-top: 8px;
-    margin-left: 20px;
-}
-.profile p{
-	color: #6c7293;
-    font-weight: 500;
-    margin-left: 35px;
-    margin-top: 10px;
-    font-size: 13.5px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 25px;
-    padding-left: 35px;
-    cursor: pointer;
-}
-.dots{
-  margin-left: 10px;
-  color: #005596;
-}
-.profile-div{
-  background-color: white;
-  width: 140px;
-  border: 1px solid #ddd;
-  padding: 10px 0px;
-  right: 6%;
-  border-radius: 5px;
-  position: absolute;
-  z-index: 9;
-  display: none;
-
-}
-.profile-div:after{
-  content: '';
-    position: absolute;
-    height: 10px;
-    width: 10px;
-    background-color: white;
-    top: -6px;
-    border-left: 1px solid #ddd;
-    border-top: 1px solid #ddd;
-    transform: rotate(45deg);
-    right: 10%;
-}
-.profile-div p{
-  margin: 0px;
-    padding: 10px 20px;
-}
-.profile-div p:hover{
-  margin: 0px;
-    padding: 10px 20px;
-    background-color: #005596;
-    border-radius: 0px;
-    color: white;
-}
-
-
 .col-div-4-1{
   width: 33.3%;
   float: left;
@@ -431,15 +362,128 @@ label {
     font-weight: bold;
 }
 
-input,select{
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+
+.custom-select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+/* Bootstrap grid system */
+.col-12 {
+width: 100%;
+float: left;
 }
 
+.col-3 {
+width: 25%;
+float: left;
+}
+
+.col-9 {
+width: 75%;
+float: left;
+}
+
+/* Clearfix to clear floats */
+/* Add this if needed to prevent layout issues due to floated elements */
+.clearfix::after {
+content: "";
+clear: both;
+display: table;
+}
+
+/* Custom styles */
+label {
+display: block; /* Make labels block-level for better spacing */
+margin-bottom: 5px;
+}
+
+select,
+input {
+width: 100%;
+padding: 8px;
+margin-top: 4px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+
+/* Optional: Style the select dropdown arrow */
+select {
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+padding-right: 30px; /* Adjust as needed */
+background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z" fill="black"/></svg>') no-repeat right center;
+}
+
+
+/* Add additional styling as needed */
+
+/* CSS */
+.button-65 {
+appearance: none;
+backface-visibility: hidden;
+background-color: #005596;
+border-radius: 10px;
+border-style: none;
+box-shadow: none;
+box-sizing: border-box;
+color: #fff;
+cursor: pointer;
+font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+font-size: 15px;
+font-weight: 500;
+height: 50px;
+letter-spacing: normal;
+line-height: 1.5;
+outline: none;
+overflow: hidden;
+padding: 14px 30px;
+position: relative;
+text-align: center;
+text-decoration: none;
+transform: translate3d(0, 0, 0);
+transition: all .3s;
+user-select: none;
+-webkit-user-select: none;
+touch-action: manipulation;
+margin: auto;
+display: block;
+white-space: nowrap;
+}
+
+.button-65:hover {
+background-color: #005596;
+box-shadow: rgba(0, 0, 0, .05) 0 5px 30px, rgba(0, 0, 0, .05) 0 1px 4px;
+opacity: 1;
+transform: translateY(0);
+transition-duration: .35s;
+}
+
+.button-65:hover:after {
+opacity: .5;
+}
+
+.button-65:active {
+box-shadow: rgba(0, 0, 0, .1) 0 3px 6px 0, rgba(0, 0, 0, .1) 0 0 10px 0, rgba(0, 0, 0, .1) 0 1px 4px -1px;
+transform: translateY(2px);
+transition-duration: .35s;
+}
+
+.button-65:active:after {
+opacity: 1;
+}
+
+@media (min-width: 768px) {
+.button-65 {
+  padding: 14px 22px;
+  width: 176px;
+}
+}
 /* Two-column layout */
 .row {
     display: flex;
