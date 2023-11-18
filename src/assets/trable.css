@@ -149,6 +149,9 @@ body{
 .active a{
 	color: var(--black)!important;
 }
+.active i{
+	color: var(--main-color)!important;
+}
 .support{
     align-items: center;
 	background: #ffffff21;

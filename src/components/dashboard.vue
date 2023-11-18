@@ -69,6 +69,22 @@
               <div id="u-name">Olamine zakaria</div>
             </div>
           </div>
+          <br><br>
+          <hr color="#5643ff" size="5" noshade width="100%"> 
+          <div class="card-body">
+        <div class="user-info-wrapper">
+            <div class="user-info-title">
+              <i class="fa fa-user" aria-hidden="true"><span class="font-weight-bolder">A propos de OLAMINE, Zakaria</span></i>
+            </div>
+            <div class="card-text">
+              <i class="fa fa-envelope" aria-hidden="true"><span class="font-weight-bolder">Email:</span></i>
+            </div>
+            <!-- Other user information sections go here -->
+        </div>
+        <br>
+        <a class="btn btn-primary text-center btn-block" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder2$lb_profile&quot;, &quot;&quot;, false, &quot;&quot;, &quot;InfosPerso&quot;, false, true))">Mon
+            Profile</a>
+    </div>
           </div>
           <div v-if="currentSection === 'infos'">
             <form @submit.prevent="submitForm">
@@ -111,13 +127,14 @@
                 <div class="col">
                   <div class="col-12">
                     <div class="col-3" style="float:left">
-                      <label for="country">Country</label>
+                      <label for="number">Phone</label>
                       <select name="country"  class="green-border" id="country">
                         <!-- ... (your existing country options) ... -->
                       </select>
                     </div>
                     <div class="col-9" style="float:right">
-                      <label for="number">Phone</label>
+                      <br>
+                      <label for="number"></label>
                       <input type="text"  class="green-border" placeholder="" />
                     </div>
                   </div>
@@ -283,6 +300,42 @@ export default {
 
 <style>
 @import '../assets/trable.css';
+.card-body {
+            max-width: 600px;
+            margin-top: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
+        .user-info-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .user-info-title svg {
+            margin-right: 5px;
+        }
+
+        .card-text {
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 
 </style>
