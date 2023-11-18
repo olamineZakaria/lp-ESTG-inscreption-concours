@@ -60,7 +60,7 @@
           <div v-if="currentSection === 'home'">
           <div id="profile-upper">
             <div id="profile-banner-image">
-              <img src="../assets/images/Guelmim_02.jpg" alt="Banner image">
+              <img class="img-TM" src="../assets/images/Guelmim_02.jpg" alt="Banner image">
             </div>
             <div id="profile-d">
               <div id="profile-pic">
@@ -203,13 +203,14 @@
               </div>
               <div class="form-group row">
                 <div class="col">
-                  <label for="salutation">Établissement</label>
+                  <label for="salutation">Choisir une université</label>
                   <select v-model="salutation" class="green-border">
                   </select>
                 </div>
                 <div class="col">
-                  <label for="salutation">Adress:</label>
-                  <input type="text">
+                  <label for="salutation">Établissement</label>
+                  <select v-model="salutation" class="green-border">
+                  </select>
                 </div>
               </div>
               <button class="button-65" role="button">Enregistrer</button>
@@ -282,5 +283,6 @@ export default {
 
 <style>
 @import '../assets/trable.css';
-/* Add your custom styles here */
+
+
 </style>
