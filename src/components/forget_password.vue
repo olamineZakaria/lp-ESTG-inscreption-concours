@@ -16,11 +16,16 @@
             <div class="wrap-input100" data-validate="Email valide requis: ex@abc.xyz">
               <input v-model="email" class="input100" type="email" name="email">
             </div>
-            <div v-if="error" class="error-message">
+            <div v-if="errorL" class="error-message">
               {{ error }}
             </div>
+            <div v-if="loading" class="loading-spinner"></div>
+            <div v-if="passwordResetSent && !loading" class="success-message">
+              Email de réinitialisation de mot de passe envoyé. Vérifiez votre boîte de réception.
+              Redirection vers la page de connexion...
+            </div>
             <div class="container-login100-form-btn">
-              <button class="login100-form-btn">Réinitialiser</button>
+              <button class="login100-form-btn" :disabled="loading">Réinitialiser</button>
             </div>
           </form>
         </div>
@@ -39,6 +44,10 @@ export default {
       cin: '',
       email: '',
       error: '',
+      errorL: true,
+
+      passwordResetSent: false, // New state variable
+      loading: false, // New state variable for loading
     };
   },
   methods: {
@@ -51,6 +60,9 @@ export default {
           this.error = 'Veuillez remplir tous les champs.';
           return;
         }
+
+        // Set loading to true to display the loading spinner
+        this.loading = true;
 
         const usersRef = collection(db, 'users');
         const usersQuery = query(usersRef, where('cin', '==', this.cin));
@@ -69,10 +81,20 @@ export default {
 
         // Send password reset email
         await sendPasswordResetEmail(auth, this.email);
-        this.error = 'Email de réinitialisation de mot de passe envoyé. Vérifiez votre boîte de réception.';
+        this.errorL = false;
+        // Update state variable to indicate successful password reset email
+        this.passwordResetSent = true;
+
+        // Delay for 3 seconds before navigating to the login page
+        setTimeout(() => {
+          this.$router.push('/login');
+        }, 3000);
       } catch (error) {
         console.error('Password reset failed:', error.message);
         this.error = 'Échec de la réinitialisation du mot de passe ';
+      } finally {
+        // Set loading to false after the operation is complete
+        this.loading = false;
       }
     },
   },
@@ -84,6 +106,28 @@ export default {
 @import '@/assets/stayling.css';
 .error-message {
   color: red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.loading-spinner {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.success-message {
+  color: green;
   margin-top: 10px;
   margin-bottom: 10px;
 }

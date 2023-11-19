@@ -1,4 +1,3 @@
-<!-- src/components/login_page.vue -->
 <template>
   <div class="full-page">
     <div class="limiter">
@@ -18,6 +17,7 @@
           <div v-if="error" class="error-message">
             {{ error }}
           </div>
+          <div v-if="loading" class="loading-spinner"></div>
           <div class="flex-sb-m w-full p-t-3 p-b-32">
             <div class="contact100-form-checkbox">
               <input class="input-checkbox100" id="ckb1" type="checkbox" v-model="rememberMe" name="remember-me">
@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="container-login100-form-btn">
-            <button class="login100-form-btn" type="submit">Login</button>
+            <button class="login100-form-btn" type="submit" :disabled="loading">Login</button>
           </div>
         </form>
       </div>
@@ -50,7 +50,8 @@ export default {
       email: '',
       password: '',
       rememberMe: false,
-      error: '', // New variable for error message
+      error: '',
+      loading: false, // New state variable for loading
     };
   },
   methods: {
@@ -65,11 +66,15 @@ export default {
         const auth = getAuth();
         const db = getFirestore();
 
+        // Set loading to true to display the loading spinner
+        this.loading = true;
+
         // Check if user with the provided Email exists
         const usersCollection = collection(db, 'users');
         const query = where('email', '==', this.email);
         const userQuerySnapshot = await getDocs(usersCollection, query);
         if (userQuerySnapshot.size === 0) {
+          this.error = 'Email ou le mot de passe Invalide';
           return;
         }
 
@@ -100,6 +105,9 @@ export default {
             this.error = 'Email ou le mot de passe Invalide';
             break;
         }
+      } finally {
+        // Set loading to false after the operation is complete
+        this.loading = false;
       }
     },
   },
@@ -112,5 +120,20 @@ export default {
 .error-message {
   color: red;
   margin-top: 10px;
+}
+.loading-spinner {
+  margin-top: 10px;
+  display: inline-block;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
 }
 </style>
