@@ -1,44 +1,105 @@
-<!-- src/components/regestration_page.vue -->
-<!-- src/components/regestration_page.vue -->
+<!-- src/components/registration_page.vue -->
 <template>
-  <div class="full-page">
+    <div class="full-page">
       <div class="limiter">
-          <div>
-              <div class="wrap-login100">
-                  <img class="logo-img" src="../assets/images/img2.png" alt="Votre image" width="350" height="250" style="padding-top: 0%;">
-                  <form class="login100-form validate-form">
-                      <span class="login100-form-title p-b-43">Première visite</span>
-                      <pre><label class="label-style">Créer un nouveau compte<br><u>CIN: Numéro de la carte d'identité nationale</u><br><br><br></label></pre>
-                      <label>CIN</label>
-                      <div class="wrap-input100" data-validate="Numéro CIN requis">
-                          <input class="input100" type="text" name="cin">
-                      </div>
-                      <label>Email</label>
-                      <div class="wrap-input100" data-validate="Email valide requis: ex@abc.xyz">
-                          <input class="input100" type="email" name="email">
-                      </div>
-                      <label>Mot de passe</label>
-                      <div class="wrap-input100" data-validate="Mot de passe requis">
-                          <input class="input100" type="password" name="password">
-                      </div>
-                      <label>Confirmez le mot de passe</label>
-                      <div class="wrap-input100" data-validate="Confirmez le mot de passe">
-                          <input class="input100" type="password" name="confirm-password">
-                      </div>
-                      <div class="container-login100-form-btn">
-                          <button class="login100-form-btn">Créer un compte</button>
-                      </div>
-                  </form>
+        <div>
+          <div class="wrap-login100">
+            <img class="logo-img" src="../assets/images/img2.png" alt="Votre image" width="350" height="250" style="padding-top: 0%;">
+            <form class="login100-form validate-form" @submit.prevent="registerUser">
+              <span class="login100-form-title p-b-43">Première visite</span>
+              <pre><label class="label-style">Créer un nouveau compte<br><u>CIN: Numéro de la carte d'identité nationale</u><br><br><br></label></pre>
+              <label>CIN</label>
+              <div class="wrap-input100" data-validate="Numéro CIN requis">
+                <input class="input100" type="text" name="cin" ref="cin">
               </div>
+              <label>Email</label>
+              <div class="wrap-input100" data-validate="Email valide requis: ex@abc.xyz">
+                <input class="input100" type="email" name="email" ref="email">
+              </div>
+              <label>Mot de passe</label>
+              <div class="wrap-input100" data-validate="Mot de passe requis">
+                <input class="input100" type="password" name="password" ref="password">
+              </div>
+              <label>Confirmez le mot de passe</label>
+              <div class="wrap-input100" data-validate="Confirmez le mot de passe">
+                <input class="input100" type="password" name="confirm-password" ref="confirmPassword">
+              </div>
+              <div class="container-login100-form-btn">
+                <button class="login100-form-btn" type="submit">Créer un compte</button>
+              </div>
+            </form>
           </div>
+        </div>
       </div>
-  </div>
+    </div>
+  </template>
+  
+  <script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 
-</template>
-<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDHwJajjTE1AfKbThaZQYGLSxK6YwxLgXM",
+    authDomain: "lpestg-26d04.firebaseapp.com",
+    projectId: "lpestg-26d04",
+    storageBucket: "lpestg-26d04.appspot.com",
+    messagingSenderId: "1046824275411",
+    appId: "1:1046824275411:web:ed93b3797001589923b326"
+  };
 
-</script>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
 
+// Get the Auth instance
+const auth = getAuth(app);
+
+// ...
+
+const db = getFirestore(app);
+
+export default {
+  methods: {
+    async registerUser() {
+      const cin = this.$refs.cin.value;
+      const email = this.$refs.email.value;
+      const password = this.$refs.password.value;
+      const confirmPassword = this.$refs.confirmPassword.value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords don't match");
+        return;
+      }
+
+      try {
+        // Create a new user with email, password, and additional data (cin)
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Store user data in Firestore
+        await addDoc(collection(db, "users",), {
+          cin: cin,
+          email: email,
+          // You might want to avoid storing passwords directly in Firestore for security reasons.
+          // Instead, consider using a separate server-side function to handle sensitive data.
+        });
+
+        console.log('User registered:', user);
+        alert("Registration successful");
+      } catch (error) {
+        console.error('Registration failed:', error.message);
+        alert("Registration failed: " + error.message);
+      }
+    }
+  },
+  // Optionally, you can initialize Firebase inside a lifecycle hook
+  created() {
+    // Firebase initialization can go here if needed
+  }
+};
+
+  </script>
+  
 <style scoped>
 @import '@/assets/styles_login._fonts.css';
 @import '@/assets/stayling.css';

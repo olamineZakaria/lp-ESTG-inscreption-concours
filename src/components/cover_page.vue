@@ -1,3 +1,4 @@
+<!-- src/components/cover_page.vue -->
 <template>
     <div class="full-page">
         <div class="navbar">

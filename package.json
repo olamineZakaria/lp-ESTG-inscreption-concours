@@ -13,6 +13,7 @@
     "countries-list": "^3.0.6",
     "css.gg": "^2.1.1",
     "express": "^4.18.2",
+    "firebase": "^10.6.0",
     "mongoose": "^8.0.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.6.3",

@@ -1,8 +1,8 @@
-// src/main.js
+
 
 import { createApp } from 'vue'; // Import createApp from 'vue' for Vue 3
 import App from './App.vue';
-import router from './router/index';
+import router from './routes/index';
 
 const app = createApp(App);
 
