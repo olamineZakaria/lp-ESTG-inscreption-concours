@@ -1,4 +1,4 @@
-
+<!-- dashboard.vue -->
 <template>
   <div id="app">
     <section>
@@ -58,14 +58,15 @@
             
           </div>
           <br />
-          <div v-if="currentSection === 'home'">
+          <div style="margin-top: 10px;" v-if="currentSection === 'home'">
+            
           <div id="profile-upper">
             <div id="profile-banner-image">
               <img class="img-TM" src="../assets/images/Guelmim_02.jpg" alt="Banner image">
             </div>
             <div id="profile-d">
               <div id="profile-pic">
-                <img src="../assets/images/photo.jpeg">
+                <img src="../assets/images/images.png">
               </div>
               <div id="u-name">Nom Prenom</div>
             </div>
@@ -76,11 +77,11 @@
         <!-- <div class="card-body"> -->
           <div class="user-form-wrapper">
               <div class="user-form">
-                <h3>A propos de OLAMINE, Zakaria</h3>
-                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> JM105382</p>
-                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> tentzakaria@gmail.com</p>
-                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong> +212650888704</p>
-                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong> 15/11/2003</p>
+                <h3>A propos de:  Nom Prenom</h3>
+                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ userData.cin }}</p>
+                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ userData.email }}</p>
+                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ userData.number }}</p>
+                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong></p>
               </div>
               <div class="user-form-card">
                 <div class="user-form-card-main" style="background-color: rgb(78, 186, 78);">
@@ -102,7 +103,8 @@
           </div>
         <!-- </div> -->
           </div>
-          <div v-if="currentSection === 'infos'">
+          <div style="margin-top: 10px;" v-if="currentSection === 'infos'">
+            <br><br>
             <form @submit.prevent="submitForm">
               <div class="form-group row">
                 <div class="col">
@@ -181,7 +183,8 @@
               <button class="button-65" role="button">Enregistrer</button>
             </form>
           </div>
-          <div v-if="currentSection === 'cursus'">
+          <div style="margin-top: 10px;" v-if="currentSection === 'cursus'">
+            <br><br>
             <form @submit.prevent="submitForm">
               <div class="form-group row-50">
                 <div class="col-50">
@@ -258,7 +261,19 @@
             </form>
           </div>
           <div v-if="currentSection === 'dossier'">
-            
+            <br><br><br>
+            <center>
+              <div class="wrapper-main-GG">
+                <header>Chargement de Mon Dossie</header>
+                <form class="setForm" action="#">
+                  <input class="file-input-GG" type="file" name="file" hidden>
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Parcourir le fichier</p>
+                </form>
+                <section class="progress-area"></section>
+                <section class="uploaded-area"></section>
+            </div>
+            </center>
           </div>
         </div>
       </div>
@@ -271,6 +286,7 @@ export default {
   data() {
     return {
       currentSection: 'home',
+      userData: {},
       nom: '',
       prenom: '',
       email: '',
@@ -282,6 +298,7 @@ export default {
       salutation: '',
       bac: '',
       dut: '',
+      // ... (other existing data properties)
     };
   },
   methods: {
@@ -289,6 +306,7 @@ export default {
       this.currentSection = section;
     },
     deconnexionSection() {
+      localStorage.removeItem('userData');
       this.$router.push('/welcome');
     },
     getSectionTitle() {
@@ -310,14 +328,19 @@ export default {
       }
     },
     submitForm() {
-      // ... your form submission logic ...
+      // ... (your existing form submission logic)
     },
     handleImageUpload(event) {
-      // ... your image upload logic ...
+      // ... (your existing image upload logic)
     },
-    created() {
-    this.showSection('home'); // Set the initial section to 'home'
   },
+  created() {
+    this.showSection('home');
+
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      this.userData = JSON.parse(userData);
+    }
   },
 };
 </script>

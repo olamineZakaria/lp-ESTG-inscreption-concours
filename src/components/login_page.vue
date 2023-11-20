@@ -82,13 +82,7 @@ export default {
         const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
         const user = userCredential.user;
         console.log('User logged in:', user);
-
-        // Remember Me functionality
-        if (this.rememberMe) {
-          // Store user information in local storage
-          localStorage.setItem('userData', JSON.stringify({ email: this.email }));
-        }
-
+        localStorage.setItem('userData', JSON.stringify({ email: this.email }));
         this.$router.push('/dashboard');
       } catch (error) {
         console.error('Login failed:', error.message);
