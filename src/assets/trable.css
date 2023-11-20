@@ -446,28 +446,21 @@ background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="
 appearance: none;
 backface-visibility: hidden;
 background-color: #005596;
-border-radius: 10px;
+border-radius: 2px;
 border-style: none;
 box-shadow: none;
 box-sizing: border-box;
 color: #fff;
 cursor: pointer;
 font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
-font-size: 15px;
-font-weight: 500;
-height: 50px;
+font-size: 14px;
+font-weight: 400;
+height: 40px;
 letter-spacing: normal;
 line-height: 1.5;
 outline: none;
 overflow: hidden;
-padding: 14px 30px;
-position: relative;
 text-align: center;
-text-decoration: none;
-transform: translate3d(0, 0, 0);
-transition: all .3s;
-user-select: none;
--webkit-user-select: none;
 touch-action: manipulation;
 margin: auto;
 display: block;
@@ -498,8 +491,8 @@ opacity: 1;
 
 @media (min-width: 768px) {
 .button-65 {
-  padding: 14px 22px;
-  width: 176px;
+  /* padding: 14px 22px; */
+  width: 300px;
 }
 }
 /* Two-column layout */
@@ -625,6 +618,15 @@ opacity: 1;
   color: #333;
 }
 
+.user-form-card-done {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 30%;
+  width: 100%;
+  text-align: left;
+}
 
 
 

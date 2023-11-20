@@ -71,8 +71,9 @@
             </div>
           </div>
           <br><br>
-          <hr color="#5643ff" size="5" noshade width="100%"> 
-          <div class="card-body">
+          <hr color="#005596" size="5" noshade width="100%"> 
+          <br>
+        <!-- <div class="card-body"> -->
           <div class="user-form-wrapper">
               <div class="user-form">
                 <h3>A propos de OLAMINE, Zakaria</h3>
@@ -87,9 +88,19 @@
                   <h2 style="text-align: center;color: white; margin-top: 10px;">Dossier complet</h2>
                   <br><br>
                 </div>
+                <br>
+                <button class="button-65" role="button">Mon Dossier</button>
               </div>
           </div>
-        </div>
+        <!-- </div> -->
+        <br>
+        <!-- <div class="card-body"> -->
+          <div class="user-form-done">
+              <div class="user-form">
+                <h3>Mes Candidatures</h3>
+              </div>
+          </div>
+        <!-- </div> -->
           </div>
           <div v-if="currentSection === 'infos'">
             <form @submit.prevent="submitForm">
@@ -259,7 +270,7 @@
 export default {
   data() {
     return {
-      currentSection: 'infos',
+      currentSection: 'home',
       nom: '',
       prenom: '',
       email: '',
