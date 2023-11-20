@@ -27,3 +27,7 @@ npm run dev
 ```sh
 npm run build
 ```
+## Recommended IDE Setup
+
+![Sample Image](./scrn/12.png)
+
