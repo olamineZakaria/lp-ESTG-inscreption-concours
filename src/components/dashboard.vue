@@ -67,25 +67,29 @@
               <div id="profile-pic">
                 <img src="../assets/images/photo.jpeg">
               </div>
-              <div id="u-name">Olamine zakaria</div>
+              <div id="u-name">Nom Prenom</div>
             </div>
           </div>
           <br><br>
           <hr color="#5643ff" size="5" noshade width="100%"> 
           <div class="card-body">
-        <div class="user-info-wrapper">
-            <div class="user-info-title">
-              <i class="fa fa-user" aria-hidden="true"><span class="font-weight-bolder">A propos de OLAMINE, Zakaria</span></i>
-            </div>
-            <div class="card-text">
-              <i class="fa fa-envelope" aria-hidden="true"><span class="font-weight-bolder">Email:</span></i>
-            </div>
-            <!-- Other user information sections go here -->
+          <div class="user-form-wrapper">
+              <div class="user-form">
+                <h3>A propos de OLAMINE, Zakaria</h3>
+                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> JM105382</p>
+                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> tentzakaria@gmail.com</p>
+                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong> +212650888704</p>
+                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong> 15/11/2003</p>
+              </div>
+              <div class="user-form-card">
+                <div class="user-form-card-main" style="background-color: rgb(78, 186, 78);">
+                  <h3 style="text-align: center;color: white;">Etat du dossier</h3>
+                  <h2 style="text-align: center;color: white; margin-top: 10px;">Dossier complet</h2>
+                  <br><br>
+                </div>
+              </div>
+          </div>
         </div>
-        <br>
-        <a class="btn btn-primary text-center btn-block" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder2$lb_profile&quot;, &quot;&quot;, false, &quot;&quot;, &quot;InfosPerso&quot;, false, true))">Mon
-            Profile</a>
-    </div>
           </div>
           <div v-if="currentSection === 'infos'">
             <form @submit.prevent="submitForm">
@@ -123,6 +127,12 @@
                   <label for="pays">Pays:</label>
                   <select name="pays" class="green-border"  >
                     <!-- ... (your existing country options) ... -->
+                    <option value="CA">Canada</option>
+                        <option value="ML">Mali</option>
+                        <option value="MT">Malte</option>
+                        <option value="MP">Mariannes du nord, îles</option>
+                        <option value="MA">Maroc</option>
+                        <option value="ZW">Zimbabwe​​​​​</option>
                   </select>
                 </div>
                 <div class="col">
@@ -130,7 +140,9 @@
                     <div class="col-3" style="float:left">
                       <label for="number">Phone</label>
                       <select name="country"  class="green-border" id="country">
-                        <!-- ... (your existing country options) ... -->
+                        <option data-countryCode="MA" value="212">Morocco (+212)</option>
+                        <option data-countryCode="DZ" value="213">Algeria (+213)</option>
+                        <option data-countryCode="AD" value="376">Andorra (+376)</option>
                       </select>
                     </div>
                     <div class="col-9" style="float:right">
@@ -247,7 +259,7 @@
 export default {
   data() {
     return {
-      currentSection: 'home',
+      currentSection: 'infos',
       nom: '',
       prenom: '',
       email: '',
@@ -302,10 +314,10 @@ export default {
 <style>
 @import '../assets/trable.css';
 .card-body {
-            max-width: 600px;
+            max-width: 100%;
             margin-top: 10px;
             padding: 20px;
-            background-color: #fff;
+            background-color: #fbfdff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }

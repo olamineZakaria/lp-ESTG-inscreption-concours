@@ -24,6 +24,13 @@
               <div class="wrap-input100" data-validate="Confirmez le mot de passe">
                 <input class="input100" type="password" name="confirm-password" ref="confirmPassword">
               </div>
+              <div v-if="error" class="error-message">
+              {{ error }}
+              </div>
+              <div v-if="loading" class="loading-spinner"></div>
+              <div v-if="success" class="success-message">
+              Compte créé avec succès. Redirection vers la page de connexion...
+              </div>
               <div class="container-login100-form-btn">
                 <button class="login100-form-btn" type="submit">Créer un compte</button>
               </div>
@@ -59,6 +66,13 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 export default {
+  data() {
+    return {
+      error: '',
+      success: false,
+      loading: false,
+    };
+  },
   methods: {
     async registerUser() {
       const cin = this.$refs.cin.value;
@@ -66,13 +80,17 @@ export default {
       const password = this.$refs.password.value;
       const confirmPassword = this.$refs.confirmPassword.value;
 
+      if (!cin || !email || !password || !confirmPassword) {
+        this.error = 'Veuillez remplir tous les champs.';
+        return;
+      }
       if (password !== confirmPassword) {
-        alert("Passwords don't match");
+        this.error = "Les mots de passe ne correspondent pas.";
         return;
       }
 
       try {
-        // Create a new user with email, password, and additional data (cin)
+        this.loading = true;
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
@@ -85,10 +103,18 @@ export default {
         });
 
         console.log('User registered:', user);
-        alert("Registration successful");
+        this.loading = false;
+        this.error = false;
+        this.success = true;
+        setTimeout(() => {
+          this.$router.push('/login');
+        }, 3000);
       } catch (error) {
+        this.error = true;
         console.error('Registration failed:', error.message);
-        alert("Registration failed: " + error.message);
+        this.error = error.code
+        this.loading = false;
+
       }
     }
   },
@@ -112,6 +138,29 @@ export default {
   width: 100%;
   height: 100vh;
   background-color: #f0f0f0; /* Set the background color you prefer */
-  overflow: hidden;
+  overflow: auto;
+}
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

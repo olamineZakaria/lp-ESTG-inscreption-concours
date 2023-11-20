@@ -582,3 +582,60 @@ opacity: 1;
   font-size: 36px;
   font-weight: bold;
 }
+.user-form-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 0 0 60%;
+  text-align: left;
+}
+
+.user-form-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 0 0 30%;
+  text-align: left;
+}
+.user-form-card-main {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 0 0 30%;
+  text-align: left;
+}
+
+
+.user-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: bold;
+}
+
+.user-form p {
+  margin: 10px 0;
+  color: #333;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
