@@ -127,11 +127,11 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="email">Email:</label>
-                  <input type="email" v-model="email" required  class="green-border" />
+                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);" :readonly="true" />
                 </div>
                 <div class="col">
                   <label for="CIN">CIN:</label>
-                  <input type="text" v-model="CIN" required  class="green-border"/>
+                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);" :readonly="true"/>
                 </div>
               </div>
 
@@ -140,11 +140,11 @@
                   <label for="pays">Pays:</label>
                   <select name="pays" class="green-border"  >
                     <!-- ... (your existing country options) ... -->
-                    <option value="CA">Canada</option>
+                        <option value="MA">Maroc</option>
+                        <option value="CA">Canada</option>
                         <option value="ML">Mali</option>
                         <option value="MT">Malte</option>
                         <option value="MP">Mariannes du nord, îles</option>
-                        <option value="MA">Maroc</option>
                         <option value="ZW">Zimbabwe​​​​​</option>
                   </select>
                 </div>
@@ -161,7 +161,7 @@
                     <div class="col-9" style="float:right">
                       <br>
                       <label for="number"></label>
-                      <input type="text"  class="green-border" placeholder="" />
+                      <input type="text"   class="green-border" placeholder="" />
                     </div>
                   </div>
                 </div>
@@ -262,18 +262,6 @@
           </div>
           <div v-if="currentSection === 'dossier'">
             <br><br><br>
-            <center>
-              <div class="wrapper-main-GG">
-                <header>Chargement de Mon Dossie</header>
-                <form class="setForm" action="#">
-                  <input class="file-input-GG" type="file" name="file" hidden>
-                  <i class="fas fa-cloud-upload-alt"></i>
-                  <p>Parcourir le fichier</p>
-                </form>
-                <section class="progress-area"></section>
-                <section class="uploaded-area"></section>
-            </div>
-            </center>
           </div>
         </div>
       </div>
@@ -282,6 +270,21 @@
 </template>
 
 <script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyDHwJajjTE1AfKbThaZQYGLSxK6YwxLgXM",
+    authDomain: "lpestg-26d04.firebaseapp.com",
+    projectId: "lpestg-26d04",
+    storageBucket: "lpestg-26d04.appspot.com",
+    messagingSenderId: "1046824275411",
+    appId: "1:1046824275411:web:ed93b3797001589923b326"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 export default {
   data() {
     return {
@@ -290,14 +293,13 @@ export default {
       nom: '',
       prenom: '',
       email: '',
-      CIN: '',
+      cin: '',
       pays: '',
-      country: '',
-      number: '',
+      code: '',
+      numPhone: '',
       profileImage: '',
       salutation: '',
-      bac: '',
-      dut: '',
+
       // ... (other existing data properties)
     };
   },
@@ -336,12 +338,13 @@ export default {
   },
   created() {
     this.showSection('home');
-
     const userData = localStorage.getItem('userData');
     if (userData) {
       this.userData = JSON.parse(userData);
-    }
-  },
+      this.email = this.userData.email;
+      this.cin = this.userData.cin;
+  }
+}
 };
 </script>
 

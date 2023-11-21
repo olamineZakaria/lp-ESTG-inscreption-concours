@@ -41,70 +41,10 @@
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js';
-import { getFirestore, collection, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js';
+import login from '../scripts/login'; // Update the path as needed
 
 export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      rememberMe: false,
-      error: '',
-      loading: false, // New state variable for loading
-    };
-  },
-  methods: {
-    async login() {
-      // Check if either Email or password is missing
-      if (!this.email || !this.password) {
-        this.error = 'Veuillez remplir tous les champs.';
-        return;
-      }
-
-      try {
-        const auth = getAuth();
-        const db = getFirestore();
-
-        // Set loading to true to display the loading spinner
-        this.loading = true;
-
-        // Check if user with the provided Email exists
-        const usersCollection = collection(db, 'users');
-        const query = where('email', '==', this.email);
-        const userQuerySnapshot = await getDocs(usersCollection, query);
-        if (userQuerySnapshot.size === 0) {
-          this.error = 'Email ou le mot de passe Invalide';
-          return;
-        }
-
-        // Sign in with email and password
-        const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-        const user = userCredential.user;
-        console.log('User logged in:', user);
-        localStorage.setItem('userData', JSON.stringify({ email: this.email }));
-        this.$router.push('/dashboard');
-      } catch (error) {
-        console.error('Login failed:', error.message);
-
-        // Set error message to be displayed in the template based on the error type
-        switch (error.code) {
-          case 'auth/user-disabled':
-            this.error = 'Le compte associé à cet email a été désactivé';
-            break;
-          case 'auth/too-many-requests':
-            this.error = 'Trop de tentatives de connexion infructueuses. Veuillez réessayer plus tard';
-            break;
-          default:
-            this.error = 'Email ou le mot de passe Invalide';
-            break;
-        }
-      } finally {
-        // Set loading to false after the operation is complete
-        this.loading = false;
-      }
-    },
-  },
+  mixins: [login],
 };
 </script>
 
@@ -114,20 +54,19 @@ export default {
 .error-message {
   color: red;
   margin-top: 10px;
-}
-.loading-spinner {
-  margin-top: 10px;
-  display: inline-block;
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top: 4px solid #3498db;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   animation: spin 1s linear infinite;
+  margin: 20px auto;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
-   100% { transform: rotate(360deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

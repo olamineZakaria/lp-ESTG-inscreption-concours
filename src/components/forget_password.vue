@@ -33,70 +33,35 @@
     </div>
   </div>
 </template>
-
 <script>
-import { getAuth, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js';
-import { getFirestore, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { resetPassword } from '../scripts/PasswordReset';
 
 export default {
-  data() {
-    return {
-      cin: '',
-      email: '',
-      error: '',
-      errorL: true,
+  setup() {
+    const cin = ref('');
+    const email = ref('');
+    const error = ref('');
+    const errorL = ref(true);
+    const passwordResetSent = ref(false);
+    const loading = ref(false);
 
-      passwordResetSent: false, // New state variable
-      loading: false, // New state variable for loading
+    const router = useRouter();
+
+    const resetPasswordHandler = () => {
+      resetPassword(cin.value, email.value, error, errorL, loading, passwordResetSent, router);
     };
-  },
-  methods: {
-    async resetPassword() {
-      try {
-        const auth = getAuth();
-        const db = getFirestore();
 
-        if (!this.email || !this.cin) {
-          this.error = 'Veuillez remplir tous les champs.';
-          return;
-        }
-
-        // Set loading to true to display the loading spinner
-        this.loading = true;
-
-        const usersRef = collection(db, 'users');
-        const usersQuery = query(usersRef, where('cin', '==', this.cin));
-        const usersSnapshot = await getDocs(usersQuery);
-
-        if (usersSnapshot.empty) {
-          this.error = 'La CIN fournie n’a pas été trouvée.';
-          return;
-        }
-
-        const userDoc = usersSnapshot.docs[0].data();
-        if (userDoc.email !== this.email) {
-          this.error = 'L\'adresse email ne correspond pas à la CIN fournie.';
-          return;
-        }
-
-        // Send password reset email
-        await sendPasswordResetEmail(auth, this.email);
-        this.errorL = false;
-        // Update state variable to indicate successful password reset email
-        this.passwordResetSent = true;
-
-        // Delay for 3 seconds before navigating to the login page
-        setTimeout(() => {
-          this.$router.push('/login');
-        }, 3000);
-      } catch (error) {
-        console.error('Password reset failed:', error.message);
-        this.error = 'Échec de la réinitialisation du mot de passe ';
-      } finally {
-        // Set loading to false after the operation is complete
-        this.loading = false;
-      }
-    },
+    return {
+      cin,
+      email,
+      error,
+      errorL,
+      passwordResetSent,
+      loading,
+      resetPassword: resetPasswordHandler,
+    };
   },
 };
 </script>

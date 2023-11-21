@@ -42,28 +42,17 @@
   </template>
   
   <script>
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import firebaseApp from '../scripts/firebaseConfig'; // Update the path as needed
+
+// import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDHwJajjTE1AfKbThaZQYGLSxK6YwxLgXM",
-    authDomain: "lpestg-26d04.firebaseapp.com",
-    projectId: "lpestg-26d04",
-    storageBucket: "lpestg-26d04.appspot.com",
-    messagingSenderId: "1046824275411",
-    appId: "1:1046824275411:web:ed93b3797001589923b326"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
-// Get the Auth instance
-const auth = getAuth(app);
+const auth = getAuth(firebaseApp);
 
 // ...
 
-const db = getFirestore(app);
+const db = getFirestore(firebaseApp);
 
 export default {
   data() {
