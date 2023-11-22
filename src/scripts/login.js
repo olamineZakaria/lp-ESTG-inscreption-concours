@@ -44,11 +44,13 @@ export default {
         if (cinQuerySnapshot.size > 0) {
           const cin = cinQuerySnapshot.docs[0].data().cin;
 
-          
-          // Display cin in an alert or use it as needed
-          // alert('CIN: ' + cin);
+          const databaseuser = {
+            cin: cin,
+            email: this.email,
+          };
+    
+          localStorage.setItem('databaseuser', JSON.stringify(databaseuser));
         }
-
         console.log('User logged in:', user);
         this.$router.push('/dashboard');
       } catch (error) {
@@ -69,5 +71,11 @@ export default {
         this.loading = false;
       }
     },
+    created() {
+      const storedUser = localStorage.getItem('databaseuser');
+      if (storedUser) {
+        this.databaseuser = JSON.parse(storedUser);
+      }
+    }
   },
 };

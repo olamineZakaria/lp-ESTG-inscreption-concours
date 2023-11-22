@@ -66,9 +66,9 @@
             </div>
             <div id="profile-d">
               <div id="profile-pic">
-                <img src="../assets/images/images.png">
+                <img class="img-TM" :src="profileImage || '../assets/images/photo.jpeg'" alt="">
               </div>
-              <div id="u-name">Nom Prenom</div>
+              <div id="u-name">{{ nom }} {{ prenom }}</div>
             </div>
           </div>
           <br><br>
@@ -77,10 +77,10 @@
         <!-- <div class="card-body"> -->
           <div class="user-form-wrapper">
               <div class="user-form">
-                <h3>A propos de:  Nom Prenom</h3>
-                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ userData.cin }}</p>
-                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ userData.email }}</p>
-                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ userData.number }}</p>
+                <h3>A propos de: {{ nom }} {{ prenom }}</h3>
+                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ cin }}</p>
+                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ email }}</p>
+                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ phone }}</p>
                 <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong></p>
               </div>
               <div class="user-form-card">
@@ -116,29 +116,29 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="nom">Nom:</label>
-                  <input type="text" v-model="nom" required class="green-border" />
+                  <input type="text" v-model="nom" required class="green-border" placeholder="Nom"/>
                 </div>
                 <div class="col">
                   <label for="prenom">Prénom:</label>
-                  <input type="text" v-model="prenom" required  class="green-border" />
+                  <input type="text" v-model="prenom" required  class="green-border" placeholder="Prénom"/>
                 </div>
               </div>
 
               <div class="form-group row">
                 <div class="col">
                   <label for="email">Email:</label>
-                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);" :readonly="true" />
+                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);" />
                 </div>
                 <div class="col">
                   <label for="CIN">CIN:</label>
-                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);" :readonly="true"/>
+                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);" />
                 </div>
               </div>
 
               <div class="form-group row">
                 <div class="col">
                   <label for="pays">Pays:</label>
-                  <select name="pays" class="green-border"  >
+                  <select v-model="pays" name="pays" class="green-border"  >
                     <!-- ... (your existing country options) ... -->
                         <option value="MA">Maroc</option>
                         <option value="CA">Canada</option>
@@ -152,7 +152,7 @@
                   <div class="col-12">
                     <div class="col-3" style="float:left">
                       <label for="number">Phone</label>
-                      <select name="country"  class="green-border" id="country">
+                      <select name="country" v-model="code" class="green-border" id="country">
                         <option data-countryCode="MA" value="212">Morocco (+212)</option>
                         <option data-countryCode="DZ" value="213">Algeria (+213)</option>
                         <option data-countryCode="AD" value="376">Andorra (+376)</option>
@@ -161,9 +161,19 @@
                     <div class="col-9" style="float:right">
                       <br>
                       <label for="number"></label>
-                      <input type="text"   class="green-border" placeholder="" />
+                      <input type="text" v-model="phone" class="green-border" placeholder="0610080701"  />
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  <label for="salutation">Date de naissance:</label>
+                  <input type="date" v-model="datenaissance" class="green-border">
+                </div>
+                <div class="col">
+                  <label for="salutation">Adress:</label>
+                  <input type="text" v-model="address" class="green-border" placeholder="Rue 14 PG 24,  N 121 Guelmim">
                 </div>
               </div>
               <div class="form-group row">
@@ -175,17 +185,14 @@
                     <option value="Mme">Mme</option>
                   </select>
                 </div>
-                <div class="col">
-                  <label for="salutation">Adress:</label>
-                  <input type="text"  class="green-border">
-                </div>
               </div>
-              <button class="button-65" role="button">Enregistrer</button>
+              <br><br><br><br>
+              <button class="button-65" submit role="button">Enregistrer</button>
             </form>
           </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'cursus'">
             <br><br>
-            <form @submit.prevent="submitForm">
+            <form >
               <div class="form-group row-50">
                 <div class="col-50">
                   <label for="Niveau">Niveau d'étude Actuel</label>
@@ -257,7 +264,7 @@
                   </select>
                 </div>
               </div>
-              <button class="button-65" role="button">Enregistrer</button>
+              <button type ="submit" class="button-65" role="button">Enregistrer</button>
             </form>
           </div>
           <div v-if="currentSection === 'dossier'">
@@ -270,37 +277,34 @@
 </template>
 
 <script>
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import firebaseApp from '../scripts/firebaseConfig';
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
-const firebaseConfig = {
-    apiKey: "AIzaSyDHwJajjTE1AfKbThaZQYGLSxK6YwxLgXM",
-    authDomain: "lpestg-26d04.firebaseapp.com",
-    projectId: "lpestg-26d04",
-    storageBucket: "lpestg-26d04.appspot.com",
-    messagingSenderId: "1046824275411",
-    appId: "1:1046824275411:web:ed93b3797001589923b326"
-  };
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+import { getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+// ... (your existing code)
+
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
+
 export default {
   data() {
     return {
       currentSection: 'home',
-      userData: {},
+      databaseuser: {},
       nom: '',
       prenom: '',
       email: '',
       cin: '',
       pays: '',
       code: '',
-      numPhone: '',
+      phone: '',
       profileImage: '',
       salutation: '',
+      address: '',
 
-      // ... (other existing data properties)
     };
   },
   methods: {
@@ -329,22 +333,79 @@ export default {
           return '';
       }
     },
-    submitForm() {
-      // ... (your existing form submission logic)
+    async submitForm() {
+      try {
+        const storageRef = ref(storage, 'profile_images/' + this.email + '_' + Date.now());
+        await uploadBytes(storageRef, this.imageFile);
+        const imageUrl = await getDownloadURL(storageRef);
+
+        // Check if the user already exists based on their email
+        const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+        if (!querySnapshot.empty) {
+          // Update the existing user document
+          const userDoc = querySnapshot.docs[0];
+          await updateDoc(doc(db, "users", userDoc.id), {
+            nom: this.nom,
+            prenom: this.prenom,
+            cin: this.cin,
+            pays: this.pays,
+            code: this.code,
+            phone: `+${this.code}${this.phone}`,
+            profileImage: imageUrl,
+            salutation: this.salutation,
+            address: this.address,
+            // Add other fields as needed
+          });
+          const databaseuser = {
+            nom: this.nom,
+            prenom: this.prenom,
+            cin: this.cin,
+            pays: this.pays,
+            code: this.code,
+            phone: `+${this.code}${this.phone}`,
+            profileImage: imageUrl,
+            salutation: this.salutation,
+            address: this.address,
+
+            // Add other fields as needed
+          };
+          localStorage.setItem('databaseuser', JSON.stringify(databaseuser));
+
+          alert('User information updated successfully!');
+        } else {
+          // User does not exist, show an error message
+          alert('User with email ' + this.email + ' not found. Cannot update information.');
+        }
+
+        // You can add further logic, such as showing a success message or redirecting the user
+      } catch (e) {
+        console.error("Error updating/adding document: ", e);
+        alert('Error updating/adding user information: ' + e);
+        // Handle errors as needed
+      }
     },
     handleImageUpload(event) {
       // ... (your existing image upload logic)
     },
+    created() {
+        const storedUser = localStorage.getItem('databaseuser');
+        if (storedUser) {
+          this.databaseuser = JSON.parse(storedUser);
+          // Assign other properties if needed
+          this.nom = this.databaseuser.nom;
+          this.prenom = this.databaseuser.prenom;
+          this.email = this.databaseuser.email;
+          this.cin = this.databaseuser.cin;
+          this.pays = this.databaseuser.pays;
+          this.code = this.databaseuser.code;
+          this.phone = this.databaseuser.phone;
+          this.profileImage = this.databaseuser.profileImage;
+          this.salutation = this.databaseuser.salutation;
+          this.address = this.databaseuser.address;
+          // Add other properties as needed
+        }
+      },
   },
-  created() {
-    this.showSection('home');
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      this.userData = JSON.parse(userData);
-      this.email = this.userData.email;
-      this.cin = this.userData.cin;
-  }
-}
 };
 </script>
 
