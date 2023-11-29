@@ -295,9 +295,59 @@
               <button type="submit" class="button-65" role="button">Enregistrer</button>
             </form>
           </div>
-          <div v-if="currentSection === 'dossier'">
-            <br><br><br>
-          </div>
+          <div v-if="currentSection === 'dossier'" class="file-upload-section">
+      <form @submit.prevent="submitDossierForm" class="file-upload-form">
+        <div class="form-group">
+          <label for="file1">File 1:</label>
+          <input type="file" id="file1" @change="handleFileChange(1)" />
+        </div>
+        <div class="form-group">
+          <label for="file2">File 2:</label>
+          <input type="file" id="file2" @change="handleFileChange(2)" />
+        </div>
+        <div class="form-group">
+          <label for="file3">File 3:</label>
+          <input type="file" id="file3" @change="handleFileChange(3)" />
+        </div>
+        <div class="form-group">
+          <label for="file4">File 4:</label>
+          <input type="file" id="file4" @change="handleFileChange(4)" />
+        </div>
+        <div class="form-group">
+          <label for="file5">File 5:</label>
+          <input type="file" id="file5" @change="handleFileChange(5)" />
+        </div>
+        <button type="submit" class="upload-button" role="button">Upload</button>
+      </form>
+    </div>
+    <div style="margin-top: 10px;" v-if="currentSection === 'parametres'">
+      <form @submit.prevent="changePassword">
+                <h4>Changer le mot de passe</h4>
+                <div class="form-group">
+                  <label for="currentPassword">Mot de passe actuel:</label>
+                  <input type="password" v-model="currentPassword" required />
+                </div>
+                <div class="form-group">
+                  <label for="newPassword">Nouveau mot de passe:</label>
+                  <input type="password" v-model="newPassword" required />
+                </div>
+                <div class="form-group">
+                  <label for="confirmPassword">Confirmer le nouveau mot de passe:</label>
+                  <input type="password" v-model="confirmPassword" required />
+                </div>
+                <button type="submit" class="button-65" role="button">Changer le mot de passe</button>
+              </form>
+
+              <!-- Change Email Form -->
+              <form @submit.prevent="changeEmail">
+                <h4>Changer l'adresse e-mail</h4>
+                <div class="form-group">
+                  <label for="newEmail">Nouvelle adresse e-mail:</label>
+                  <input type="email" v-model="newEmail" required />
+                </div>
+                <button type="submit" class="button-65" role="button">Changer l'adresse e-mail</button>
+              </form>
+    </div>
         </div>
       </div>
     </section>
@@ -595,4 +645,43 @@ export default {
 .btn-primary:hover {
   background-color: #0056b3;
 }
+.file-upload-section {
+    margin-top: 20px;
+  }
+
+  .file-upload-form {
+    max-width: 400px;
+    margin: 20px auto;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+/* 
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  } */
+
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .upload-button {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .upload-button:hover {
+    background-color: #0056b3;
+  }
 </style>
