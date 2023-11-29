@@ -9,7 +9,7 @@
         <ul class="nav">
           <li :class="{ 'active': currentSection === 'home' }">
             <a class="a-ptr" @click="showSection('home')">
-              <i class="fa fa-cogs"></i>Tableau de Bard
+              <i class="fa fa-cogs"></i>Tableau de Board
             </a>
           </li>
           <li :class="{ 'active': currentSection === 'infos' }">
@@ -77,11 +77,11 @@
         <!-- <div class="card-body"> -->
           <div class="user-form-wrapper">
               <div class="user-form">
-                <h3>A propos de: {{ nom }} {{ prenom }}</h3>
-                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ cin }}</p>
-                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ email }}</p>
-                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ phone }}</p>
-                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong></p>
+                <h3>A propos de: {{ databaseuser.nom }} {{ databaseuser.prenom }}</h3>
+                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ databaseuser.cin }}</p>
+                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ databaseuser.email }}</p>
+                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ databaseuser.phone }}</p>
+                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong>{{ databaseuser.datenaissance }}</p>
               </div>
               <div class="user-form-card">
                 <div class="user-form-card-main" style="background-color: rgb(78, 186, 78);">
@@ -127,11 +127,11 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="email">Email:</label>
-                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);" />
+                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);"  />
                 </div>
                 <div class="col">
                   <label for="CIN">CIN:</label>
-                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);" />
+                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);"  />
                 </div>
               </div>
 
@@ -186,26 +186,27 @@
                   </select>
                 </div>
               </div>
-              <br><br><br><br>
+              <br>
               <button class="button-65" submit role="button">Enregistrer</button>
             </form>
           </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'cursus'">
             <br><br>
-            <form >
+            <form @submit.prevent="submitFormcursus" >
               <div class="form-group row-50">
                 <div class="col-50">
                   <label for="Niveau">Niveau d'étude Actuel</label>
-                  <select name="Niveau" id="Niveau" class="green-border">
+                  <select name="Niveau" v-model="Niveau" id="Niveau" class="green-border">
+                    <option value="BAC+2">BAC+2</option>
                   </select>
                 </div>
                 <div class="col-50">
                   <label for="CNE">Code Massar:</label>
-                  <input type="text" v-model="CNE" required  class="green-border"/>
+                  <input type="text" v-model="CNE" required  class="green-border" placeholder="ex : D15258985"/>
                 </div>
                 <div class="col-500">
                   <label for="Lycée">Lycée d'obtention du Bac</label>
-                  <input type="text" v-model="Lycée" required  class="green-border"/>
+                  <input type="text" v-model="Lycee" required  class="green-border" placeholder="ex : Lycee Mohammed EL baqali "/>
                 </div>
               </div>
 
@@ -213,11 +214,15 @@
                 <div class="col">
                   <label for="Année">Année d’obtention du Bac</label>
                   <select name="Année" id="Année" class="green-border">
+                    <option value="2024">2023</option>
+                    <option value="2023">2022</option>
+                    <option value="2022">2021</option>
+                    <option value="2021">2020</option>
                   </select>
                 </div>
                 <div class="col">
                   <label for="Lycée">Série du bac</label>
-                  <input type="text" v-model="Lycée" required  class="green-border"/>
+                  <input type="text" v-model="bac" required  class="green-border" placeholder="ex : science math B"/>
                 </div>
               </div>
               <div class="form-group row">
@@ -234,6 +239,11 @@
                 <div class="col-50">
                   <label for="d’obtention">Année d’obtention</label>
                   <select name="d’obtention" id="d’obtention" class="green-border">
+                    <option value="2024">2023</option>
+                    <option value="2023">2022</option>
+                    <option value="2022">2021</option>
+                    <option value="2021">2020</option>
+
                   </select>
                 </div>
               </div>
@@ -242,13 +252,19 @@
                 <div class="col">
                   <label for="Option">Option Diplome</label>
                   <select name="Option" class="green-border" >
-                    <!-- ... (your existing country options) ... -->
+                    <option value="">informatique</option>
+                    <option value="">genie infomatique</option>
+                    <option value="">genie electrique</option>
+                    <option value="">data science</option>
+                    <option value="">informatique descionelle</option>
                   </select>
                 </div>
                 <div class="col">
                   <label for="Ville">Ville</label>
                   <select name="Ville" class="green-border" >
-                    <!-- ... (your existing country options) ... -->
+                    <option value="Agadir">Agadir</option>
+                    <option value="Al Hoceima">Al Hoceima</option>
+                    <option value="Beni Mellal">Beni Mellal</option>
                   </select>
                 </div>
               </div>
@@ -279,21 +295,18 @@
 <script>
 import firebaseApp from '../scripts/firebaseConfig';
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
-import { getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
-
-// ... (your existing code)
 
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
 
 export default {
+  
   data() {
     return {
       currentSection: 'home',
-      databaseuser: {},
       nom: '',
       prenom: '',
       email: '',
@@ -304,16 +317,17 @@ export default {
       profileImage: '',
       salutation: '',
       address: '',
-
+      datenaissance:''
     };
   },
   methods: {
+    
     showSection(section) {
       this.currentSection = section;
     },
     deconnexionSection() {
-      localStorage.removeItem('userData');
-      this.$router.push('/welcome');
+      localStorage.clear();
+      this.$router.push('/login');
     },
     getSectionTitle() {
       switch (this.currentSection) {
@@ -354,22 +368,25 @@ export default {
             profileImage: imageUrl,
             salutation: this.salutation,
             address: this.address,
-            // Add other fields as needed
+            datenaissance:this.datenaissance,
           });
-          const databaseuser = {
+            const userData = {
             nom: this.nom,
             prenom: this.prenom,
+            email: this.email,
             cin: this.cin,
             pays: this.pays,
             code: this.code,
-            phone: `+${this.code}${this.phone}`,
+            phone: this.phone,
             profileImage: imageUrl,
             salutation: this.salutation,
             address: this.address,
-
-            // Add other fields as needed
+            datenaissance: this.datenaissance,
           };
-          localStorage.setItem('databaseuser', JSON.stringify(databaseuser));
+        // Store the updated user data in localStorage
+        localStorage.setItem('databaseuser', JSON.stringify(userData));
+   
+
 
           alert('User information updated successfully!');
         } else {
@@ -387,27 +404,51 @@ export default {
     handleImageUpload(event) {
       // ... (your existing image upload logic)
     },
-    created() {
-        const storedUser = localStorage.getItem('databaseuser');
-        if (storedUser) {
-          this.databaseuser = JSON.parse(storedUser);
-          // Assign other properties if needed
-          this.nom = this.databaseuser.nom;
-          this.prenom = this.databaseuser.prenom;
-          this.email = this.databaseuser.email;
-          this.cin = this.databaseuser.cin;
-          this.pays = this.databaseuser.pays;
-          this.code = this.databaseuser.code;
-          this.phone = this.databaseuser.phone;
-          this.profileImage = this.databaseuser.profileImage;
-          this.salutation = this.databaseuser.salutation;
-          this.address = this.databaseuser.address;
-          // Add other properties as needed
-        }
-      },
+    // async created() {
+    //   try {
+    //     const userQuery = query(collection(db, "users"), where("email", "==", this.email));
+    //     const querySnapshot = await getDocs(userQuery);
+
+    //     if (!querySnapshot.empty) {
+    //       const userData = querySnapshot.docs[0].data();
+    //       this.nom = userData.nom;
+    //       this.prenom = userData.prenom;
+    //       this.email = userData.email;
+    //       this.cin = userData.cin;
+    //       this.pays = userData.pays;
+    //       this.code = userData.code;
+    //       this.phone = userData.phone;
+    //       this.profileImage = userData.profileImage;
+    //       this.salutation = userData.salutation;
+    //       this.address = userData.address;
+    //       // Add other properties as needed
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching user data: ", error);
+    //     // Handle errors as needed
+    //   }
+    // },
+    
+    
   },
+  created() {
+    // ... (your existing created hook)
+
+    // Retrieve user data from localStorage
+    const storedUser = localStorage.getItem('databaseuser');
+    if (storedUser) {
+      this.databaseuser = JSON.parse(storedUser);
+      this.email = storedUser.email;
+      this.cin = storedUser.cin;
+      this.nom = storedUser.nom;
+
+
+    }
+  },
+  
 };
 </script>
+
 
 <style>
 @import '../assets/trable.css';
