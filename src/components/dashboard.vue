@@ -66,7 +66,7 @@
             </div>
             <div id="profile-d">
               <div id="profile-pic">
-                <img class="img-TM" :src="profileImage || '../assets/images/photo.jpeg'" alt="">
+                <img class="img-TM" :src="profileImage" alt="">
               </div>
               <div id="u-name">{{ nom }} {{ prenom }}</div>
             </div>
@@ -77,11 +77,11 @@
         <!-- <div class="card-body"> -->
           <div class="user-form-wrapper">
               <div class="user-form">
-                <h3>A propos de: {{ databaseuser.nom }} {{ databaseuser.prenom }}</h3>
-                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ databaseuser.cin }}</p>
-                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ databaseuser.email }}</p>
-                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ databaseuser.phone }}</p>
-                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong>{{ databaseuser.datenaissance }}</p>
+                <h3>A propos de: {{ nom }} {{ prenom }}</h3>
+                <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ cin }}</p>
+                <p><i class="fa fa-envelope" aria-hidden="true"></i><strong> Email:</strong> {{ email }}</p>
+                <p><i class="fa fa-phone" aria-hidden="true"></i><strong> Téléphone:</strong>{{ phone }}</p>
+                <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong>{{ datenaissance }}</p>
               </div>
               <div class="user-form-card">
                 <div class="user-form-card-main" style="background-color: rgb(78, 186, 78);">
@@ -109,8 +109,8 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="profileImage">Image de profil:</label>
-                  <input type="file" @change="handleImageUpload" accept="image/*"  class="green-border"/>
-                  <img v-if="profileImage" :src="profileImage" alt="Profile Preview" class="profile-preview" />
+                  <input type="file" @change="submitForm" accept="image/*"  class="green-border"/>
+                  <img v-if="profileImage" :src="profileImage" alt="Profile Preview" class="profile-preview" height="100"/>
                 </div>
               </div>
               <div class="form-group row">
@@ -294,7 +294,7 @@
 
 <script>
 import firebaseApp from '../scripts/firebaseConfig';
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 import { getFirestore, collection, getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
 
@@ -303,7 +303,6 @@ const db = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
 
 export default {
-  
   data() {
     return {
       currentSection: 'home',
@@ -317,11 +316,10 @@ export default {
       profileImage: '',
       salutation: '',
       address: '',
-      datenaissance:''
+      datenaissance: ''
     };
   },
   methods: {
-    
     showSection(section) {
       this.currentSection = section;
     },
@@ -349,52 +347,55 @@ export default {
     },
     async submitForm() {
       try {
-        const storageRef = ref(storage, 'profile_images/' + this.email + '_' + Date.now());
-        await uploadBytes(storageRef, this.imageFile);
-        const imageUrl = await getDownloadURL(storageRef);
+        const file = event.target.files[0];
+        const storageRef = ref(storage, 'profile_images/' + this.email + '_' + Date.now() + '.png');
 
-        // Check if the user already exists based on their email
-        const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
-        if (!querySnapshot.empty) {
-          // Update the existing user document
-          const userDoc = querySnapshot.docs[0];
-          await updateDoc(doc(db, "users", userDoc.id), {
-            nom: this.nom,
-            prenom: this.prenom,
-            cin: this.cin,
-            pays: this.pays,
-            code: this.code,
-            phone: `+${this.code}${this.phone}`,
-            profileImage: imageUrl,
-            salutation: this.salutation,
-            address: this.address,
-            datenaissance:this.datenaissance,
-          });
+        // Check if the file is an image
+        if (file.type.startsWith('image/')) {
+          await uploadBytes(storageRef, file);
+          const imageUrl = await getDownloadURL(storageRef);
+
+          // Check if the user already exists based on their email
+          const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+          if (!querySnapshot.empty) {
+            // Update the existing user document
+            const userDoc = querySnapshot.docs[0];
+            await updateDoc(doc(db, "users", userDoc.id), {
+              nom: this.nom,
+              prenom: this.prenom,
+              cin: this.cin,
+              pays: this.pays,
+              code: this.code,
+              phone: `+${this.code}${this.phone}`,
+              profileImage: imageUrl,
+              salutation: this.salutation,
+              address: this.address,
+              datenaissance: this.datenaissance,
+            });
             const userData = {
-            nom: this.nom,
-            prenom: this.prenom,
-            email: this.email,
-            cin: this.cin,
-            pays: this.pays,
-            code: this.code,
-            phone: this.phone,
-            profileImage: imageUrl,
-            salutation: this.salutation,
-            address: this.address,
-            datenaissance: this.datenaissance,
-          };
-        // Store the updated user data in localStorage
-        localStorage.setItem('databaseuser', JSON.stringify(userData));
-   
+              nom: this.nom,
+              prenom: this.prenom,
+              email: this.email,
+              cin: this.cin,
+              pays: this.pays,
+              code: this.code,
+              phone: this.phone,
+              profileImage: imageUrl,
+              salutation: this.salutation,
+              address: this.address,
+              datenaissance: this.datenaissance,
+            };
+            // Store the updated user data in localStorage
+            localStorage.setItem('databaseuser', JSON.stringify(userData));
 
-
-          alert('User information updated successfully!');
+            alert('User information updated successfully!');
+          } else {
+            // User does not exist, show an error message
+            alert('User with email ' + this.email + ' not found. Cannot update information.');
+          }
         } else {
-          // User does not exist, show an error message
-          alert('User with email ' + this.email + ' not found. Cannot update information.');
+          alert('Invalid file format. Please select a valid image file.');
         }
-
-        // You can add further logic, such as showing a success message or redirecting the user
       } catch (e) {
         console.error("Error updating/adding document: ", e);
         alert('Error updating/adding user information: ' + e);
@@ -404,50 +405,63 @@ export default {
     handleImageUpload(event) {
       // ... (your existing image upload logic)
     },
-    // async created() {
-    //   try {
-    //     const userQuery = query(collection(db, "users"), where("email", "==", this.email));
-    //     const querySnapshot = await getDocs(userQuery);
+    async fetchUserData(userEmail) {
+      try {
+        const userQuery = query(collection(db, "users"), where("email", "==", userEmail));
+        const querySnapshot = await getDocs(userQuery);
 
-    //     if (!querySnapshot.empty) {
-    //       const userData = querySnapshot.docs[0].data();
-    //       this.nom = userData.nom;
-    //       this.prenom = userData.prenom;
-    //       this.email = userData.email;
-    //       this.cin = userData.cin;
-    //       this.pays = userData.pays;
-    //       this.code = userData.code;
-    //       this.phone = userData.phone;
-    //       this.profileImage = userData.profileImage;
-    //       this.salutation = userData.salutation;
-    //       this.address = userData.address;
-    //       // Add other properties as needed
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching user data: ", error);
-    //     // Handle errors as needed
-    //   }
-    // },
-    
-    
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          this.nom = userData.nom;
+          this.prenom = userData.prenom;
+          this.email = userData.email;
+          this.cin = userData.cin;
+          this.pays = userData.pays;
+          this.code = userData.code;
+          this.phone = userData.phone;
+          this.profileImage = userData.profileImage;
+          this.salutation = userData.salutation;
+          this.address = userData.address;
+          this.datenaissance = userData.datenaissance;
+
+          const fetchedUserData = {
+            nom: this.nom,
+            prenom: this.prenom,
+            email: this.email,
+            cin: this.cin,
+            pays: this.pays,
+            code: this.code,
+            phone: this.phone,
+            profileImage: this.profileImage,
+            salutation: this.salutation,
+            address: this.address,
+            datenaissance: this.datenaissance,
+          };
+          localStorage.setItem('databaseuser', JSON.stringify(fetchedUserData));
+        }
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      }
+    },
   },
   created() {
-    // ... (your existing created hook)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.fetchUserData(user.email);
+      }
+    });
 
-    // Retrieve user data from localStorage
     const storedUser = localStorage.getItem('databaseuser');
     if (storedUser) {
-      this.databaseuser = JSON.parse(storedUser);
-      this.email = storedUser.email;
-      this.cin = storedUser.cin;
-      this.nom = storedUser.nom;
-
-
+      const databaseuser = JSON.parse(storedUser);
+      this.email = databaseuser.email;
+      this.cin = databaseuser.cin;
     }
   },
-  
 };
 </script>
+
+
 
 
 <style>
