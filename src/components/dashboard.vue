@@ -32,13 +32,13 @@
               <i class="fa fa-user-plus"></i>Mes inscriptions
             </a>
           </li>
-       
+
           <li :class="{ 'active': currentSection === 'parametres' }">
             <a class="a-ptr" @click="showSection('parametres')">
               <i class="fa fa-cogs"></i>Paramètres
             </a>
           </li>
-          <li :class="{ 'active': currentSection === 'deconnexion' } " id="li_ptr">
+          <li :class="{ 'active': currentSection === 'deconnexion' }" id="li_ptr">
             <a class="a-ptr" @click="deconnexionSection">
               <i class="fa fa-sign-out"></i>Se déconnecter
             </a>
@@ -55,27 +55,27 @@
             <br>
           </div>
           <div class="clearfix">
-            
+
           </div>
           <br />
           <div style="margin-top: 10px;" v-if="currentSection === 'home'">
-            
-          <div id="profile-upper">
-            <div id="profile-banner-image">
-              <img class="img-TM" src="../assets/images/Guelmim_02.jpg" alt="Banner image">
-            </div>
-            <div id="profile-d">
-              <div id="profile-pic">
-                <img class="img-TM" :src="profileImage" alt="">
+
+            <div id="profile-upper">
+              <div id="profile-banner-image">
+                <img class="img-TM" src="../assets/images/Guelmim_02.jpg" alt="Banner image">
               </div>
-              <div id="u-name">{{ nom }} {{ prenom }}</div>
+              <div id="profile-d">
+                <div id="profile-pic">
+                  <img class="img-TM" :src="profileImage" alt="">
+                </div>
+                <div id="u-name">{{ nom }} {{ prenom }}</div>
+              </div>
             </div>
-          </div>
-          <br><br>
-          <hr color="#005596" size="5" noshade width="100%"> 
-          <br>
-        <!-- <div class="card-body"> -->
-          <div class="user-form-wrapper">
+            <br><br>
+            <hr color="#005596" size="5" noshade width="100%">
+            <br>
+            <!-- <div class="card-body"> -->
+            <div class="user-form-wrapper">
               <div class="user-form">
                 <h3>A propos de: {{ nom }} {{ prenom }}</h3>
                 <p><i class="fa fa-id-card" aria-hidden="true"></i><strong> CIN:</strong> {{ cin }}</p>
@@ -92,16 +92,16 @@
                 <br>
                 <button class="button-65" role="button">Mon Dossier</button>
               </div>
-          </div>
-        <!-- </div> -->
-        <br>
-        <!-- <div class="card-body"> -->
-          <div class="user-form-done">
+            </div>
+            <!-- </div> -->
+            <br>
+            <!-- <div class="card-body"> -->
+            <div class="user-form-done">
               <div class="user-form">
                 <h3>Mes Candidatures</h3>
               </div>
-          </div>
-        <!-- </div> -->
+            </div>
+            <!-- </div> -->
           </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'infos'">
             <br><br>
@@ -109,43 +109,44 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="profileImage">Image de profil:</label>
-                  <input type="file" @change="submitForm" accept="image/*"  class="green-border"/>
-                  <img v-if="profileImage" :src="profileImage" alt="Profile Preview" class="profile-preview" height="100"/>
+                  <input type="file" @change="submitForm" accept="image/*" class="green-border" />
+                  <img v-if="profileImage" :src="profileImage" alt="Profile Preview" class="profile-preview"
+                    height="100" />
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col">
                   <label for="nom">Nom:</label>
-                  <input type="text" v-model="nom" required class="green-border" placeholder="Nom"/>
+                  <input type="text" v-model="nom" required class="green-border" placeholder="Nom" />
                 </div>
                 <div class="col">
                   <label for="prenom">Prénom:</label>
-                  <input type="text" v-model="prenom" required  class="green-border" placeholder="Prénom"/>
+                  <input type="text" v-model="prenom" required class="green-border" placeholder="Prénom" />
                 </div>
               </div>
 
               <div class="form-group row">
                 <div class="col">
                   <label for="email">Email:</label>
-                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);"  />
+                  <input type="email" v-model="email" required style="background-color: rgb(235, 235, 235);" readonly />
                 </div>
                 <div class="col">
                   <label for="CIN">CIN:</label>
-                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);"  />
+                  <input type="text" v-model="cin" required style="background-color: rgb(235, 235, 235);" readonly />
                 </div>
               </div>
 
               <div class="form-group row">
                 <div class="col">
                   <label for="pays">Pays:</label>
-                  <select v-model="pays" name="pays" class="green-border"  >
+                  <select v-model="pays" name="pays" class="green-border">
                     <!-- ... (your existing country options) ... -->
-                        <option value="MA">Maroc</option>
-                        <option value="CA">Canada</option>
-                        <option value="ML">Mali</option>
-                        <option value="MT">Malte</option>
-                        <option value="MP">Mariannes du nord, îles</option>
-                        <option value="ZW">Zimbabwe​​​​​</option>
+                    <option value="MA">Maroc</option>
+                    <option value="CA">Canada</option>
+                    <option value="ML">Mali</option>
+                    <option value="MT">Malte</option>
+                    <option value="MP">Mariannes du nord, îles</option>
+                    <option value="ZW">Zimbabwe​​​​​</option>
                   </select>
                 </div>
                 <div class="col">
@@ -161,7 +162,7 @@
                     <div class="col-9" style="float:right">
                       <br>
                       <label for="number"></label>
-                      <input type="text" v-model="phone" class="green-border" placeholder="0610080701"  />
+                      <input type="text" v-model="phone" class="green-border" placeholder="0610080701" />
                     </div>
                   </div>
                 </div>
@@ -179,7 +180,7 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="salutation">Civilité:</label>
-                  <select v-model="salutation"  class="green-border">
+                  <select v-model="salutation" class="green-border">
                     <option value="M.">M.</option>
                     <option value="Mlle">Mlle</option>
                     <option value="Mme">Mme</option>
@@ -192,28 +193,29 @@
           </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'cursus'">
             <br><br>
-            <form @submit.prevent="submitFormcursus" >
+            <form @submit.prevent="submitFormcursus">
               <div class="form-group row-50">
                 <div class="col-50">
                   <label for="Niveau">Niveau d'étude Actuel</label>
-                  <select name="Niveau" v-model="Niveau" id="Niveau" class="green-border">
+                  <select name="Niveau" v-model="niveau" id="Niveau" class="green-border">
                     <option value="BAC+2">BAC+2</option>
                   </select>
                 </div>
                 <div class="col-50">
                   <label for="CNE">Code Massar:</label>
-                  <input type="text" v-model="CNE" required  class="green-border" placeholder="ex : D15258985"/>
+                  <input type="text" v-model="CNE" required class="green-border" placeholder="ex : D15258985" />
                 </div>
                 <div class="col-500">
                   <label for="Lycée">Lycée d'obtention du Bac</label>
-                  <input type="text" v-model="Lycee" required  class="green-border" placeholder="ex : Lycee Mohammed EL baqali "/>
+                  <input type="text" v-model="Lycee" required class="green-border"
+                    placeholder="ex : Lycee Mohammed EL baqali " />
                 </div>
               </div>
 
               <div class="form-group row">
                 <div class="col">
                   <label for="Année">Année d’obtention du Bac</label>
-                  <select name="Année" id="Année" class="green-border">
+                  <select name="Année" v-model="anneebac" id="Année" class="green-border">
                     <option value="2024">2023</option>
                     <option value="2023">2022</option>
                     <option value="2022">2021</option>
@@ -222,23 +224,20 @@
                 </div>
                 <div class="col">
                   <label for="Lycée">Série du bac</label>
-                  <input type="text" v-model="bac" required  class="green-border" placeholder="ex : science math B"/>
+                  <input type="text" v-model="bac" required class="green-border" placeholder="ex : science math B" />
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col">
                   <label for="Diplome">Diplome apres Bac</label>
-                  <select name="Diplome" id="Diplome" class="green-border">
+                  <select name="Diplome" v-model="diplome" id="Diplome" class="green-border">
+                    <option value="DUT">DUT</option>
+                    <option value="BTS">BTS</option>
                   </select>
                 </div>
-                <div class="col-501">
-                  <label for="Obtenue">Diplome Obtenue.</label>
-                  <select name="Obtenue" id="Obtenue" class="green-border">
-                  </select>
-                </div>
-                <div class="col-50">
+                <div class="col">
                   <label for="d’obtention">Année d’obtention</label>
-                  <select name="d’obtention" id="d’obtention" class="green-border">
+                  <select name="d’obtention" v-model="anneedip" id="d’obtention" class="green-border">
                     <option value="2024">2023</option>
                     <option value="2023">2022</option>
                     <option value="2022">2021</option>
@@ -251,7 +250,7 @@
               <div class="form-group row">
                 <div class="col">
                   <label for="Option">Option Diplome</label>
-                  <select name="Option" class="green-border" >
+                  <select name="Option" v-model="optionD" class="green-border">
                     <option value="">informatique</option>
                     <option value="">genie infomatique</option>
                     <option value="">genie electrique</option>
@@ -261,7 +260,7 @@
                 </div>
                 <div class="col">
                   <label for="Ville">Ville</label>
-                  <select name="Ville" class="green-border" >
+                  <select name="Ville" v-model="ville" class="green-border">
                     <option value="Agadir">Agadir</option>
                     <option value="Al Hoceima">Al Hoceima</option>
                     <option value="Beni Mellal">Beni Mellal</option>
@@ -270,17 +269,30 @@
               </div>
               <div class="form-group row">
                 <div class="col">
-                  <label for="salutation">Choisir une université</label>
-                  <select v-model="salutation" class="green-border">
-                  </select>
-                </div>
-                <div class="col">
                   <label for="salutation">Établissement</label>
-                  <select v-model="salutation" class="green-border">
+                  <select v-model="ecole" class="green-border">
+                    <option value="EST_Safi">EST Safi</option>
+                    <option value="EST_Essaouira">EST Essaouira</option>
+                    <option value="EST_Casablanca">EST Casablanca</option>
+                    <option value="EST_Sale">EST Salé</option>
+                    <option value="EST_Hoceima">EST Hoceima</option>
+                    <option value="EST_Fkih_Ben_Salah">EST Fkih Ben Salah</option>
+                    <option value="EST_Sidi_Bennour">EST Sidi Bennour</option>
+                    <option value="EST_Meknes">EST Meknes</option>
+                    <option value="EST_Kenitra">EST Kénitra</option>
+                    <option value="EST_Fes">EST Fes</option>
+                    <option value="EST_Oujda">EST Oujda</option>
+                    <option value="EST_Beni_Mellal">EST Beni Mellal</option>
+                    <option value="EST_Agadir">EST Agadir</option>
+                    <option value="EST_Berrchid">EST Berrchid</option>
+                    <option value="EST_Khenifra">EST Khenifra</option>
+                    <option value="EST_Laayoune">EST Laayoune</option>
+                    <option value="EST_Guelmim">EST Guelmim</option>
+                    <option value="EST_Nador">EST Nador</option>
                   </select>
                 </div>
               </div>
-              <button type ="submit" class="button-65" role="button">Enregistrer</button>
+              <button type="submit" class="button-65" role="button">Enregistrer</button>
             </form>
           </div>
           <div v-if="currentSection === 'dossier'">
@@ -316,7 +328,18 @@ export default {
       profileImage: '',
       salutation: '',
       address: '',
-      datenaissance: ''
+      datenaissance: '',
+      // 
+      niveau: '',
+      CNE: '',
+      Lycee: '',
+      anneebac: '',
+      bac: '',
+      diplome: '',
+      anneedip: '',
+      optionD: '',
+      ville: '',
+      ecole: '',
     };
   },
   methods: {
@@ -345,6 +368,55 @@ export default {
           return '';
       }
     },
+    async submitFormcursus() {
+      try {
+        if (true) {
+          const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+          if (!querySnapshot.empty) {
+            // Update the existing user document
+            const userDoc = querySnapshot.docs[0];
+            await updateDoc(doc(db, "users", userDoc.id), {
+              niveau: this.niveau,
+              CNE: this.CNE,
+              Lycee: this.Lycee,
+              anneebac: this.anneebac,
+              bac: this.bac,
+              diplome: this.diplome,
+              anneedip: this.anneedip,
+              optionD: this.optionD,
+              ville: this.ville,
+              ecole: this.ecole,
+            });
+            const userData = {
+              niveau: this.niveau,
+              CNE: this.CNE,
+              Lycee: this.Lycee,
+              anneebac: this.anneebac,
+              bac: this.bac,
+              diplome: this.diplome,
+              anneedip: this.anneedip,
+              optionD: this.optionD,
+              ville: this.ville,
+              ecole: this.ecole,
+            };
+            // Store the updated user data in localStorage
+            localStorage.setItem('databaseuser', JSON.stringify(userData));
+
+            alert('User information updated successfully!');
+          } else {
+            // User does not exist, show an error message
+            alert('User with email ' + this.email + ' not found. Cannot update information.');
+          }
+        } else {
+          alert('Invalid file format. Please select a valid image file.');
+        }
+      } catch (e) {
+        console.error("Error updating/adding document: ", e);
+        alert('Error updating/adding user information: ' + e);
+        // Handle errors as needed
+      }
+    },
+
     async submitForm() {
       try {
         const file = event.target.files[0];
@@ -366,7 +438,7 @@ export default {
               cin: this.cin,
               pays: this.pays,
               code: this.code,
-              phone: `+${this.code}${this.phone}`,
+              phone: this.phone,
               profileImage: imageUrl,
               salutation: this.salutation,
               address: this.address,
@@ -423,7 +495,16 @@ export default {
           this.salutation = userData.salutation;
           this.address = userData.address;
           this.datenaissance = userData.datenaissance;
-
+          this.niveau= userData.niveau;
+          this.CNE= userData.CNE;
+          this.Lycee= userData.Lycee;
+          this.bac= userData.bac;
+          this.diplome= userData.diplome;
+          this.anneedip= userData.anneedip;
+          this.anneebac= userData.anneebac;
+          this.optionD= userData.optionD;
+          this.ville= userData.ville;
+          this.ecole= userData.ecole;
           const fetchedUserData = {
             nom: this.nom,
             prenom: this.prenom,
@@ -436,6 +517,16 @@ export default {
             salutation: this.salutation,
             address: this.address,
             datenaissance: this.datenaissance,
+            niveau: this.niveau,
+            CNE: this.CNE,
+            Lycee: this.Lycee,
+            anneebac: this.anneebac,
+            bac: this.bac,
+            diplome: this.diplome,
+            anneedip: this.anneedip,
+            optionD: this.optionD,
+            ville: this.ville,
+            ecole: this.ecole,
           };
           localStorage.setItem('databaseuser', JSON.stringify(fetchedUserData));
         }
@@ -466,42 +557,42 @@ export default {
 
 <style>
 @import '../assets/trable.css';
+
 .card-body {
-            max-width: 100%;
-            margin-top: 10px;
-            padding: 20px;
-            background-color: #fbfdff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+  max-width: 100%;
+  margin-top: 10px;
+  padding: 20px;
+  background-color: #fbfdff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .user-info-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
+.user-info-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
 
-        .user-info-title svg {
-            margin-right: 5px;
-        }
+.user-info-title svg {
+  margin-right: 5px;
+}
 
-        .card-text {
-            margin-bottom: 10px;
-        }
+.card-text {
+  margin-bottom: 10px;
+}
 
-        .btn-primary {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-        }
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
+.btn-primary:hover {
+  background-color: #0056b3;
+}
 </style>
