@@ -146,7 +146,7 @@
                     <option value="ML">Mali</option>
                     <option value="MT">Malte</option>
                     <option value="MP">Mariannes du nord, îles</option>
-                    <option value="ZW">Zimbabwe​​​​​</option>
+                    <option value="ZW">Zimbabwe</option>
                   </select>
                 </div>
                 <div class="col">
@@ -298,24 +298,24 @@
           <div v-if="currentSection === 'dossier'" class="file-upload-section">
       <form @submit.prevent="submitDossierForm" class="file-upload-form">
         <div class="form-group">
-          <label for="file1">File 1:</label>
-          <input type="file" id="file1" @change="handleFileChange(1)" />
-        </div>
-        <div class="form-group">
-          <label for="file2">File 2:</label>
+          <label for="file2">Copie de Bac</label>
           <input type="file" id="file2" @change="handleFileChange(2)" />
         </div>
         <div class="form-group">
-          <label for="file3">File 3:</label>
+          <label for="file1">Relevé de notes du Baccalauréat</label>
+          <input type="file" id="file1" @change="handleFileChange(1)" />
+        </div>
+        <div class="form-group">
+          <label for="file3">Une Copie de Pièce d'Identité (Recto/verso)</label>
           <input type="file" id="file3" @change="handleFileChange(3)" />
         </div>
         <div class="form-group">
-          <label for="file4">File 4:</label>
-          <input type="file" id="file4" @change="handleFileChange(4)" />
+          <label for="file2">Copie des Diplômes Obtenus</label>
+          <input type="file" id="file2" @change="handleFileChange(2)" />
         </div>
         <div class="form-group">
-          <label for="file5">File 5:</label>
-          <input type="file" id="file5" @change="handleFileChange(5)" />
+          <label for="file4">Relevé de notes du Diplômes</label>
+          <input type="file" id="file4" @change="handleFileChange(4)" />
         </div>
         <button type="submit" class="upload-button" role="button">Upload</button>
       </form>
@@ -347,6 +347,35 @@
                 </div>
                 <button type="submit" class="button-65" role="button">Changer l'adresse e-mail</button>
               </form>
+    </div>
+    <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
+            <div class="user-form-done">
+                <div class="user-form" style="display: flex; align-items: center;">
+                <img src="../assets/images/894848.png" height="60" alt="" style="margin-right: 10px;">
+                <h3 style="margin-bottom: 0;">Licenece - Data science et Statistique</h3>
+                <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(251, 199, 115);">Candidat <i class="fa fa-clock-o" style="font-size: 2em;"></i></p>
+            </div>
+              <br>
+              <div class="user-form" style="display: flex; align-items: center;">
+                <img src="../assets/images/894848.png" height="60" alt="">
+                <h3>Licenece - Math informatique</h3>
+                <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(78, 186, 78);">Admis <i class="fa fa-check" style="font-size: 2em;"></i></p>
+              </div>
+              <br>
+              <div class="user-form" style="display: flex; align-items: center;">
+                <img src="../assets/images/894848.png" height="60" alt="">
+                <h3>Licenece - Flutter mobile</h3>
+                <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(246, 0, 0);">Non Admis <i class="fa fa-times" style="font-size: 2em;"></i></p>
+
+              </div>
+              <br>
+                <div class="user-form" style="display: flex; align-items: center;">
+                  <img src="../assets/images/894848.png" height="60" alt="" style="margin-right: 10px;">
+                  <h3 style="margin-bottom: 0;">Licenece - Data science et Statistique</h3>
+                  <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(251, 199, 115);">Candidat <i class="fa fa-clock-o" style="font-size: 2em;"></i></p>
+                </div>
+       </div>
+       <br>
     </div>
         </div>
       </div>
