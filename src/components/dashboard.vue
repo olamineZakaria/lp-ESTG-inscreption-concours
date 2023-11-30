@@ -84,9 +84,9 @@
                 <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong>{{ datenaissance }}</p>
               </div>
               <div class="user-form-card">
-                <div class="user-form-card-main" style="background-color: rgb(78, 186, 78);">
+                <div class="user-form-card-main" style="background-color:orange;">
                   <h3 style="text-align: center;color: white;">Etat du dossier</h3>
-                  <h2 style="text-align: center;color: white; margin-top: 10px;">Dossier complet</h2>
+                  <h2 style="text-align: center;color: white; margin-top: 10px;">Dossier incomplet</h2>
                   <br><br>
                 </div>
                 <br>
@@ -96,11 +96,16 @@
             <!-- </div> -->
             <br>
             <!-- <div class="card-body"> -->
-            <div class="user-form-done">
-              <div class="user-form">
-                <h3>Mes Candidatures</h3>
+              <div class="user-form-done">
+                <h2>Mes Candidateur</h2>
+                <div v-for="(inscription, index) in inscriptions" :key="index" class="user-form"  style="display: flex; align-items: center; margin-top: 10px;">
+                  <img src="../assets/images/894848.png" height="60" alt="">
+                  <h3>{{ inscription.title }}</h3>
+                  <p aria-hidden="true" style="margin-left: auto; font-size: 1em;" color="{'admis-color': inscription.etat === 'admis','candidat-color': inscription.etat === 'candidat', 'rejected-color': inscription.etat !== 'admis' }">
+                    {{ inscription.etat }} <i :class="{ 'fa fa-check': inscription.etat === 'admis','fa fa-clock-o':inscription.etat === 'candidat' ,'fa fa-times': inscription.etat !== 'admis', 'admis-color': inscription.etat === 'admis', 'candidat-color': inscription.etat === 'candidat','rejected-color': inscription.etat === 'non admis' }" style="font-size: 2em;"></i>
+                  </p>
+                </div>
               </div>
-            </div>
             <!-- </div> -->
           </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'infos'">
@@ -362,32 +367,15 @@
     </form>
   </div>
     <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
-            <div class="user-form-done">
-                <div class="user-form" style="display: flex; align-items: center;">
-                <img src="../assets/images/894848.png" height="60" alt="" style="margin-right: 10px;">
-                <h3 style="margin-bottom: 0;">Licenece - Data science et Statistique</h3>
-                <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(251, 199, 115);">Candidat <i class="fa fa-clock-o" style="font-size: 2em;"></i></p>
-            </div>
-              <br>
-              <div class="user-form" style="display: flex; align-items: center;">
-                <img src="../assets/images/894848.png" height="60" alt="">
-                <h3>Licenece - Math informatique</h3>
-                <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(78, 186, 78);">Admis <i class="fa fa-check" style="font-size: 2em;"></i></p>
-              </div>
-              <br>
-              <div class="user-form" style="display: flex; align-items: center;">
-                <img src="../assets/images/894848.png" height="60" alt="">
-                <h3>Licenece - Flutter mobile</h3>
-                <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(246, 0, 0);">Non Admis <i class="fa fa-times" style="font-size: 2em;"></i></p>
-
-              </div>
-              <br>
-                <div class="user-form" style="display: flex; align-items: center;">
-                  <img src="../assets/images/894848.png" height="60" alt="" style="margin-right: 10px;">
-                  <h3 style="margin-bottom: 0;">Licenece - Data science et Statistique</h3>
-                  <p aria-hidden="true" style="margin-left: auto; font-size: 1em; color: rgb(251, 199, 115);">Candidat <i class="fa fa-clock-o" style="font-size: 2em;"></i></p>
-                </div>
-       </div>
+      <!-- <div class="user-form-done">
+      <div v-for="(inscription, index) in inscriptions" :key="index" class="user-form"  style="display: flex; align-items: center; margin-top: 10px;">
+        <img src="../assets/images/894848.png" height="60" alt="">
+        <h3>{{ inscription.title }}</h3>
+        <p aria-hidden="true" style="margin-left: auto; font-size: 1em;" color="{'admis-color': inscription.etat === 'admis','candidat-color': inscription.etat === 'candidat', 'rejected-color': inscription.etat !== 'admis' }">
+          {{ inscription.etat }} <i :class="{ 'fa fa-check': inscription.etat === 'admis','fa fa-clock-o':inscription.etat === 'candidat' ,'fa fa-times': inscription.etat !== 'admis', 'admis-color': inscription.etat === 'admis', 'candidat-color': inscription.etat === 'candidat','rejected-color': inscription.etat === 'non admis' }" style="font-size: 2em;"></i>
+        </p>
+      </div> -->
+  <!-- </div> -->
        <br>
     </div>
         </div>
@@ -441,9 +429,19 @@ export default {
       passwordChangeError: null,
       emailChangeSuccess: false,
       emailChangeError: null,
+      inscriptions: [],
     };
   },
   methods: {
+    async fetchInscriptions() {
+    try {
+      const inscriptionsCollection = collection(db, "inscreptions");
+      const inscriptionsSnapshot = await getDocs(inscriptionsCollection);
+      this.inscriptions = inscriptionsSnapshot.docs.map(doc => doc.data());
+    } catch (error) {
+      console.error("Error fetching inscriptions: ", error);
+    }
+  },
     showSection(section) {
       this.currentSection = section;
     },
@@ -640,6 +638,7 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.fetchUserData(user.email);
+        this.fetchInscriptions();  
       }
     });
 
@@ -735,4 +734,14 @@ export default {
   .upload-button:hover {
     background-color: #0056b3;
   }
+.admis-color {
+  color: rgb(78, 186, 78);
+}
+.candidat-color{
+  color: rgb(237, 177, 12)
+}
+
+.rejected-color {
+  color: rgb(246, 0, 0);
+}
 </style>
