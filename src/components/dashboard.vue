@@ -320,34 +320,47 @@
         <button type="submit" class="upload-button" role="button">Upload</button>
       </form>
     </div>
-    <div style="margin-top: 10px;" v-if="currentSection === 'parametres'">
-      <form @submit.prevent="changePassword">
-                <h4>Changer le mot de passe</h4>
-                <div class="form-group">
-                  <label for="currentPassword">Mot de passe actuel:</label>
-                  <input type="password" v-model="currentPassword" required />
-                </div>
-                <div class="form-group">
-                  <label for="newPassword">Nouveau mot de passe:</label>
-                  <input type="password" v-model="newPassword" required />
-                </div>
-                <div class="form-group">
-                  <label for="confirmPassword">Confirmer le nouveau mot de passe:</label>
-                  <input type="password" v-model="confirmPassword" required />
-                </div>
-                <button type="submit" class="button-65" role="button">Changer le mot de passe</button>
-              </form>
+    <div v-if="currentSection === 'parametres'">
+    <!-- Change Password Form -->
+    <form @submit.prevent="changePassword">
+      <h4>Changer le mot de passe</h4>
+      <div class="form-group">
+        <label for="currentPassword">Mot de passe actuel:</label>
+        <input type="password" v-model="currentPassword" required />
+      </div>
+      <div class="form-group">
+        <label for="newPassword">Nouveau mot de passe:</label>
+        <input type="password" v-model="newPassword" required />
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le nouveau mot de passe:</label>
+        <input type="password" v-model="confirmPassword" required />
+      </div>
+      <button type="submit" class="button-65" role="button">Changer le mot de passe</button>
+      <div v-if="passwordChangeSuccess" class="alert alert-success" role="alert">
+        Mot de passe changé avec succès!
+      </div>
+      <div v-if="passwordChangeError" class="alert alert-danger" role="alert">
+        {{ passwordChangeError }}
+      </div>
+    </form>
 
-              <!-- Change Email Form -->
-              <form @submit.prevent="changeEmail">
-                <h4>Changer l'adresse e-mail</h4>
-                <div class="form-group">
-                  <label for="newEmail">Nouvelle adresse e-mail:</label>
-                  <input type="email" v-model="newEmail" required />
-                </div>
-                <button type="submit" class="button-65" role="button">Changer l'adresse e-mail</button>
-              </form>
-    </div>
+    <!-- Change Email Form -->
+    <form @submit.prevent="changeEmail">
+      <h4>Changer l'adresse e-mail</h4>
+      <div class="form-group">
+        <label for="newEmail">Nouvelle adresse e-mail:</label>
+        <input type="email" v-model="newEmail" required />
+      </div>
+      <button type="submit" class="button-65" role="button">Changer l'adresse e-mail</button>
+      <div v-if="emailChangeSuccess" class="alert alert-success" role="alert">
+        Adresse e-mail changée avec succès!
+      </div>
+      <div v-if="emailChangeError" class="alert alert-danger" role="alert">
+        {{ emailChangeError }}
+      </div>
+    </form>
+  </div>
     <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
             <div class="user-form-done">
                 <div class="user-form" style="display: flex; align-items: center;">
@@ -419,6 +432,15 @@ export default {
       optionD: '',
       ville: '',
       ecole: '',
+      //
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      newEmail: '',
+      passwordChangeSuccess: false,
+      passwordChangeError: null,
+      emailChangeSuccess: false,
+      emailChangeError: null,
     };
   },
   methods: {
