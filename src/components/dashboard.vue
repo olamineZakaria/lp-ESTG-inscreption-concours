@@ -367,15 +367,14 @@
     </form>
   </div>
     <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
-      <!-- <div class="user-form-done">
-      <div v-for="(inscription, index) in inscriptions" :key="index" class="user-form"  style="display: flex; align-items: center; margin-top: 10px;">
+      <div class="user-form-done">
+      <div v-for="(formation, index) in formation" :key="index" class="user-form" style="display: flex; align-items: center; margin-top: 10px;">
         <img src="../assets/images/894848.png" height="60" alt="">
-        <h3>{{ inscription.title }}</h3>
-        <p aria-hidden="true" style="margin-left: auto; font-size: 1em;" color="{'admis-color': inscription.etat === 'admis','candidat-color': inscription.etat === 'candidat', 'rejected-color': inscription.etat !== 'admis' }">
-          {{ inscription.etat }} <i :class="{ 'fa fa-check': inscription.etat === 'admis','fa fa-clock-o':inscription.etat === 'candidat' ,'fa fa-times': inscription.etat !== 'admis', 'admis-color': inscription.etat === 'admis', 'candidat-color': inscription.etat === 'candidat','rejected-color': inscription.etat === 'non admis' }" style="font-size: 2em;"></i>
-        </p>
-      </div> -->
-  <!-- </div> -->
+        <h3>{{ formation.programme }}</h3>
+        <p></p>
+        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="showUploadButton(index)">Inscription</button>
+      </div>
+</div>
        <br>
     </div>
         </div>
@@ -430,14 +429,26 @@ export default {
       emailChangeSuccess: false,
       emailChangeError: null,
       inscriptions: [],
+      formation:[],
+      showUploadButton:false
     };
   },
   methods: {
+    showUploadButton(index) {  },
     async fetchInscriptions() {
     try {
       const inscriptionsCollection = collection(db, "inscreptions");
       const inscriptionsSnapshot = await getDocs(inscriptionsCollection);
       this.inscriptions = inscriptionsSnapshot.docs.map(doc => doc.data());
+    } catch (error) {
+      console.error("Error fetching inscriptions: ", error);
+    }
+  },
+  async fetchFormation() {
+    try {
+      const formationCollection = collection(db, "formation");
+      const formationSnapshot = await getDocs(formationCollection);
+      this.formation = formationSnapshot.docs.map(doc => doc.data());
     } catch (error) {
       console.error("Error fetching inscriptions: ", error);
     }
@@ -638,7 +649,8 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.fetchUserData(user.email);
-        this.fetchInscriptions();  
+        this.fetchInscriptions(); 
+        this.fetchFormation();
       }
     });
 
@@ -744,4 +756,13 @@ export default {
 .rejected-color {
   color: rgb(246, 0, 0);
 }
+.inscription-button {
+    background-color: #4CAF50;
+    color: white;
+}
+.inscription-button:hover {
+    background-color: #4af14f;
+    color: white;
+}
+
 </style>
