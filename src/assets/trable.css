@@ -604,6 +604,15 @@ opacity: 1;
   flex: 0 0 30%;
   text-align: left;
 }
+.user-form-card-main-dd {
+  height: 10px;
+  width: 95%;
+  padding: 2%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 0 0 30%;
+  text-align: left;
+}
 
 
 .user-form label {

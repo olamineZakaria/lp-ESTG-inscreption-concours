@@ -303,11 +303,17 @@
             </form>
           </div>
           <div v-if="currentSection === 'dossier'" class="file-upload-section">
+                <div :style="{ backgroundColor: backgroundColor }" class="user-form-card-main-dd">
+                  <h2 style="text-align: center; color: white; margin-top: 0px;">
+                    {{ hasFileUrls ? 'Dossier complet' : 'Dossier incomplet' }}
+                  </h2>
+                </div>
             <form @submit.prevent="submitAllFiles" class="file-upload-form">
                 <div class="form-group" v-for="(file, index) in files" :key="index">
                   <label :class="{ 'already-exist-label': alreadyExist }" :for="'file' + (index + 1)">File {{ index + 1 }} - {{ fileLabels[index] }}</label>
                   <input :type="'file'" :id="'file' + (index + 1)" @change="handleFileChange(index)" />
                 </div>
+                <div v-if="loading" class="loading-spinner"></div>
                 <button type="submit" class="upload-button" role="button">Upload All</button>
             </form>
           </div>
@@ -375,6 +381,7 @@ import firebaseApp from '../scripts/firebaseConfig';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 import { getFirestore, collection, getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+import { getDatabase, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
 
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
@@ -417,6 +424,7 @@ export default {
       emailChangeError: null,
       inscriptions: [],
       formation:[],
+      loading: false,
       showUploadButton:false,
       //
       files: Array(5).fill(null),
@@ -427,41 +435,8 @@ export default {
 
     };
   },
+  
   methods: {
-    async AddInscreption(index) {
-      try {
-        const userEmail = 'user@example.com';  // replace with the actual email or fetch it from your data
-
-        // Reference to the user document in Firestore
-        const userRef = firebase.firestore().collection('users').doc(userEmail);
-
-        // Fetch the user document
-        const userDoc = await userRef.get();
-
-        // Get the user data or initialize an empty object if the user doesn't exist
-        const userData = userDoc.exists ? userDoc.data() : { email: userEmail, inscriptions: [] };
-
-        // Assuming formation is an object with relevant data
-        const formation = this.formations[index];
-
-        // Add the inscription to the user's inscriptions array
-        userData.inscriptions.push({
-          programme: formation.programme,
-          datefin: formation.datefin,
-          // Add other relevant data as needed
-        });
-
-        // Update the user document in Firestore
-        await userRef.set(userData);
-
-        // Display an alert after successfully adding inscription
-        alert('Inscription added successfully!');
-
-        console.log('Inscription added successfully for user with email:', userEmail);
-      } catch (error) {
-        console.error('Error adding inscription:', error);
-      }
-    },
     async checkFileUrls() {
       // Fetch user data from Firestore
       try {
@@ -484,6 +459,7 @@ export default {
     async submitAllFiles() {
   try {
     // Upload files to Firebase Storage
+    this.loading = true;
     const storagePromises = this.files.map(async (file, index) => {
       const storageRef = ref(storage, `files/${this.email}_${Date.now()}_${index + 1}.pdf`);
       await uploadBytes(storageRef, file);
@@ -514,10 +490,13 @@ export default {
     }
 
     alert('All files uploaded successfully!');
+    this.loading = false;
+
   } catch (e) {
     console.error('Error uploading files: ', e);
     alert('Error uploading files: ' + e);
     // Handle errors as needed
+
   }
 },
 
@@ -857,6 +836,19 @@ export default {
 .inscription-button:hover {
     background-color: #4af14f;
     color: white;
+}
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 </style>
