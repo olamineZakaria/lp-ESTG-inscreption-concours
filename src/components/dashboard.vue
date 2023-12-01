@@ -358,7 +358,7 @@
         <img src="../assets/images/894848.png" height="60" alt="">
         <h3>{{ formation.programme }} </h3>
         <p style="margin-left:10px ;"> Date fin : {{ formation.datefin }}</p>
-        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="showUploadButton(index)">Inscription
+        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="AddInscreption(index)">Inscription
         </button>
       </div>
       </div>
@@ -428,6 +428,40 @@ export default {
     };
   },
   methods: {
+    async AddInscreption(index) {
+      try {
+        const userEmail = 'user@example.com';  // replace with the actual email or fetch it from your data
+
+        // Reference to the user document in Firestore
+        const userRef = firebase.firestore().collection('users').doc(userEmail);
+
+        // Fetch the user document
+        const userDoc = await userRef.get();
+
+        // Get the user data or initialize an empty object if the user doesn't exist
+        const userData = userDoc.exists ? userDoc.data() : { email: userEmail, inscriptions: [] };
+
+        // Assuming formation is an object with relevant data
+        const formation = this.formations[index];
+
+        // Add the inscription to the user's inscriptions array
+        userData.inscriptions.push({
+          programme: formation.programme,
+          datefin: formation.datefin,
+          // Add other relevant data as needed
+        });
+
+        // Update the user document in Firestore
+        await userRef.set(userData);
+
+        // Display an alert after successfully adding inscription
+        alert('Inscription added successfully!');
+
+        console.log('Inscription added successfully for user with email:', userEmail);
+      } catch (error) {
+        console.error('Error adding inscription:', error);
+      }
+    },
     async checkFileUrls() {
       // Fetch user data from Firestore
       try {
