@@ -84,14 +84,16 @@
                 <p><i class="fa fa-calendar" aria-hidden="true"></i><strong> Né le:</strong>{{ datenaissance }}</p>
               </div>
               <div class="user-form-card">
-                <div class="user-form-card-main" style="background-color:orange;">
-                  <h3 style="text-align: center;color: white;">Etat du dossier</h3>
-                  <h2 style="text-align: center;color: white; margin-top: 10px;">Dossier incomplet</h2>
-                  <br><br>
+                <div :style="{ backgroundColor: backgroundColor }" class="user-form-card-main">
+                  <h3 style="text-align: center; color: white;">Etat du dossier</h3>
+                  <h2 style="text-align: center; color: white; margin-top: 10px;">
+                    {{ hasFileUrls ? 'Dossier complet' : 'Dossier incomplet' }}
+                  </h2>
+                  <br /><br />
                 </div>
-                <br>
+                <br />
                 <button class="button-65" role="button">Mon Dossier</button>
-              </div>
+               </div>
             </div>
             <!-- </div> -->
             <br>
@@ -301,30 +303,14 @@
             </form>
           </div>
           <div v-if="currentSection === 'dossier'" class="file-upload-section">
-      <form @submit.prevent="submitDossierForm" class="file-upload-form">
-        <div class="form-group">
-          <label for="file2">Copie de Bac</label>
-          <input type="file" id="file2" @change="handleFileChange(2)" />
-        </div>
-        <div class="form-group">
-          <label for="file1">Relevé de notes du Baccalauréat</label>
-          <input type="file" id="file1" @change="handleFileChange(1)" />
-        </div>
-        <div class="form-group">
-          <label for="file3">Une Copie de Pièce d'Identité (Recto/verso)</label>
-          <input type="file" id="file3" @change="handleFileChange(3)" />
-        </div>
-        <div class="form-group">
-          <label for="file2">Copie des Diplômes Obtenus</label>
-          <input type="file" id="file2" @change="handleFileChange(2)" />
-        </div>
-        <div class="form-group">
-          <label for="file4">Relevé de notes du Diplômes</label>
-          <input type="file" id="file4" @change="handleFileChange(4)" />
-        </div>
-        <button type="submit" class="upload-button" role="button">Upload</button>
-      </form>
-    </div>
+            <form @submit.prevent="submitAllFiles" class="file-upload-form">
+                <div class="form-group" v-for="(file, index) in files" :key="index">
+                  <label :class="{ 'already-exist-label': alreadyExist }" :for="'file' + (index + 1)">File {{ index + 1 }} - {{ fileLabels[index] }}</label>
+                  <input :type="'file'" :id="'file' + (index + 1)" @change="handleFileChange(index)" />
+                </div>
+                <button type="submit" class="upload-button" role="button">Upload All</button>
+            </form>
+          </div>
     <div v-if="currentSection === 'parametres'">
     <!-- Change Password Form -->
     <form @submit.prevent="changePassword">
@@ -370,11 +356,12 @@
       <div class="user-form-done">
       <div v-for="(formation, index) in formation" :key="index" class="user-form" style="display: flex; align-items: center; margin-top: 10px;">
         <img src="../assets/images/894848.png" height="60" alt="">
-        <h3>{{ formation.programme }}</h3>
-        <p></p>
-        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="showUploadButton(index)">Inscription</button>
+        <h3>{{ formation.programme }} </h3>
+        <p style="margin-left:10px ;"> Date fin : {{ formation.datefin }}</p>
+        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="showUploadButton(index)">Inscription
+        </button>
       </div>
-</div>
+      </div>
        <br>
     </div>
         </div>
@@ -430,10 +417,77 @@ export default {
       emailChangeError: null,
       inscriptions: [],
       formation:[],
-      showUploadButton:false
+      showUploadButton:false,
+      //
+      files: Array(5).fill(null),
+      hasFileUrls: false,
+      fileLabels: ['Bac (*png)', 'CIN Recto/verso (*png)', 'Diplôme(*png)', 'Relevé de notes Bac(*png)', 'Relevé de notes Diplôme(*png)'], // Replace with your list of names
+      backgroundColor: 'orange',
+      alreadyExist: false
+
     };
   },
   methods: {
+    async checkFileUrls() {
+      // Fetch user data from Firestore
+      try {
+        const userQuerySnapshot = await getDocs(query(collection(db, 'users'), where('email', '==', this.email)));
+
+        if (!userQuerySnapshot.empty) {
+          const userData = userQuerySnapshot.docs[0].data();
+          this.hasFileUrls = Array.isArray(userData.fileUrls) && userData.fileUrls.length > 0;
+          this.backgroundColor = this.hasFileUrls ? 'green' : 'orange';
+          this.alreadyExist = true
+        }
+      } catch (e) {
+        console.error('Error checking fileUrls: ', e);
+        // Handle errors as needed
+      }
+    },
+    handleFileChange(index) {
+      // Implement your file change logic here for individual files
+    },
+    async submitAllFiles() {
+  try {
+    // Upload files to Firebase Storage
+    const storagePromises = this.files.map(async (file, index) => {
+      const storageRef = ref(storage, `files/${this.email}_${Date.now()}_${index + 1}.pdf`);
+      await uploadBytes(storageRef, file);
+      return getDownloadURL(storageRef);
+    });
+
+    const storageUrls = await Promise.all(storagePromises);
+
+    // Update or add files to Firestore
+    const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+
+    if (!userQuerySnapshot.empty) {
+      // User already exists, update the user document
+      const userDoc = userQuerySnapshot.docs[0];
+      const userData = {
+        fileUrls: storageUrls,
+      };
+
+      await updateDoc(doc(db, "users", userDoc.id), userData);
+    } else {
+      // User does not exist, add a new user document
+      const userData = {
+        email: this.email,
+        fileUrls: storageUrls,
+      };
+
+      await addDoc(collection(db, "users"), userData);
+    }
+
+    alert('All files uploaded successfully!');
+  } catch (e) {
+    console.error('Error uploading files: ', e);
+    alert('Error uploading files: ' + e);
+    // Handle errors as needed
+  }
+},
+
+    
     showUploadButton(index) {  },
     async fetchInscriptions() {
     try {
@@ -651,6 +705,8 @@ export default {
         this.fetchUserData(user.email);
         this.fetchInscriptions(); 
         this.fetchFormation();
+        this.checkFileUrls();
+
       }
     });
 
@@ -719,6 +775,10 @@ export default {
   .form-group {
     margin-bottom: 15px;
   }
+  .already-exist-label {
+  color: green;
+  /* Add any additional styles for the already exist state */
+}
 /* 
   label {
     display: block;
