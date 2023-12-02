@@ -431,7 +431,8 @@ export default {
       hasFileUrls: false,
       fileLabels: ['Bac (*png)', 'CIN Recto/verso (*png)', 'Diplôme(*png)', 'Relevé de notes Bac(*png)', 'Relevé de notes Diplôme(*png)'], // Replace with your list of names
       backgroundColor: 'orange',
-      alreadyExist: false
+      alreadyExist: false,
+      etat:''
 
     };
   },
@@ -446,12 +447,28 @@ export default {
       // User already exists, update the user document
       const userDoc = userQuerySnapshot.docs[0];
 
-      // Ensure this.formations[index] is defined
+      // Ensure this.formation[index] is defined
       if (this.formation[index].programme) {
+        // Check if InscreptionLiST is an array in the existing user document
+        const existingInscreptionLiST = userDoc.data().InscreptionLiST;
+
         const inscriptionData = {
           // Assuming this.formations[index] contains the data for the inscription
           // Modify this part based on the structure of your formations data
-          InscreptionLiST: userDoc.data().InscreptionLiST + JSON.stringify(this.formation[index].programme),
+          InscreptionLiST: Array.isArray(existingInscreptionLiST)
+            ? [
+                ...existingInscreptionLiST,
+                {
+                  programme: this.formation[index].programme,
+                  status: 'Candidate', // Add the status field with an initial value
+                },
+              ]
+            : [
+                {
+                  programme: this.formation[index].programme,
+                  status: 'Candidate', // Add the status field with an initial value
+                },
+              ],
         };
 
         await updateDoc(doc(db, "users", userDoc.id), inscriptionData);
@@ -463,8 +480,13 @@ export default {
     } else {
       // User does not exist, add a new user document
       const userData = {
-        // Ensure this.formations[index] is defined
-        InscreptionLiST: this.formation[index].programme ? JSON.stringify(this.formation[index].programme) : '',
+        // Ensure this.formation[index] is defined
+        InscreptionLiST: [
+          {
+            programme: this.formation[index].programme,
+            status: 'Candidate', // Add the status field with an initial value
+          },
+        ],
       };
 
       await addDoc(collection(db, "users"), userData);
@@ -479,6 +501,9 @@ export default {
     // Handle errors as needed
   }
 },
+
+
+
 
 
     async checkFileUrls() {
