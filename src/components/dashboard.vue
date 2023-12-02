@@ -102,9 +102,9 @@
                 <h2>Mes Candidateur</h2>
                 <div v-for="(inscription, index) in inscriptions" :key="index" class="user-form"  style="display: flex; align-items: center; margin-top: 10px;">
                   <img src="../assets/images/894848.png" height="60" alt="">
-                  <h3>{{ inscription.title }}</h3>
+                  <h3>{{ inscription.programme }}</h3>
                   <p aria-hidden="true" style="margin-left: auto; font-size: 1em;" color="{'admis-color': inscription.etat === 'admis','candidat-color': inscription.etat === 'candidat', 'rejected-color': inscription.etat !== 'admis' }">
-                    {{ inscription.etat }} <i :class="{ 'fa fa-check': inscription.etat === 'admis','fa fa-clock-o':inscription.etat === 'candidat' ,'fa fa-times': inscription.etat !== 'admis', 'admis-color': inscription.etat === 'admis', 'candidat-color': inscription.etat === 'candidat','rejected-color': inscription.etat === 'non admis' }" style="font-size: 2em;"></i>
+                    {{ inscription.status }} <i :class="{ 'fa fa-check': inscription.status === 'admis','fa fa-clock-o':inscription.status === 'Candidat' ,'fa fa-times': inscription.status !== 'admis', 'admis-color': inscription.status === 'admis', 'candidat-color': inscription.status === 'Candidat','rejected-color': inscription.status === 'non admis' }" style="font-size: 2em;"></i>
                   </p>
                 </div>
               </div>
@@ -382,6 +382,7 @@ import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "htt
 import { getFirestore, collection, getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
 import { getDatabase, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+import { PDFDocument, rgb } from 'pdf-lib';
 
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
@@ -438,6 +439,27 @@ export default {
   },
   
   methods: {
+    async fetchInscriptions() {
+      try {
+        const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+
+        if (!userQuerySnapshot.empty) {
+          const userDoc = userQuerySnapshot.docs[0];
+          const inscreptionLiST = userDoc.data().InscreptionLiST || [];
+
+          // Map inscreptionLiST to inscriptions array
+          this.inscriptions = inscreptionLiST.map(inscription => ({
+            programme: inscription.programme,
+            status: inscription.status,
+          }));
+        } else {
+          console.error('User not found.');
+        }
+      } catch (e) {
+        console.error('Error fetching data: ', e);
+        // Handle errors as needed
+      }
+    },
     async AddInscreption(index) {
   try {
     // Assuming this.email contains the email of the user
@@ -450,25 +472,24 @@ export default {
       // Ensure this.formation[index] is defined
       if (this.formation[index].programme) {
         // Check if InscreptionLiST is an array in the existing user document
-        const existingInscreptionLiST = userDoc.data().InscreptionLiST;
+        const existingInscreptionLiST = userDoc.data().InscreptionLiST || [];
+
+        // Check if the inscription already exists
+        const inscriptionExists = existingInscreptionLiST.some(inscription => inscription.programme === this.formation[index].programme);
+
+        if (inscriptionExists) {
+          alert('Inscription for this formation already exists!');
+          return;  // Exit the function early
+        }
 
         const inscriptionData = {
-          // Assuming this.formations[index] contains the data for the inscription
-          // Modify this part based on the structure of your formations data
-          InscreptionLiST: Array.isArray(existingInscreptionLiST)
-            ? [
-                ...existingInscreptionLiST,
-                {
-                  programme: this.formation[index].programme,
-                  status: 'Candidate', // Add the status field with an initial value
-                },
-              ]
-            : [
-                {
-                  programme: this.formation[index].programme,
-                  status: 'Candidate', // Add the status field with an initial value
-                },
-              ],
+          InscreptionLiST: [
+            ...existingInscreptionLiST,
+            {
+              programme: this.formation[index].programme,
+              status: 'Candidat', // Add the status field with an initial value
+            },
+          ],
         };
 
         await updateDoc(doc(db, "users", userDoc.id), inscriptionData);
@@ -479,18 +500,56 @@ export default {
       }
     } else {
       // User does not exist, add a new user document
-      const userData = {
-        // Ensure this.formation[index] is defined
-        InscreptionLiST: [
-          {
-            programme: this.formation[index].programme,
-            status: 'Candidate', // Add the status field with an initial value
-          },
-        ],
-      };
+      // const userData = {
+      //   InscreptionLiST: [
+      //     {
+      //       programme: this.formation[index].programme,
+      //       status: 'Candidat', // Add the status field with an initial value
+      //     },
+      //   ],
+      // };
 
-      await addDoc(collection(db, "users"), userData);
+      alert('Error adding inscription: ');
+
+
+      // await addDoc(collection(db, "users"), userData);
     }
+    const userInformation = {
+      nom: this.nom,
+      prenom: this.prenom,
+      inscriptions:this.formation[index].programme
+      // Add other user information fields here
+    };
+
+    // Create a new PDF document
+    const pdfDoc = await PDFDocument.create();
+
+    // Add a new page to the PDF
+    const page = pdfDoc.addPage();
+
+    // Add text to the page
+    page.drawText('Receipt', { x: 50, y: page.getHeight() - 50, fontColor: rgb(0, 0, 0) });
+    page.drawText(`Nom: ${userInformation.nom}`, { x: 50, y: page.getHeight() - 100, fontColor: rgb(0, 0, 0) });
+    page.drawText(`Prenom: ${userInformation.prenom}`, { x: 50, y: page.getHeight() - 150, fontColor: rgb(0, 0, 0) });
+    page.drawText(`Prenom: ${userInformation.inscriptions}`, { x: 50, y: page.getHeight() - 200, fontColor: rgb(0, 0, 0) });
+
+    // Add other user information fields as needed
+
+    // Save the PDF as a Uint8Array
+    const pdfBytes = await pdfDoc.save();
+
+    // Convert the Uint8Array to a Blob
+    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+    // Create a download link and trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(pdfBlob);
+    link.download = 'inscription_receipt.pdf';
+    link.click();
+
+    alert('Inscription added successfully!');
+    this.loading = false;
+
 
     alert('Inscription added successfully!');
     this.loading = false;
@@ -501,6 +560,7 @@ export default {
     // Handle errors as needed
   }
 },
+
 
 
 
@@ -571,15 +631,15 @@ export default {
 
     
     showUploadButton(index) {  },
-    async fetchInscriptions() {
-    try {
-      const inscriptionsCollection = collection(db, "inscreptions");
-      const inscriptionsSnapshot = await getDocs(inscriptionsCollection);
-      this.inscriptions = inscriptionsSnapshot.docs.map(doc => doc.data());
-    } catch (error) {
-      console.error("Error fetching inscriptions: ", error);
-    }
-  },
+  //   async fetchInscriptions() {
+  //   try {
+  //     const inscriptionsCollection = collection(db, "inscreptions");
+  //     const inscriptionsSnapshot = await getDocs(inscriptionsCollection);
+  //     this.inscriptions = inscriptionsSnapshot.docs.map(doc => doc.data());
+  //   } catch (error) {
+  //     console.error("Error fetching inscriptions: ", error);
+  //   }
+  // },
   async fetchFormation() {
     try {
       const formationCollection = collection(db, "formation");
@@ -892,7 +952,7 @@ export default {
   color: rgb(78, 186, 78);
 }
 .candidat-color{
-  color: rgb(237, 177, 12)
+  color: orange;
 }
 
 .rejected-color {
