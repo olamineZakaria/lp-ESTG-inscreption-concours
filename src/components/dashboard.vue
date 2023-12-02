@@ -437,6 +437,50 @@ export default {
   },
   
   methods: {
+    async AddInscreption(index) {
+  try {
+    // Assuming this.email contains the email of the user
+    const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+
+    if (!userQuerySnapshot.empty) {
+      // User already exists, update the user document
+      const userDoc = userQuerySnapshot.docs[0];
+
+      // Ensure this.formations[index] is defined
+      if (this.formation[index].programme) {
+        const inscriptionData = {
+          // Assuming this.formations[index] contains the data for the inscription
+          // Modify this part based on the structure of your formations data
+          InscreptionLiST: userDoc.data().InscreptionLiST + JSON.stringify(this.formation[index].programme),
+        };
+
+        await updateDoc(doc(db, "users", userDoc.id), inscriptionData);
+      } else {
+        console.error('Error adding inscription: Formations data is undefined.');
+        alert('Error adding inscription: Formations data is undefined.');
+        return;  // Exit the function early to prevent further errors
+      }
+    } else {
+      // User does not exist, add a new user document
+      const userData = {
+        // Ensure this.formations[index] is defined
+        InscreptionLiST: this.formation[index].programme ? JSON.stringify(this.formation[index].programme) : '',
+      };
+
+      await addDoc(collection(db, "users"), userData);
+    }
+
+    alert('Inscription added successfully!');
+    this.loading = false;
+
+  } catch (e) {
+    console.error('Error adding inscription: ', e);
+    alert('Error adding inscription: ' + e);
+    // Handle errors as needed
+  }
+},
+
+
     async checkFileUrls() {
       // Fetch user data from Firestore
       try {
