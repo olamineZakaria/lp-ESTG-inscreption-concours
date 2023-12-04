@@ -364,8 +364,8 @@
         <img src="../assets/images/894848.png" height="60" alt="">
         <h3>{{ formation.programme }} </h3>
         <p style="margin-left:10px ;"> Date fin : {{ formation.datefin }}</p>
-        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="AddInscreption(index)">Inscription
-        </button>
+        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="AddInscreption(index)">Inscription</button>
+        <div v-if="loading" class="loading-spinner"></div>
       </div>
       </div>
        <br>
@@ -463,6 +463,7 @@ export default {
     async AddInscreption(index) {
   try {
     // Assuming this.email contains the email of the user
+    this.loading = true
     const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
 
     if (!userQuerySnapshot.empty) {
@@ -479,6 +480,7 @@ export default {
 
         if (inscriptionExists) {
           alert('Inscription for this formation already exists!');
+          this.loading = false;
           return;  // Exit the function early
         }
 
@@ -522,6 +524,7 @@ export default {
       inscriptions:this.formation[index].programme
       // Add other user information fields here
     };
+    this.$root.$emit('userInformation', userInformation);
 
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create();

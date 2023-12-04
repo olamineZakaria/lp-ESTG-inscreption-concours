@@ -9,11 +9,11 @@
         </div>
         <h1>CANDIDATURE EST-Guelim ANNÉE UNIVERSITAIRE : 2023/2024</h1>
         <div id="project">
-          <div><span>Nom </span> Website development</div>
-          <div><span>Prenom </span> John Doe</div>
-          <div><span>Email </span> <a :href="'mailto:' + email">john@example.com</a></div>
-          <div><span>CIN </span> August 17, 2015</div>
-          <div><span>CNE </span> September 17, 2015</div>
+          <div><span>Nom : </span>{{ nom }}</div>
+          <div><span>Prenom : </span> {{ prenom }}</div>
+          <div><span>Email </span> <a>{{ email }}</a></div>
+          <div><span>CIN </span> {{cin}}</div>
+          <div><span>CNE </span> {{ CNE }}</div>
         </div>
       </header>
       <main>
@@ -27,15 +27,32 @@
   export default {
     data() {
       return {
-        email: 'john@example.com',
-        inscreptionList: ['Inscreption list', 'Inscreption list', 'Inscreption list'],
-        notice: 'Guelmim , le 22/11/2023 11:28',
+        email: '',
+        nom:'',
+        prenom:'',
+        cin :'',
+        CNE:'', // Set default values
+        inscriptions: '',
+        notice: '',
       };
+    },
+    mounted() {
+      // Listen for the emitted event and update data
+      this.$root.$on('userInformation', (userInformation) => {
+        this.email = userInformation.email;
+        this.nom = userInformation.nom;
+        this.prenom = userInformation.prenom;
+        this.cin = userInformation.cin;
+        this.CNE = userInformation.CNE;
+        this.inscriptions = userInformation.inscriptions;
+
+        this.notice = 'Guelmim, le 22/11/2023 11:28';
+      });
     },
   };
   </script>
   
-  <style >
+  <style scoped>
   .clearfix:after {
     content: "";
     display: table;
