@@ -370,7 +370,7 @@
       </div>
        <br>
     </div>
-        </div>
+    </div>
       </div>
     </section>
   </div>
@@ -530,12 +530,10 @@ export default {
     const page = pdfDoc.addPage();
 
     // Add text to the page
-    page.drawText('Ecole Supérieure de Technologie de Guelmim', { x: 15, y: page.getHeight() - 50, fontColor: rgb(0, 0, 0) });
-    page.drawText(`CODE NATIONAL ETUDIANT : ${userInformation.CNE}`, { x: 15, y: page.getHeight() - 100, fontColor: rgb(0, 0, 0) });
     page.drawText(`Nom: ${userInformation.nom}`, { x: 15, y: page.getHeight() - 150, fontColor: rgb(0, 0, 0) });
     page.drawText(`Prenom: ${userInformation.prenom}`, { x: 15, y: page.getHeight() - 200, fontColor: rgb(0, 0, 0) });
-    page.drawText(`CNI: ${userInformation.prenom}`, { x: 15, y: page.getHeight() - 250, fontColor: rgb(0, 0, 0) });
-    page.drawText(`Les filières choisies : ${userInformation.inscriptions}`, { x: 15, y: page.getHeight() - 300, fontColor: rgb(0, 0, 0) });
+    page.drawText(`CIN: ${userInformation.cin}`, { x: 15, y: page.getHeight() - 250, fontColor: rgb(0, 0, 0) });
+    page.drawText(`CNE: ${userInformation.CNE}`, { x: 15, y: page.getHeight() - 300, fontColor: rgb(0, 0, 0) });
 
     // Add other user information fields as needed
 
@@ -550,10 +548,6 @@ export default {
     link.href = window.URL.createObjectURL(pdfBlob);
     link.download = 'inscription_receipt.pdf';
     link.click();
-
-    alert('Inscription added successfully!');
-    this.loading = false;
-
 
     alert('Inscription added successfully!');
     this.loading = false;

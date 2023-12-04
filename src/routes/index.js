@@ -7,6 +7,7 @@ import regestration_page from '../components/regestration_page.vue'
 import forget_password from '../components/forget_password.vue'
 import cover_page from '../components/cover_page.vue'
 import dashboard from '../components/dashboard.vue'
+import templatepdf from '../components/Template.vue'
 const routes = [
     {
         path: '/',
@@ -15,6 +16,10 @@ const routes = [
     {
         path: '/login',
         component: login_page
+    },
+    {
+        path: '/pdf',
+        component: templatepdf
     },
     {
         path: '/regestration',
