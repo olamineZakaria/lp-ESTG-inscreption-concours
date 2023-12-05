@@ -27,38 +27,14 @@
                 <div class="services_section_2">
                     <center>
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="image_main">
-                                    <img src="../assets/images/pexels-lukas-669616.jpg" class="image_8" style="width:100%; height: 200px;">
-                                    <div class="text_main">
-                                        <div class="seemore_text">Informatique Décisionnelle et Statistiques (IDS)</div>
-                                    </div>
+                            <div v-for="(formation, index) in formationArray" :key="index" class="col-md-3">
+                            <div class="image_main">
+                                <img :src="formation.image" class="image_8" style="width:200px; height: 200px;">
+                                <div class="text_main">
+                                <div class="seemore_text">{{ formation.programme }}</div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="image_main">
-                                    <img src="../assets/images/img-3.png" class="image_8" style="width:100%; height: 200px;">
-                                    <div class = "text_main">
-                                        <div class="seemore_text">Instrumentation & Systèmes (IS)</div>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="image_main">
-                                    <img src="../assets/images/pexels-pixabay-159397.jpg" class="image_8" style="width:100%; height: 200px;">
-                                    <div class="text_main">
-                                        <div class="seemore_text">Energies Renouvelables et Procédés (ERP)</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <div class="col-md-3">
-                                <div class="image_main">
-                                    <img src="../assets/images/pexels-lukas-669614.jpg" class="image_8" style="width:100%; height: 200px;">
-                                    <div class="text_main">
-                                        <div class="seemore_text">Informatique Décisionnelle et Statistiques (IDS) ASSa</div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </center>
                 </div>
@@ -66,33 +42,11 @@
         </div>
         <div  class="services_section layout_padding">
             <div class="container">
-                <h1 id="Conditions-admission" class="services_taital"><span style="color: #005596"></span> Conditions d'admission</h1>
+                <h1 id="Conditions-admission" class="services_taital"><span style="color: #005596"> Conditions d'admission</span></h1>
                 <center>
-                    <div class="container-main">
-                    <h4 class="text-h4">'</h4>
-                    <ul>
-                        <li>
-                            <div class="checkmark"></div>
-                            <span class="document">Bac+2 DEUG, SMI, OU DEUP, DEUST, DUT ET BTS</span>
-                        </li>
-                        <li>
-                            <div class="checkmark"></div>
-                            <span class="document">Les notes obtenues dans certains modules</span>
-                        </li>
-                        <li>
-                            <div class="checkmark"></div>
-                            <span class="document">Pré-requis pédagogiques spécifiques</span>
-                        </li>
-                        <li>
-                            <div class="checkmark"></div>
-                            <span class="document">Etude du dossier</span>
-                        </li>
-                        <li>
-                            <div class="checkmark"></div>
-                            <span class="document">Epreuve écrite</span>
-                        </li>
-                     </ul>
-            </div>
+                    <div v-for="(condition, index) in conditionArray" :key="index">
+                        <span style="font-size: 1.5em;" class="document">{{ index + 1 }}. {{ condition.title }}</span>
+                    </div>
                 </center>
             </div>
         </div>
@@ -104,6 +58,12 @@
                     <h4><u>Le dossier de candidature doit être déposé en ligne:</u></h4>
                     <br>
                     <ul>
+                        <li v-for="(dossier, index) in dossierArray" :key="index">
+                            <div class="checkmark">✓</div>
+                            <span class="document">{{ index + 1 }}. {{ dossier.documentType }}</span>
+                        </li>
+                    </ul>
+                    <!-- <ul>
                         <li>
                             <div class="checkmark">✓</div>
                             <span class="document">Copie de CIN.</span>
@@ -120,7 +80,7 @@
                             <div class="checkmark">✓</div>
                             <span class="document">Copie des relevés des notes S1, S2, S3, et S4.</span>
                         </li>
-                     </ul>
+                     </ul> -->
                     <p class="note">N.B: Toute information erronée entraîne l’annulation de la candidature.</p>
             </div>
                 </center>
@@ -128,7 +88,7 @@
         </div>
         <div id="Dates-important" class="services_section layout_padding">
             <div class="container">
-                <h1 class="services_taital"><span style="color: #005596"></span>Dates importants</h1>
+                <h1 class="services_taital"><span style="color: #005596">Dates importants</span></h1>
                 <table>
                     <tr>
                         <th>Event</th>
@@ -183,6 +143,10 @@ export default {
     data() {
         return {
             dateImportantArray: [],
+            conditionArray: [],
+            dossierArray: [],
+            formationArray:[],
+
         };
     },
     // Other Vue component options...
@@ -194,12 +158,22 @@ export default {
     methods: {
         async getDataFromFirestore() {
             const dateImportantCollection = collection(db, 'dateImporatnt');
+            const conditionCollection = collection(db, 'condition');
+            const dossierCollection = collection(db, 'Dossier');
+            const formationCollection = collection(db,'formation');
 
             try {
                 const querySnapshot = await getDocs(dateImportantCollection);
+                const conditionSnapshot = await getDocs(conditionCollection);
+                const dossierSnapshot = await getDocs(dossierCollection);
+                const formationSnapshot = await getDocs(formationCollection);
+
 
                 // Transform the data into an array
                 this.dateImportantArray = querySnapshot.docs.map(doc => doc.data());
+                this.conditionArray = conditionSnapshot.docs.map(doc => doc.data());
+                this.dossierArray = dossierSnapshot.docs.map(doc => doc.data());
+                this.formationArray = formationSnapshot.docs.map(doc => doc.data());
             } catch (error) {
                 alert('Error getting data from Firestore:', error.message);
                 // Handle the error as needed
