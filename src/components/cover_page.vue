@@ -91,10 +91,6 @@
                             <div class="checkmark"></div>
                             <span class="document">Epreuve écrite</span>
                         </li>
-                        <li>
-                            <div class="checkmark"></div>
-                            <span class="document">Entretien Oral</span>
-                        </li>
                      </ul>
             </div>
                 </center>
@@ -108,14 +104,6 @@
                     <h4><u>Le dossier de candidature doit être déposé en ligne:</u></h4>
                     <br>
                     <ul>
-                        <li>
-                            <div class="checkmark">✓</div>
-                            <span class="document">Demande manuscrite adressée au directeur de l’école.</span>
-                        </li>
-                        <li>
-                            <div class="checkmark">✓</div>
-                            <span class="document">Fiche de pré-inscription en ligne signée.</span>
-                        </li>
                         <li>
                             <div class="checkmark">✓</div>
                             <span class="document">Copie de CIN.</span>
@@ -141,56 +129,42 @@
         <div id="Dates-important" class="services_section layout_padding">
             <div class="container">
                 <h1 class="services_taital"><span style="color: #005596"></span>Dates importants</h1>
-                    <table>
+                <table>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr v-for="(item, index) in dateImportantArray" :key="index">
+                        <td>{{ item.event }}</td>
+                        <td>{{ item.date }}</td>
+                    </tr>
+                </table>
+                    <!-- <table>
                         <tr>
                             <th>Event</th>
                             <th>Date</th>
                         </tr>
                          <tr>
                             <td>Préinscription en ligne</td>
-                            <td>Du Lundi 07/08/2023 au Jeudi 31/08/2023</td>
+                            <td>{{ dateImporant.Preinscription }}</td>
                         </tr>
                         <tr>
                             <td>Sélection et étude de dossier</td>
-                            <td>Lundi 04 au Jeudi 07 Septembre 2023</td>
+                            <td>{{ dateImporant.Selection }}</td>
                         </tr>
                         <tr>
                             <td>Affichage des résultats de la sélection</td>
-                            <td>Vendredi 08 Septembre 2023</td>
+                            <td>{{ dateImporant.Aselection }}</td>
                         </tr>
                         <tr>
-                            <td>Concours d'admission (Test écrit)</td>
-                            <td>Vendredi 15 et Samedi 16 Septembre 2023</td>
+                            <td>Concours d'admission</td>
+                            <td>{{ dateImporant.Concours }}</td>
                         </tr>
                         <tr>
-                            <td>Affichage des résultats du test écrit</td>
-                            <td>A partir du Mercredi 20 Septembre 2023</td>
+                            <td>Affichage des résultats</td>
+                            <td>{{ dateImporant.Aconcours }}</td>
                         </tr>
-                        <tr>
-                            <td>Entretien Oral</td>
-                            <td>Lundi 25 Septembre 2023</td>
-                        </tr>
-                        <tr>
-                            <td>Affichage des résultats de l’entretien oral</td>
-                            <td>Mardi 26 Septembre 2023</td>
-                        </tr>
-                        <tr>
-                            <td>Inscription des candidats de la liste principale</td>
-                            <td>Vendredi 29/09/2023</td>
-                        </tr>
-                        <tr>
-                            <td>Affichage de la 1ère liste d'attente</td>
-                            <td>Vendredi 29/09/2023 à 18h30</td>
-                        </tr>
-                        <tr>
-                            <td>Inscription des candidats de la 1ère liste d'attente</td>
-                            <td>Mercredi 04/10/2023</td>
-                        </tr>
-                        <tr>
-                            <td>D'autres listes d'attentes vont s'afficher à partir du mercredi 04/10/2023 dans la limite des places disponibles</td>
-                            <td></td>
-                        </tr>
-                </table>
+                </table> -->
             </div>
         </div>
         <br>
@@ -200,7 +174,40 @@
     </div>
     
 </template>
+<script>
+import { getFirestore, collection, getDocs} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import firebaseApp from '../scripts/firebaseConfig';
+const db = getFirestore(firebaseApp);
 
+export default {
+    data() {
+        return {
+            dateImportantArray: [],
+        };
+    },
+    // Other Vue component options...
+
+    mounted() {
+        this.getDataFromFirestore();
+    },
+
+    methods: {
+        async getDataFromFirestore() {
+            const dateImportantCollection = collection(db, 'dateImporatnt');
+
+            try {
+                const querySnapshot = await getDocs(dateImportantCollection);
+
+                // Transform the data into an array
+                this.dateImportantArray = querySnapshot.docs.map(doc => doc.data());
+            } catch (error) {
+                alert('Error getting data from Firestore:', error.message);
+                // Handle the error as needed
+            }
+        },
+    },
+};
+</script>
 <style>
 @import '../assets/global.css';
 </style>
