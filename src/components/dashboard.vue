@@ -311,7 +311,7 @@
             <form @submit.prevent="submitAllFiles" class="file-upload-form">
                 <div class="form-group" v-for="(file, index) in files" :key="index">
                   <label :class="{ 'already-exist-label': alreadyExist }" :for="'file' + (index + 1)">File {{ index + 1 }} - {{ fileLabels[index] }}</label>
-                  <input :type="'file'" :id="'file' + (index + 1)" @change="handleFileChange(index)" />
+                  <input :type="'file'" :id="'file' + (index + 1)" @change="handleFileChange(index)" accept="image/*" required/>
                 </div>
                 <div v-if="loading" class="loading-spinner"></div>
                 <button type="submit" class="upload-button" role="button">Upload All</button>
@@ -428,9 +428,9 @@ export default {
       loading: false,
       showUploadButton:false,
       //
-      files: Array(5).fill(null),
+      files: Array(6).fill(null),
       hasFileUrls: false,
-      fileLabels: ['Bac (*png)', 'CIN Recto/verso (*png)', 'Diplôme(*png)', 'Relevé de notes Bac(*png)', 'Relevé de notes Diplôme(*png)'], // Replace with your list of names
+      fileLabels: ['Bac (*png)', 'CIN Recto/verso (*png)', 'Diplôme(*png)', 'Relevé de notes Bac(*png)', 'Relevé de notes Diplôme s1/s2(*png)','Relevé de notes Diplôme s3/s4(*png)'], // Replace with your list of names
       backgroundColor: 'orange',
       alreadyExist: false,
       etat:''
@@ -588,12 +588,29 @@ export default {
     },
     async submitAllFiles() {
   try {
-    // Upload files to Firebase Storage
     this.loading = true;
+
     const storagePromises = this.files.map(async (file, index) => {
-      const storageRef = ref(storage, `files/${this.email}_${Date.now()}_${index + 1}.pdf`);
-      await uploadBytes(storageRef, file);
-      return getDownloadURL(storageRef);
+      // Check if the file object is invalid or null, create a default file object
+      if (!file || !file.name) {
+        file = { name: `default_${index + 1}`, type: 'image/png' }; // Create a default file object
+      }
+
+      // Use the original file extension in the storage path
+      const storageRef = ref(storage, `files/${this.email}_${Date.now()}_${index + 1}_${file.name}`);
+
+      // Create a blob from the file data
+      const blob = new Blob([file]);
+
+      // Set metadata to ensure the correct content type
+      const metadata = {
+        contentType: file.type, // Use the actual file type from the input file
+      };
+
+      // Upload the blob to Firebase Storage
+      await uploadBytes(storageRef, blob, metadata);
+
+      return getDownloadURL(storageRef); // Return the download URL
     });
 
     const storageUrls = await Promise.all(storagePromises);
@@ -624,12 +641,12 @@ export default {
 
   } catch (e) {
     console.error('Error uploading files: ', e);
-    alert('Error uploading files: ' + e);
+    if (e.message !== 'Invalid file format') {
+      alert('Error uploading files: ' + e.message);
+    }
     // Handle errors as needed
-
   }
 },
-
     
     showUploadButton(index) {  },
   //   async fetchInscriptions() {
@@ -849,6 +866,7 @@ export default {
         this.fetchInscriptions(); 
         this.fetchFormation();
         this.checkFileUrls();
+        
 
       }
     });
