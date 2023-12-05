@@ -565,7 +565,7 @@ opacity: 1;
   box-shadow: 0 0 0 5px #fff;
 }
 #profile-pic img {
-  width: 100%;
+  width: 150%;
 }
 #u-name {
   position: absolute;

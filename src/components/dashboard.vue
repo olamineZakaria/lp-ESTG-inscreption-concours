@@ -358,18 +358,21 @@
       </div>
     </form>
   </div>
-    <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
-      <div class="user-form-done">
-      <div v-for="(formation, index) in formation" :key="index" class="user-form" style="display: flex; align-items: center; margin-top: 10px;">
-        <img src="../assets/images/894848.png" height="60" alt="">
-        <h3>{{ formation.programme }} </h3>
-        <p style="margin-left:10px ;"> Date fin : {{ formation.datefin }}</p>
-        <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="AddInscreption(index)">Inscription</button>
-        <div v-if="loading" class="loading-spinner"></div>
+  <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
+  <div class="user-form-done">
+    <div v-for="(formation, index) in formation" :key="index" class="user-form" style="display: flex; align-items: center; margin-top: 10px;">
+      <img src="../assets/images/894848.png" height="60" alt="">
+      <h3>{{ formation.programme }} </h3>
+      <p style="margin-left:10px ;"> Date fin : {{ formation.datefin }}</p>
+      <button class="btn-primary inscription-button" style="margin-left:auto ;" @click="AddInscreption(index)">Inscription</button>
+      <div v-if="loading" class="loading-spinner-full-page">
+    <div class="spinner"></div>
       </div>
-      </div>
-       <br>
+
     </div>
+  </div>
+  <br>
+</div>
     </div>
       </div>
     </section>
@@ -946,6 +949,30 @@ export default {
     margin-bottom: 5px;
     font-weight: bold;
   } */
+  
+  .loading-spinner-full-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Adjust the z-index to make sure it appears on top of other elements */
+  }
+
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+
 
   input[type="file"] {
     width: 100%;
