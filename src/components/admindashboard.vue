@@ -14,22 +14,22 @@
             </li>
             <li :class="{ 'active': currentSection === 'infos' }">
               <a class="a-ptr" @click="showSection('infos')">
-                <i class="fa fa-user"></i>Mes informations
+                <i class="fa fa-user"></i>Informations
               </a>
             </li>
-            <li :class="{ 'active': currentSection === 'cursus' }">
-              <a class="a-ptr" @click="showSection('cursus')">
-                <i class="fa fa-graduation-cap"></i>Mon Cursus
+            <li :class="{ 'active': currentSection === 'Candidat' }">
+              <a class="a-ptr" @click="showSection('Candidat')">
+                <i class="fa fa-graduation-cap"></i>Candidat
               </a>
             </li>
             <li :class="{ 'active': currentSection === 'dossier' }">
               <a class="a-ptr" @click="showSection('dossier')">
-                <i class="fa fa-folder"></i>Mon dossier
+                <i class="fa fa-folder"></i>Selection
               </a>
             </li>
             <li :class="{ 'active': currentSection === 'inscriptions' }">
               <a class="a-ptr" @click="showSection('inscriptions')">
-                <i class="fa fa-user-plus"></i>Mes inscriptions
+                <i class="fa fa-user-plus"></i>
               </a>
             </li>
   
@@ -49,23 +49,157 @@
               </div>
               <br>
             </div>
-            <div class="clearfix">
-  
-            </div>
+            <div class="clearfix"></div>
             <br />
+            <div style="margin-top: 10px;" v-if="currentSection === 'home'">
+            <div class="col-div-4-1">
+            <div class="box">
+                <p class="head-1">La Moyenne Minimale</p>
+                <p class="number">{{minMoyenne}}</p>
             </div>
-        </div>
+	        </div>
+            <div class="col-div-4-1">
+                <div class="box">
+                    <p class="head-1">La Moyenne Maximale</p>
+                    <p class="number">{{ maxMoyenne }}</p>
+                </div>
+            </div>
+            <div class="col-div-4-1">
+                <div class="box">
+                    <p class="head-1">Nombre des candidats</p>
+                    <p class="number">{{ numberOfUsers }}</p>
+                </div>
+            </div>
+            </div>
+            <!-- // -->
+            <div style="margin-top: 10px;" v-if="currentSection === 'Candidat'">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>CIN</th>
+                        <th>CNE</th>
+                        <th>Email</th>
+                        <th>Moyenne</th>
+                        <!-- Add more columns as needed based on your user data structure -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(user, index) in usersData" :key="index">
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.cin }}</td>
+                        <td>{{ user.CNE }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.moyenne }}</td> <!-- Display moyenne for each user -->
+
+                        <!-- Add more columns as needed based on your user data structure -->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            </div>
+            </div>
       </section>
     </div>
   </template>
   <script>
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+  import firebaseApp from '../scripts/firebaseConfig';
+  
+  const db = getFirestore(firebaseApp);
+  
   export default {
     data() {
       return {
-        currentSection: 'home', // Assuming 'home' is the default section
+        currentSection: 'Candidat', // Assuming 'home' is the default section
+        usersData: [], 
+        numberOfUsers: 0,
+        maxMoyenne: 0,
+        minMoyenne:0,
       };
     },
     methods: {
+        async countUsers() {
+      try {
+        // Reference to the "users" collection
+        const usersCollection = collection(db, 'users');
+
+        // Get a snapshot of the collection and return the size
+        const usersSnapshot = await getDocs(usersCollection);
+        const numberOfUsers = usersSnapshot.size;
+
+        // Log or use the count as needed
+        console.log('Number of users:', numberOfUsers);
+
+        // You can store the count in a data property if you need to use it in the component
+        this.numberOfUsers = numberOfUsers;
+
+        // Return the count if needed in other parts of your application
+        return numberOfUsers;
+      } catch (error) {
+        console.error('Error counting users:', error);
+      }
+    },
+        async fetchUsers() {
+    try {
+        const usersCollection = collection(db, 'users'); // Assuming 'users' is your collection name
+        const usersSnapshot = await getDocs(usersCollection);
+        this.usersData = usersSnapshot.docs.map(doc => {
+            const user = doc.data();
+
+            // Convert relevant values to numbers
+            user.Ns1 = parseFloat(user.Ns1);
+            user.Ns2 = parseFloat(user.Ns2);
+            user.Ns3 = parseFloat(user.Ns3);
+            user.Ns4 = parseFloat(user.Ns4);
+            user.Nbac = parseFloat(user.Nbac);
+
+            // Check if all required values are valid numbers
+            const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
+            if (!isValidNumber(user.Ns1) || !isValidNumber(user.Ns2) || !isValidNumber(user.Ns3) || !isValidNumber(user.Ns4) || !isValidNumber(user.Nbac)) {
+                console.error('One or more values are not valid numbers. Check your data.');
+                return user; // Skip this user to avoid NaN in moyenne
+            }
+
+            // Calculate the moyenne for each user and store it in the user object
+            user.moyenne = ((user.Ns1 + user.Ns2 + user.Ns3 + user.Ns4) / 4) * 0.75 + (user.Nbac * 0.25);
+            
+            return user;
+        });
+        this.minMoyenne = this.calculateMinMoyenne();
+        this.maxMoyenne = this.calculateMaxMoyenne();
+
+        
+
+        // Optional: You can log the updated usersData array to verify the moyenne values
+        console.log('Updated usersData:', this.usersData);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+    
+},
+    calculateMinMoyenne(){
+        if (this.usersData.length === 0) {
+            return 0;// Return 0 if there are no users
+        }
+        const minMoyenne = Math.min(...this.usersData.map(user => user.moyenne));
+        return minMoyenne;
+
+    },
+    calculateMaxMoyenne() {
+      if (this.usersData.length === 0) {
+        return 0;// Return 0 if there are no users
+      }
+
+      // Assume moyenne is a numeric property in your user data
+      const maxMoyenne = Math.max(...this.usersData.map(user => user.moyenne));
+
+      return maxMoyenne;
+    },
+
       showSection(section) {
         this.currentSection = section;
       },
@@ -78,8 +212,8 @@
         switch (this.currentSection) {
           case 'home':
             return 'Tableau de Board';
-          case 'infos':
-            return 'Mes informations';
+          case 'Candidat':
+            return 'Candidat';
           case 'cursus':
             return 'Mon Cursus';
           case 'dossier':
@@ -93,8 +227,13 @@
         }
       },
     },
+    mounted() {
+        this.fetchUsers();
+        this.countUsers();
+    },
   };
   </script>
+  
   
   
   <style>
