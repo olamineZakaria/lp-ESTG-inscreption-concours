@@ -8,6 +8,7 @@ import forget_password from '../components/forget_password.vue'
 import cover_page from '../components/cover_page.vue'
 import dashboard from '../components/dashboard.vue'
 import templatepdf from '../components/Template.vue'
+import admindashboard from '../components/admindashboard.vue'
 const routes = [
     {
         path: '/',
@@ -20,6 +21,10 @@ const routes = [
     {
         path: '/pdf',
         component: templatepdf
+    },
+    {
+        path: '/admin',
+        component: admindashboard
     },
     {
         path: '/regestration',

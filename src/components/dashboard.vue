@@ -33,11 +33,6 @@
             </a>
           </li>
 
-          <li :class="{ 'active': currentSection === 'parametres' }">
-            <a class="a-ptr" @click="showSection('parametres')">
-              <i class="fa fa-cogs"></i>Paramètres
-            </a>
-          </li>
           <li :class="{ 'active': currentSection === 'deconnexion' }" id="li_ptr">
             <a class="a-ptr" @click="deconnexionSection">
               <i class="fa fa-sign-out"></i>Se déconnecter
@@ -298,6 +293,28 @@
                     <option value="EST_Nador">EST Nador</option>
                   </select>
                 </div>
+                <div class="col">
+                  <label for="Niveau">Note BAC</label>
+                  <input type="text" v-model="Nbac" required class="green-border" placeholder="18.10" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-50">
+                  <label for="Niveau">Note s1</label>
+                  <input type="text" v-model="Ns1" required class="green-border" placeholder="18.10" />
+                </div>
+                <div class="col-50">
+                  <label for="Niveau">Note s2</label>
+                  <input type="text" v-model="Ns2" required class="green-border" placeholder="18.10" />
+                </div>
+                <div class="col-50">
+                  <label for="Niveau">Note s3</label>
+                  <input type="text" v-model="Ns3" required class="green-border" placeholder="18.10" />
+                </div>
+                <div class="col-50">
+                  <label for="Lycée">Note s4</label>
+                  <input type="text" v-model="Ns4" required class="green-border" placeholder="18.10" />
+                </div>
               </div>
               <button type="submit" class="button-65" role="button">Enregistrer</button>
             </form>
@@ -317,47 +334,6 @@
                 <button type="submit" class="upload-button" role="button">Upload All</button>
             </form>
           </div>
-    <div v-if="currentSection === 'parametres'">
-    <!-- Change Password Form -->
-    <form @submit.prevent="changePassword">
-      <h4>Changer le mot de passe</h4>
-      <div class="form-group">
-        <label for="currentPassword">Mot de passe actuel:</label>
-        <input type="password" v-model="currentPassword" required />
-      </div>
-      <div class="form-group">
-        <label for="newPassword">Nouveau mot de passe:</label>
-        <input type="password" v-model="newPassword" required />
-      </div>
-      <div class="form-group">
-        <label for="confirmPassword">Confirmer le nouveau mot de passe:</label>
-        <input type="password" v-model="confirmPassword" required />
-      </div>
-      <button type="submit" class="button-65" role="button">Changer le mot de passe</button>
-      <div v-if="passwordChangeSuccess" class="alert alert-success" role="alert">
-        Mot de passe changé avec succès!
-      </div>
-      <div v-if="passwordChangeError" class="alert alert-danger" role="alert">
-        {{ passwordChangeError }}
-      </div>
-    </form>
-
-    <!-- Change Email Form -->
-    <form @submit.prevent="changeEmail">
-      <h4>Changer l'adresse e-mail</h4>
-      <div class="form-group">
-        <label for="newEmail">Nouvelle adresse e-mail:</label>
-        <input type="email" v-model="newEmail" required />
-      </div>
-      <button type="submit" class="button-65" role="button">Changer l'adresse e-mail</button>
-      <div v-if="emailChangeSuccess" class="alert alert-success" role="alert">
-        Adresse e-mail changée avec succès!
-      </div>
-      <div v-if="emailChangeError" class="alert alert-danger" role="alert">
-        {{ emailChangeError }}
-      </div>
-    </form>
-  </div>
   <div style="margin-top: 10px;" v-if="currentSection === 'inscriptions'">
   <div class="user-form-done">
     <div v-for="(formation, index) in formation" :key="index" class="user-form" style="display: flex; align-items: center; margin-top: 10px;">
@@ -417,6 +393,11 @@ export default {
       optionD: '',
       ville: '',
       ecole: '',
+      Nbac:'',
+      Ns1:'',
+      Ns2:'',
+      Ns3:'',
+      Ns4:'',
       //
       currentPassword: '',
       newPassword: '',
@@ -689,8 +670,6 @@ export default {
           return 'Mes Inscriptions';
         case 'dossier':
           return 'Mon Dossier';
-        case 'parametres':
-          return 'Paramètres';
         default:
           return '';
       }
@@ -713,6 +692,11 @@ export default {
               optionD: this.optionD,
               ville: this.ville,
               ecole: this.ecole,
+              Nbac: this.Nbac,
+              Ns1:this.Ns1,
+              Ns2:this.Ns2,
+              Ns3:this.Ns3,
+              Ns4:this.Ns4,
             });
             const userData = {
               niveau: this.niveau,
@@ -725,6 +709,11 @@ export default {
               optionD: this.optionD,
               ville: this.ville,
               ecole: this.ecole,
+              Nbac: this.Nbac,
+              Ns1:this.Ns1,
+              Ns2:this.Ns2,
+              Ns3:this.Ns3,
+              Ns4:this.Ns4,
             };
             // Store the updated user data in localStorage
             localStorage.setItem('databaseuser', JSON.stringify(userData));
@@ -832,6 +821,11 @@ export default {
           this.optionD= userData.optionD;
           this.ville= userData.ville;
           this.ecole= userData.ecole;
+          this.Nbac=userData.Nbac;
+          this.Ns1=userData.Ns1;
+          this.Ns2=userData.Ns2;
+          this.Ns3=userData.Ns3;
+          this.Ns4=userData.Ns4;
           const fetchedUserData = {
             nom: this.nom,
             prenom: this.prenom,
@@ -854,6 +848,11 @@ export default {
             optionD: this.optionD,
             ville: this.ville,
             ecole: this.ecole,
+            Nbac: this.Nbac,
+            Ns1:this.Ns1,
+            Ns2:this.Ns2,
+            Ns3:this.Ns3,
+            Ns4:this.Ns4,
           };
           localStorage.setItem('databaseuser', JSON.stringify(fetchedUserData));
         }
