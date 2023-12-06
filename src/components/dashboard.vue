@@ -745,62 +745,62 @@ export default {
     },
 
     async submitForm() {
-      try {
-        const file = event.target.files[0];
-        const storageRef = ref(storage, 'profile_images/' + this.email + '_' + Date.now() + '.png');
+  try {
+    const file = event.target.files[0];
+    const storageRef = ref(storage, 'profile_images/' + this.email + '_' + Date.now() + '.png');
 
-        // Check if the file is an image
-        if (file.type.startsWith('image/')) {
-          await uploadBytes(storageRef, file);
-          const imageUrl = await getDownloadURL(storageRef);
+    // Check if the file is an image
+    if (file.type.startsWith('image/')) {
+      await uploadBytes(storageRef, file);
+      const imageUrl = await getDownloadURL(storageRef);
 
-          // Check if the user already exists based on their email
-          const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
-          if (!querySnapshot.empty) {
-            // Update the existing user document
-            const userDoc = querySnapshot.docs[0];
-            await updateDoc(doc(db, "users", userDoc.id), {
-              nom: this.nom,
-              prenom: this.prenom,
-              cin: this.cin,
-              pays: this.pays,
-              code: this.code,
-              phone: this.phone,
-              profileImage: imageUrl,
-              salutation: this.salutation,
-              address: this.address,
-              datenaissance: this.datenaissance,
-            });
-            const userData = {
-              nom: this.nom,
-              prenom: this.prenom,
-              email: this.email,
-              cin: this.cin,
-              pays: this.pays,
-              code: this.code,
-              phone: this.phone,
-              profileImage: imageUrl,
-              salutation: this.salutation,
-              address: this.address,
-              datenaissance: this.datenaissance,
-            };
-            // Store the updated user data in localStorage
-            localStorage.setItem('databaseuser', JSON.stringify(userData));
+      // Check if the user already exists based on their email
+      const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
+      if (querySnapshot.size > 0) {
+        // Update the existing user document
+        const userDoc = querySnapshot.docs[0];
+        await updateDoc(doc(db, "users", userDoc.id), {
+          nom: this.nom,
+          prenom: this.prenom,
+          cin: this.cin,
+          pays: this.pays,
+          code: this.code,
+          phone: this.phone,
+          profileImage: imageUrl,
+          salutation: this.salutation,
+          address: this.address,
+          datenaissance: this.datenaissance,
+        });
+        const userData = {
+          nom: this.nom,
+          prenom: this.prenom,
+          email: this.email,
+          cin: this.cin,
+          pays: this.pays,
+          code: this.code,
+          phone: this.phone,
+          profileImage: imageUrl,
+          salutation: this.salutation,
+          address: this.address,
+          datenaissance: this.datenaissance,
+        };
+        // Store the updated user data in localStorage
+        localStorage.setItem('databaseuser', JSON.stringify(userData));
 
-            alert('User information updated successfully!');
-          } else {
-            // User does not exist, show an error message
-            alert('User with email ' + this.email + ' not found. Cannot update information.');
-          }
-        } else {
-          alert('Invalid file format. Please select a valid image file.');
-        }
-      } catch (e) {
-        console.error("Error updating/adding document: ", e);
-        alert('Error updating/adding user information: ' + e);
-        // Handle errors as needed
+        alert('User information updated successfully!');
+      } else {
+        // User does not exist, show an error message
+        alert('User with email ' + this.email + ' not found. Cannot update information.');
       }
-    },
+    } else {
+      alert('Invalid file format. Please select a valid image file.');
+    }
+  } catch (e) {
+    console.error("Error updating/adding document: ", e);
+    alert('Error updating/adding user information: ' + e);
+    // Handle errors as needed
+  }
+},
     handleImageUpload(event) {
       // ... (your existing image upload logic)
     },

@@ -18,6 +18,10 @@
                     <br>
                     <br>
                     <a href="/welcome" class="button">Inscription</a>
+                    <br><br>
+                    <div v-for="(document, index) in documentconcoursArray" :key="index">
+                        <a :href="document.file" class="button-x">Guide Pour inscription</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,6 +48,7 @@
             <div class="container">
                 <h1 id="Conditions-admission" class="services_taital"><span style="color: #005596"> Conditions d'admission</span></h1>
                 <center>
+                    
                     <div v-for="(condition, index) in conditionArray" :key="index">
                         <span style="font-size: 1.5em;" class="document">{{ index + 1 }}. {{ condition.title }}</span>
                     </div>
@@ -146,6 +151,7 @@ export default {
             conditionArray: [],
             dossierArray: [],
             formationArray:[],
+            documentconcoursArray:[],
 
         };
     },
@@ -161,12 +167,14 @@ export default {
             const conditionCollection = collection(db, 'condition');
             const dossierCollection = collection(db, 'Dossier');
             const formationCollection = collection(db,'formation');
+            const documentCollection = collection(db,'documentconcours');
 
             try {
                 const querySnapshot = await getDocs(dateImportantCollection);
                 const conditionSnapshot = await getDocs(conditionCollection);
                 const dossierSnapshot = await getDocs(dossierCollection);
                 const formationSnapshot = await getDocs(formationCollection);
+                const documentSnapshot = await getDocs(documentCollection);
 
 
                 // Transform the data into an array
@@ -174,6 +182,7 @@ export default {
                 this.conditionArray = conditionSnapshot.docs.map(doc => doc.data());
                 this.dossierArray = dossierSnapshot.docs.map(doc => doc.data());
                 this.formationArray = formationSnapshot.docs.map(doc => doc.data());
+                this.documentconcoursArray = documentSnapshot.docs.map(doc => doc.data());
             } catch (error) {
                 alert('Error getting data from Firestore:', error.message);
                 // Handle the error as needed

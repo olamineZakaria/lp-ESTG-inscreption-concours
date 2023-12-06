@@ -85,6 +85,16 @@
     text-decoration: none;
     border-radius: 8px;
 }
+.banner-slide .banner-overlay .banner-content a.button-x {
+    padding: 18px 50px;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    background: #B86E3A;
+    text-decoration: none;
+    border-radius: 8px;
+}
           
 .banner-slide .banner-overlay .banner-content a.button:hover {
     background: darken(#005596, 10%);

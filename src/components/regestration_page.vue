@@ -47,6 +47,7 @@ import firebaseApp from '../scripts/firebaseConfig'; // Update the path as neede
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 
 const auth = getAuth(firebaseApp);
 
@@ -64,48 +65,60 @@ export default {
   },
   methods: {
     async registerUser() {
-      const cin = this.$refs.cin.value;
-      const email = this.$refs.email.value;
-      const password = this.$refs.password.value;
-      const confirmPassword = this.$refs.confirmPassword.value;
+  const cin = this.$refs.cin.value;
+  const email = this.$refs.email.value;
+  const password = this.$refs.password.value;
+  const confirmPassword = this.$refs.confirmPassword.value;
 
-      if (!cin || !email || !password || !confirmPassword) {
-        this.error = 'Veuillez remplir tous les champs.';
-        return;
-      }
-      if (password !== confirmPassword) {
-        this.error = "Les mots de passe ne correspondent pas.";
-        return;
-      }
+  if (!cin || !email || !password || !confirmPassword) {
+    this.error = 'Veuillez remplir tous les champs.';
+    return;
+  }
+  if (password !== confirmPassword) {
+    this.error = "Les mots de passe ne correspondent pas.";
+    return;
+  }
 
-      try {
-        this.loading = true;
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+  try {
+    this.loading = true;
 
-        // Store user data in Firestore
-        await addDoc(collection(db, "users",), {
-          cin: cin,
-          email: email,
-          // You might want to avoid storing passwords directly in Firestore for security reasons.
-          // Instead, consider using a separate server-side function to handle sensitive data.
-        });
+    // Check if the user with the given CIN and email already exists
+    const usersCollectionRef = collection(db, "users");
+    const q = query(usersCollectionRef, where("cin", "==", cin));
+    const querySnapshot = await getDocs(q);
 
-        console.log('User registered:', user);
-        this.loading = false;
-        this.error = false;
-        this.success = true;
-        setTimeout(() => {
-          this.$router.push('/login');
-        }, 3000);
-      } catch (error) {
-        this.error = true;
-        console.error('Registration failed:', error.message);
-        this.error = error.code
-        this.loading = false;
-
-      }
+    if (!querySnapshot.empty) {
+      // A user with the same CIN and email already exists
+      this.error = 'Un utilisateur avec le même CIN existe déjà.';
+      this.loading = false;
+      return this.error;
     }
+
+    // If the user does not exist, proceed with user registration
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Store user data in Firestore
+    await addDoc(usersCollectionRef, {
+      cin: cin,
+      email: email,
+      // Avoid storing passwords directly in Firestore for security reasons.
+      // Instead, consider using a separate server-side function to handle sensitive data.
+    });
+
+    console.log('User registered:', user);
+    this.loading = false;
+    this.error = false;
+    this.success = true;
+    setTimeout(() => {
+      this.$router.push('/login');
+    }, 3000);
+  } catch (error) {
+    this.error = true;
+    console.error('Registration failed:', error.message);
+    this.loading = false;
+  }
+}
   },
   // Optionally, you can initialize Firebase inside a lifecycle hook
   created() {
