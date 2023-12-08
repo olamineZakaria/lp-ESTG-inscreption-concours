@@ -253,11 +253,11 @@
                 <div class="col">
                   <label for="Option">Option Diplome</label>
                   <select name="Option" v-model="optionD" class="green-border">
-                    <option value="">informatique</option>
-                    <option value="">genie infomatique</option>
-                    <option value="">genie electrique</option>
-                    <option value="">data science</option>
-                    <option value="">informatique descionelle</option>
+                    <option value="informatique">informatique</option>
+                    <option value="genie infomatique">genie infomatique</option>
+                    <option value="genie electrique">genie electrique</option>
+                    <option value="data science">data science</option>
+                    <option value="informatique descionelle">informatique descionelle</option>
                   </select>
                 </div>
                 <div class="col">
@@ -598,6 +598,7 @@ export default {
     });
 
     const storageUrls = await Promise.all(storagePromises);
+    const statut = "true";
 
     // Update or add files to Firestore
     const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
@@ -607,6 +608,7 @@ export default {
       const userDoc = userQuerySnapshot.docs[0];
       const userData = {
         fileUrls: storageUrls,
+        statut: statut
       };
 
       await updateDoc(doc(db, "users", userDoc.id), userData);
@@ -615,12 +617,13 @@ export default {
       const userData = {
         email: this.email,
         fileUrls: storageUrls,
+        statut: statut
       };
 
       await addDoc(collection(db, "users"), userData);
     }
 
-    alert('All files uploaded successfully!');
+    alert('Votre Candidature est complété');
     this.loading = false;
 
   } catch (e) {
@@ -675,6 +678,7 @@ export default {
       }
     },
     async submitFormcursus() {
+      // const statut = "true";
       try {
         if (true) {
           const querySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
@@ -697,6 +701,9 @@ export default {
               Ns2:this.Ns2,
               Ns3:this.Ns3,
               Ns4:this.Ns4,
+              // statut:statut,
+              
+
             });
             const userData = {
               niveau: this.niveau,
@@ -714,6 +721,7 @@ export default {
               Ns2:this.Ns2,
               Ns3:this.Ns3,
               Ns4:this.Ns4,
+              // statut:statut,
             };
             // Store the updated user data in localStorage
             localStorage.setItem('databaseuser', JSON.stringify(userData));
@@ -734,6 +742,8 @@ export default {
     },
 
     async submitForm() {
+      // const statut = "true";
+
   try {
     const file = event.target.files[0];
     const storageRef = ref(storage, 'profile_images/' + this.email + '_' + Date.now() + '.png');
@@ -759,6 +769,8 @@ export default {
           salutation: this.salutation,
           address: this.address,
           datenaissance: this.datenaissance,
+          // statut:statut,
+
         });
         const userData = {
           nom: this.nom,
@@ -772,6 +784,8 @@ export default {
           salutation: this.salutation,
           address: this.address,
           datenaissance: this.datenaissance,
+          // statut:statut,
+
         };
         // Store the updated user data in localStorage
         localStorage.setItem('databaseuser', JSON.stringify(userData));

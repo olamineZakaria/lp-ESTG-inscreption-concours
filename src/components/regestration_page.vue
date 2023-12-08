@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     async registerUser() {
+  const statut = "false";
   const cin = this.$refs.cin.value;
   const email = this.$refs.email.value;
   const password = this.$refs.password.value;
@@ -102,6 +103,8 @@ export default {
     await addDoc(usersCollectionRef, {
       cin: cin,
       email: email,
+      statut:statut,
+
       // Avoid storing passwords directly in Firestore for security reasons.
       // Instead, consider using a separate server-side function to handle sensitive data.
     });

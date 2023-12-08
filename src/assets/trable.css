@@ -176,14 +176,27 @@ padding: 0px 6px;
   float: left;
 }
 .box{
-	width: 88%;
+	  width: 88%;
     height: 130px;
-    background-color: #e3e3e3;
+    background-color: #ffffff;
     margin-left: 10px;
     padding: 10px;
     box-shadow: 2px 5px 10px #ddd;
     position: relative;
     border-radius: 15px;
+}
+.box-8{
+    width: 97.8%;
+    background-color: #fff;
+    height: 330px;
+    margin-left: 10px;
+    padding: 10px;
+    box-shadow: 2px 5px 10px #ddd;
+    position: relative;
+    border-radius: 15px;
+    margin-top: 8%;
+    margin-right: 10;
+
 }
 .box p{
     color: #005596;
@@ -296,12 +309,12 @@ padding: 0px 6px;
     padding: 3px 10px;
     font-size: 15px;
 }
-.box-8{
+/* .box-8{
 	width: 97.8%;
 	background-color: #fff;
 	height: 330px;
 	
-}
+} */
 .active1{
 	    background: #005596;
     color: white;
