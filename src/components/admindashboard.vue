@@ -22,8 +22,8 @@
               <i class="fa fa-graduation-cap"></i>Candidat
             </a>
           </li>
-          <li :class="{ 'active': currentSection === 'dossier' }">
-            <a class="a-ptr" @click="showSection('dossier')">
+          <li :class="{ 'active': currentSection === 'selection' }">
+            <a class="a-ptr" @click="showSection('selection')">
               <i class="fa fa-folder"></i>Selection
             </a>
           </li>
@@ -51,6 +51,12 @@
           </div>
           <div class="clearfix"></div>
           <br />
+          <div style="margin-top: 10px;" v-if="currentSection === 'selection'">
+            <div>
+                <input type="file" @change="handleCSVUpload" />
+                <span v-if="uploadSuccess" style="color: green;">CSV uploaded successfully!</span>
+          </div>
+         </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'home'">
           <div class="col-div-4-1">
             <div class="box">
@@ -127,7 +133,7 @@
               <label>Programme:</label>
               <input id="text" v-model="newFormation.programme" style="width: 300px;" />
 
-              <label for="descriptif">Descriptif File:</label>
+              <label for="descriptif">Descriptif:</label>
               <input type="file" id="descriptif" ref="descriptifInput" @change="handleDescriptifUpload" style="width: 300px;" />
               <span v-if="newFormation.description">File Uploaded: {{ newFormation.description }}</span>
 
@@ -139,27 +145,37 @@
               <button style="float: left;" class="button-65" type="submit">Ajouter une Formation</button>
             </form>
             <table style="float: left;">
-              <!-- Your table content here -->
-                <thead>
-                  <tr>
-                    <th>Table Header 1</th>
-                    <th>Table Header 2</th>
-                    <!-- Add more headers as needed -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                    <!-- Add more data rows as needed -->
-                  </tr>
-                </tbody>
-            </table>
+            <thead>
+              <tr>
+                <th>Programme</th>
+                <th>Descriptif</th>
+                <th>Image</th>
+                <th>Date Fin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Loop through each formation and display its details -->
+              <tr v-for="(formation, index) in formations" :key="index">
+                <td>{{ formation.programme }}</td>
+                <td> <a :href="formation.descreption">{{ formation.programme }}</a></td>
+                <td>
+                  <!-- Display the image, you may need to adjust this based on how you store images -->
+                  <img :src="formation.image" alt="Formation Image" style="max-width: 50px; max-height: 50px;" />
+                </td>
+                <td>{{ formation.datefin }}</td>
+                <td>
+        <!-- Add icons for delete and modifier with corresponding click events -->
+                <span @click="deleteCondition(index)" style="cursor: pointer; margin-right: 10px;">🗑️</span>
+                <span @click="editCondition(index)" style="cursor: pointer;">✏️</span>
+              </td>
+              </tr>
+            </tbody>
+          </table>
           </div>
           <hr color="#005596" size="5" noshade="" width="100%">
           <div style="margin-top: 20px; margin-bottom: 20px; display: flex; align-items: flex-start;">
             <form @submit.prevent="addDocument">
-              <label>Document:</label>
+              <label>Dossier de candidateur:</label>
               <input id="text" v-model="newDocument.documentType" style="width: 300px;" />
               <br><br>
               <button style="float: left;" class="button-65" type="submit">Ajouter un document</button>
@@ -168,45 +184,76 @@
               <!-- Your table content here -->
                 <thead>
                   <tr>
-                    <th>Table Header 1</th>
-                    <th>Table Header 2</th>
+                    <th>Dossier de candidateur</th>
                     <!-- Add more headers as needed -->
                   </tr>
                 </thead>
                 <tbody>
+                  <tr v-for="(dossier, index) in dossiers" :key="index">
+                  <td>{{ dossier.documentType }}</td>
+                  <td>
+        <!-- Add icons for delete and modifier with corresponding click events -->
+                  <span @click="deleteCondition(index)" style="cursor: pointer; margin-right: 10px;">🗑️</span>
+                  <span @click="editCondition(index)" style="cursor: pointer;">✏️</span>
+                </td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+          <hr color="#005596" size="5" noshade="" width="100%">
+          <div style="margin-top: 20px; margin-bottom: 20px; display: flex; align-items: flex-start;">
+            <form @submit.prevent="addCondition">
+              <label for="programme">Guide d'inscreption:</label>
+              <input type="file" id="descriptif" ref="descriptifInput" @change="handleDescriptifUpload" style="width: 300px;" />
+              <br><br>
+              <button style="float: left;" class="button-65" type="submit">Ajouter un Guide</button>
+            </form>
+            <table style="float: left;">
+              <!-- Your table content here -->
+                <thead>
                   <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                    <!-- Add more data rows as needed -->
+                    <th>Guide d'inscreption</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(documentconcours, index) in documentconcoursList" :key="index">
+                    <td><a :href="documentconcours.file">Guide d'inscreption</a></td>
+                    <td>
+        <!-- Add icons for delete and modifier with corresponding click events -->
+                      <span @click="deleteCondition(index)" style="cursor: pointer; margin-right: 10px;">🗑️</span>
+                      <span @click="editCondition(index)" style="cursor: pointer;">✏️</span>
+                    </td>
                   </tr>
                 </tbody>
             </table>
           </div>
           <hr color="#005596" size="5" noshade="" width="100%">
           <div style="margin-top: 20px; display: flex; align-items: flex-start;">
-            <form @submit.prevent="addCondition">
-              <label for="programme">Condition:</label>
+            <form @submit.prevent="handleSubmit">
+              <label for="programme">Conditions d'admission</label>
               <input id="text" v-model="newCondition.title" style="width: 300px;" />
               <br><br>
-              <button style="float: left;" class="button-65" type="submit">Ajouter une condition</button>
+              <button style="float: left;" class="button-65" type="submit">{{ editMode ? 'Modifier une Condition' : 'Ajouter une condition' }}</button>
             </form>
             <table style="float: left;">
-              <!-- Your table content here -->
-                <thead>
-                  <tr>
-                    <th>Table Header 1</th>
-                    <th>Table Header 2</th>
-                    <!-- Add more headers as needed -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                    <!-- Add more data rows as needed -->
-                  </tr>
-                </tbody>
-            </table>
+            <thead>
+              <tr>
+                <th>Conditions d'admission</th>
+                <!-- Add more headers as needed -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(condition, index) in condition" :key="index">
+                <td>{{ condition.title }}</td>
+                <td>
+        <!-- Add icons for delete and modifier with corresponding click events -->
+                <span @click="deleteCondition(index)" style="cursor: pointer; margin-right: 10px;">🗑️</span>
+                <span @click="editCondition(index)" style="cursor: pointer;">✏️</span>
+              </td>
+                <!-- Add more data columns as needed -->
+              </tr>
+            </tbody>
+          </table>
           </div>
           </div>
           </div>
@@ -218,6 +265,7 @@
 import { collection, addDoc, deleteDoc, updateDoc, doc, getDocs, getFirestore, query, where  } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import firebaseApp from '../scripts/firebaseConfig';
 import Chart from 'chart.js/auto';
+import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const db = getFirestore(firebaseApp);
@@ -226,6 +274,13 @@ export default {
   
   data() {
     return {
+      condition: [],
+      formations: [], // Array to store fetched formations
+      dossiers: [], // Array to store fetched dossiers
+      documentconcoursList: [], // Array to store fetched documentconcours
+
+      editMode: false, // Flag to determine whether you are in edit mode
+      editIndex: null, 
       newDocument:{
         documentType:'',
       },
@@ -240,7 +295,6 @@ export default {
       },
       diplomaCounts: {},
       barChart: null, // Added a property to store the chart instance
-
       currentSection: 'infos', // Assuming 'home' is the default section
       usersData: [], 
       numberOfUsers: 0,
@@ -250,12 +304,172 @@ export default {
       countArrayaa : [],
       optionDArray: [],
       countArrayOptionD: [],
-
+      // ya
+      uploadSuccess: false,
 
     };
 
   },
   methods: {
+    async handleCSVUpload(event) {
+      const file = event.target.files[0];
+      const csvData = await this.readFile(file);
+
+      // Parse CSV data
+      const parsedData = await this.parseCSV(csvData);
+
+      // Upload to Firestore
+      await this.uploadToFirestore(parsedData);
+      this.uploadSuccess = true;
+    },
+    readFile(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsText(file);
+      });
+    },
+    parseCSV(csvData) {
+      return new Promise((resolve) => {
+        Papa.parse(csvData, {
+          header: true,
+          dynamicTyping: true,
+          complete: (results) => {
+            resolve(results.data);
+          },
+        });
+      });
+    },
+    async uploadToFirestore(data) {
+      const db = getFirestore();
+      const collectionRef = collection(db, 'admis'); // Replace with your actual collection name
+
+      for (const item of data) {
+        await addDoc(collectionRef, item);
+      }
+    },
+    async addDocumentConcours() {
+      // Your addDocumentConcours logic here
+    },
+
+    async fetchDocumentConcours() {
+      try {
+        const db = getFirestore(); // Assuming firebaseApp is initialized globally
+        const documentconcoursCollection = collection(db, 'documentconcours');
+        const documentconcoursSnapshot = await getDocs(documentconcoursCollection);
+
+        // Map the documents to an array of documentconcours objects
+        this.documentconcoursList = documentconcoursSnapshot.docs.map(doc => doc.data());
+      } catch (error) {
+        console.error('Error fetching documentconcours:', error);
+      }
+    },
+    async fetchDossiers() {
+      try {
+        const db = getFirestore(); // Assuming firebaseApp is initialized globally
+        const dossiersCollection = collection(db, 'Dossier');
+        const dossiersSnapshot = await getDocs(dossiersCollection);
+
+        // Map the documents to an array of dossier objects
+        this.dossiers = dossiersSnapshot.docs.map(doc => doc.data());
+      } catch (error) {
+        console.error('Error fetching dossiers:', error);
+      }
+    },
+    async fetchFormations() {
+      try {
+        const db = getFirestore(); // Assuming firebaseApp is initialized globally
+        const formationsCollection = collection(db, 'formation');
+        const formationsSnapshot = await getDocs(formationsCollection);
+
+        // Map the documents to an array of formation objects
+        this.formations = formationsSnapshot.docs.map(doc => doc.data());
+      } catch (error) {
+        console.error('Error fetching formations:', error);
+      }
+    },
+    async updateCondition() {
+      try {
+        const db = getFirestore();
+        const conditionsCollection = collection(db, "condition");
+
+        // Get the document ID of the condition being edited
+        const conditionId = this.condition[this.editIndex].id;
+
+        // Reference to the specific document
+        const conditionDocRef = doc(conditionsCollection, conditionId);
+
+        // Update the document with the new data
+        await updateDoc(conditionDocRef, {
+          title: this.newCondition.title,
+          // Add other fields as needed
+        });
+
+        // Update the conditions array locally
+        this.$set(this.condition, this.editIndex, {
+          id: conditionId,
+          title: this.newCondition.title,
+          // Update other fields as needed
+        });
+      } catch (error) {
+        console.error("Error updating condition:", error);
+      }
+    },
+    async handleSubmit() {
+      try {
+        if (this.editMode) {
+          // Update the condition in edit mode
+          await this.updateCondition();
+        } else {
+          // Add a new condition in add mode
+          await this.addCondition();
+        }
+
+        // Clear the form and reset the mode after submitting
+        this.newCondition.title = "";
+        this.editMode = false;
+        this.editIndex = null;
+      } catch (error) {
+        console.error("Error submitting condition:", error);
+      }
+    },
+    editCondition(index) {
+      // Set edit mode, populate the form with the selected condition's data
+      this.editMode = true;
+      this.editIndex = index;
+      this.newCondition.title = this.condition[index].title;
+    },
+    async loadConditions() {
+      try {
+        // Load existing conditions from Firestore
+        const conditionsCollection = collection(db, 'condition');
+        const conditionsSnapshot = await getDocs(conditionsCollection);
+        this.condition = conditionsSnapshot.docs.map(doc => doc.data());
+      } catch (error) {
+        console.error('Error loading conditions:', error);
+      }
+    },
+    async addCondition() {
+      try {
+        // Add the new condition to Firestore
+        const conditionsCollection = collection(db, 'condition');
+        const newConditionRef = await addDoc(conditionsCollection, this.newCondition);
+
+        // Get the updated list of conditions
+        const conditionsSnapshot = await getDocs(conditionsCollection);
+        this.conditions = conditionsSnapshot.docs.map(doc => doc.data());
+
+        // Clear the form
+        this.newCondition = {
+          title: '',
+          // Reset other properties as needed
+        };
+
+        console.log('Condition added successfully with ID:', newConditionRef.id);
+      } catch (error) {
+        console.error('Error adding condition:', error);
+      }
+    },
     exportToExcel() {
       // Extract only the columns you want to export
       const exportData = this.usersData.map(user => {
@@ -675,11 +889,11 @@ async fetchUsers() {
         case 'home':
           return 'Tableau de Board';
         case 'Candidat':
-          return 'Candidat';
+          return 'La list des candidats';
         case 'infos':
           return 'Informations';
-        case 'dossier':
-          return 'Mon dossier';
+        case 'selection':
+          return 'Les candidats admis';
         case 'inscriptions':
           return 'Mes inscriptions';
         case 'deconnexion':
@@ -727,14 +941,22 @@ async fetchUsers() {
     },
   
   },
+  async created() {
+    await this.loadConditions();
+  },
   mounted() {
       this.showSection("home");
       this.fetchUsers();
+      this.fetchDossiers();
       this.countUsers();
       // this.fetchDiplomaCounts();
       this.generatePieChart();
       // this.generateHorizontalBarChart()
       this.createBarChart();
+      this.fetchFormations();
+      this.fetchDocumentConcours();
+
+      // this.loadConditions();
 
   },
 };
