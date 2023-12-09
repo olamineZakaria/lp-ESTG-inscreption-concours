@@ -27,11 +27,6 @@
               <i class="fa fa-folder"></i>Selection
             </a>
           </li>
-          <li :class="{ 'active': currentSection === 'inscriptions' }">
-            <a class="a-ptr" @click="showSection('inscriptions')">
-              <i class="fa fa-user-plus"></i>
-            </a>
-          </li>
 
           <li :class="{ 'active': currentSection === 'deconnexion' }" id="li_ptr">
             <a class="a-ptr" @click="deconnexionSection">
@@ -894,8 +889,6 @@ async fetchUsers() {
           return 'Informations';
         case 'selection':
           return 'Les candidats admis';
-        case 'inscriptions':
-          return 'Mes inscriptions';
         case 'deconnexion':
           return 'Se déconnecter';
         default:

@@ -423,6 +423,60 @@ export default {
   },
   
   methods: {
+    async checkAndUpdateStatusToAdmis() {
+      try {
+        // Check if the user exists in the "users" collection
+        const userQuerySnapshotUsers = await getDocs(query(collection(db, 'users'), where('email', '==', this.email)));
+        
+        // Check if the user exists in the "admis" collection
+        const userQuerySnapshotAdmis = await getDocs(query(collection(db, 'admis'), where('Email', '==', this.email)));
+
+        if (!userQuerySnapshotUsers.empty && !userQuerySnapshotAdmis.empty) {
+          // User exists in both "users" and "admis" collections
+
+          // Get the user documents
+          const userDocUsers = userQuerySnapshotUsers.docs[0];
+          const userDocAdmis = userQuerySnapshotAdmis.docs[0];
+
+          // Get InscreptionLiST from both user documents
+          const inscreptionLiSTUsers = userDocUsers.data().InscreptionLiST || [];
+
+          // Update the status to "admis" in both InscreptionLiST arrays
+          const updatedInscreptionLiSTUsers = inscreptionLiSTUsers.map(inscription => ({
+            programme: inscription.programme,
+            status: 'admis',
+          }));
+
+      
+          // Update the InscreptionLiST in the "users" collection
+          await updateDoc(doc(db, 'users', userDocUsers.id), { InscreptionLiST: updatedInscreptionLiSTUsers });
+
+          // Update the InscreptionLiST in the "admis" collection
+
+          console.log('Status updated to "admis" for both collections.');
+        } else {
+          const userDocUsers = userQuerySnapshotUsers.docs[0];
+          const userDocAdmis = userQuerySnapshotAdmis.docs[0];
+
+          // Get InscreptionLiST from both user documents
+          const inscreptionLiSTUsers = userDocUsers.data().InscreptionLiST || [];
+
+          // Update the status to "admis" in both InscreptionLiST arrays
+          const updatedInscreptionLiSTUsers = inscreptionLiSTUsers.map(inscription => ({
+            programme: inscription.programme,
+            status: 'non admis',
+          }));
+
+      
+          // Update the InscreptionLiST in the "users" collection
+          await updateDoc(doc(db, 'users', userDocUsers.id), { InscreptionLiST: updatedInscreptionLiSTUsers });
+          console.error('User not found in either "users" or "admis" collection.');
+        }
+      } catch (e) {
+        console.error('Error checking and updating status: ', e);
+        // Handle errors as needed
+      }
+  },
     async fetchInscriptions() {
       try {
         const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("email", "==", this.email)));
@@ -876,12 +930,15 @@ export default {
     },
   },
   created() {
+    this.checkAndUpdateStatusToAdmis();
+    this.fetchInscriptions(); 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.fetchUserData(user.email);
         this.fetchInscriptions(); 
         this.fetchFormation();
         this.checkFileUrls();
+        this.checkAndUpdateStatusToAdmis();
         
 
       }
