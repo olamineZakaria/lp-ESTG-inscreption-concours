@@ -122,9 +122,92 @@
 
           </div>
           <div style="margin-top: 10px;" v-if="currentSection === 'infos'">
-          <button @click="addFormation">Ajouter Formation</button>
-          <button @click="deleteFormation">Supprimer Formation</button>
-          <button @click="modifyFormation">Modifier Formation</button>
+            <div style="margin-bottom: 20px; display: flex; align-items: flex-start;">
+            <form @submit.prevent="addFormation">
+              <label>Programme:</label>
+              <input id="text" v-model="newFormation.programme" style="width: 300px;" />
+
+              <label for="descriptif">Descriptif File:</label>
+              <input type="file" id="descriptif" ref="descriptifInput" @change="handleDescriptifUpload" style="width: 300px;" />
+              <span v-if="newFormation.description">File Uploaded: {{ newFormation.description }}</span>
+
+              <label for="image">Image:</label>
+              <input type="file" id="image" ref="imageInput" @change="handleImageUpload" style="width: 300px;" />
+              <label for="dateFin">Date Fin:</label>
+              <input type="date" id="dateFin" v-model="newFormation.dateFin" style="width: 300px;" />
+              <br><br>
+              <button style="float: left;" class="button-65" type="submit">Ajouter une Formation</button>
+            </form>
+            <table style="float: left;">
+              <!-- Your table content here -->
+                <thead>
+                  <tr>
+                    <th>Table Header 1</th>
+                    <th>Table Header 2</th>
+                    <!-- Add more headers as needed -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <!-- Add more data rows as needed -->
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+          <hr color="#005596" size="5" noshade="" width="100%">
+          <div style="margin-top: 20px; margin-bottom: 20px; display: flex; align-items: flex-start;">
+            <form @submit.prevent="addDocument">
+              <label>Document:</label>
+              <input id="text" v-model="newDocument.documentType" style="width: 300px;" />
+              <br><br>
+              <button style="float: left;" class="button-65" type="submit">Ajouter un document</button>
+            </form>
+            <table style="float: left;">
+              <!-- Your table content here -->
+                <thead>
+                  <tr>
+                    <th>Table Header 1</th>
+                    <th>Table Header 2</th>
+                    <!-- Add more headers as needed -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <!-- Add more data rows as needed -->
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+          <hr color="#005596" size="5" noshade="" width="100%">
+          <div style="margin-top: 20px; display: flex; align-items: flex-start;">
+            <form @submit.prevent="addCondition">
+              <label for="programme">Condition:</label>
+              <input id="text" v-model="newCondition.title" style="width: 300px;" />
+              <br><br>
+              <button style="float: left;" class="button-65" type="submit">Ajouter une condition</button>
+            </form>
+            <table style="float: left;">
+              <!-- Your table content here -->
+                <thead>
+                  <tr>
+                    <th>Table Header 1</th>
+                    <th>Table Header 2</th>
+                    <!-- Add more headers as needed -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <!-- Add more data rows as needed -->
+                  </tr>
+                </tbody>
+            </table>
+          </div>
           </div>
           </div>
           </div>
@@ -143,10 +226,22 @@ export default {
   
   data() {
     return {
+      newDocument:{
+        documentType:'',
+      },
+      newCondition:{
+        title:'',
+      },
+      newFormation: {
+      dateFin: '',
+      description: '',
+      image: '',
+      programme: ''
+      },
       diplomaCounts: {},
       barChart: null, // Added a property to store the chart instance
 
-      currentSection: 'home', // Assuming 'home' is the default section
+      currentSection: 'infos', // Assuming 'home' is the default section
       usersData: [], 
       numberOfUsers: 0,
       maxMoyenne: 0,
